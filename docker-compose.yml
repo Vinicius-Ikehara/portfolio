@@ -13,7 +13,7 @@ services:
     environment:
       - DATABASE_URL=sqlite:///./portfolio.db
       - DEBUG=False
-      - CORS_ORIGINS=["http://localhost:3000","http://localhost:5173","https://portfolio-frontend.mktdr8.easypanel.host"]
+      - CORS_ORIGINS=["http://localhost:3000","http://localhost:5173","https://portfolio-frontend.mktdr8.easypanel.host","https://portfolio.ikehara.dev.br"]
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-this}
     volumes:
       - ./backend/data:/app/data

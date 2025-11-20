@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     CORS_ORIGINS: Union[List[str], str] = [
         "http://localhost:3000",
         "http://localhost:5173",
-        "https://portfolio-frontend.mktdr8.easypanel.host"
+        "https://portfolio-frontend.mktdr8.easypanel.host",
+        "https://portfolio.ikehara.dev.br"
     ]
 
     @field_validator('CORS_ORIGINS', mode='before')
