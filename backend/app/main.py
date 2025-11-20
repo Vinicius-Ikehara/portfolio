@@ -57,3 +57,21 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
+
+@app.get("/debug/config")
+def debug_config():
+    """
+    Endpoint temporário para debug de configurações.
+    REMOVER em produção ou quando DEBUG=False!
+    """
+    if not settings.DEBUG:
+        return {"error": "Debug mode is disabled"}
+
+    return {
+        "cors_origins": settings.CORS_ORIGINS,
+        "database_url": settings.DATABASE_URL.replace("://", "://***@") if "://" in settings.DATABASE_URL else settings.DATABASE_URL,
+        "debug": settings.DEBUG,
+        "app_name": settings.APP_NAME,
+        "app_version": settings.APP_VERSION,
+    }
