@@ -239,6 +239,61 @@ DATABASE_URL: str = "postgresql://user:password@localhost/dbname"
 2. Build command: `npm run build`
 3. Output directory: `dist`
 
+### Deploy no Easypanel
+
+#### Configuração do Backend
+
+1. **Variáveis de Ambiente no Easypanel**:
+   ```
+   DATABASE_URL=sqlite:///./portfolio.db
+   DEBUG=False
+   SECRET_KEY=sua-chave-secreta-forte-aqui
+   CORS_ORIGINS=["https://portfolio-frontend.mktdr8.easypanel.host"]
+   ```
+
+2. **Importante**: Adicione o domínio do seu frontend no `CORS_ORIGINS`
+   - Formato: `["https://seu-frontend-domain.easypanel.host"]`
+   - Para múltiplos domínios: `["https://domain1.com","https://domain2.com"]`
+
+#### Configuração do Frontend
+
+1. **Variável de Ambiente no Easypanel**:
+   ```
+   VITE_API_URL=https://portfolio-backend.mktdr8.easypanel.host
+   ```
+
+#### Troubleshooting CORS
+
+Se você receber o erro:
+```
+Access to XMLHttpRequest has been blocked by CORS policy
+```
+
+**Soluções**:
+
+1. **Verifique as variáveis de ambiente do backend**:
+   - Acesse o painel do Easypanel
+   - Vá em "Environment Variables" do serviço backend
+   - Certifique-se que `CORS_ORIGINS` contém o domínio do frontend
+
+2. **Formato correto do CORS_ORIGINS**:
+   ```
+   CORS_ORIGINS=["https://portfolio-frontend.mktdr8.easypanel.host"]
+   ```
+   - Use HTTPS (não HTTP) para produção
+   - Não inclua barra final no domínio
+   - Use aspas duplas dentro dos colchetes
+
+3. **Após alterar variáveis de ambiente**:
+   - Reinicie o serviço backend no Easypanel
+   - Aguarde alguns segundos para o serviço reiniciar
+   - Teste novamente a aplicação
+
+4. **Verifique os logs do backend**:
+   - Acesse os logs no Easypanel
+   - Procure por erros relacionados a CORS
+   - Verifique se as variáveis foram carregadas corretamente
+
 ## Segurança
 
 - CORS configurado para origens específicas
