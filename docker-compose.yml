@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: portfolio-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./portfolio.db
+      - DEBUG=False
+      - CORS_ORIGINS=["http://localhost:3000","https://seu-dominio.com"]
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-this}
+    volumes:
+      - ./backend/data:/app/data
+    networks:
+      - portfolio-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Vue.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: portfolio-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://seu-dominio.com:8000
+    depends_on:
+      - backend
+    networks:
+      - portfolio-network
+
+networks:
+  portfolio-network:
+    driver: bridge
+
+volumes:
+  portfolio-data:
