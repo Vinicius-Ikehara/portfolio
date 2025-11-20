@@ -57,28 +57,37 @@ GET https://portfolio-backend.mktdr8.easypanel.host/health
 4. **Configuração de porta** incorreta no Easypanel
 5. **Política de restart** que está causando loop
 
-## Solução Necessária
+## ✅ SOLUÇÃO ENCONTRADA
 
-Preciso **desabilitar ou configurar corretamente** o health check / liveness probe no Easypanel.
+**O problema era a configuração da PORTA no Easypanel!**
 
-### Configuração correta do Health Check:
+### Causa Raiz:
+- **Easypanel estava configurado para a porta 80**
+- **Backend estava rodando na porta 8000**
+- Health checks estavam falhando porque verificavam a porta errada
+- Easypanel matava o container por considerar que estava "unhealthy"
+
+### Como Resolver:
+
+1. **Acesse o Easypanel** → Serviço Backend
+2. **Vá para configurações de Porta/Port**
+3. **Altere de 80 para 8000**
+4. **Salve e faça redeploy**
+
+### Configuração correta do Health Check (após corrigir a porta):
 - **Path**: `/health`
-- **Port**: `8000`
+- **Port**: `8000` ← **CRÍTICO: TEM QUE SER 8000!**
 - **Initial Delay**: `10s` (dar tempo para o app iniciar)
 - **Period**: `30s`
 - **Timeout**: `5s`
 - **Success Threshold**: `1`
 - **Failure Threshold**: `3`
 
-### Ou simplesmente:
-**Desabilitar completamente** o health check por enquanto para testar.
-
-## Pedido de Ajuda
-
-Como posso:
-1. Desabilitar o health check no Easypanel?
-2. Ou configurar o health check corretamente?
-3. Ou identificar o que está causando o shutdown do container?
+### Teste para confirmar:
+```bash
+curl https://portfolio-backend.mktdr8.easypanel.host/health
+# Deve retornar: {"status": "healthy"}
+```
 
 ## Informações Adicionais
 

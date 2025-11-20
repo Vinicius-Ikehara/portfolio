@@ -210,6 +210,75 @@ Este erro pode indicar que:
    - Verifique se o domínio do backend está acessível
    - Tente acessar: `https://portfolio-backend.mktdr8.easypanel.host/docs`
 
+### Erro: Mixed Content (HTTP vs HTTPS)
+
+**Mensagem de erro**:
+```
+Mixed Content: The page at 'https://portfolio.ikehara.dev.br/admin' was loaded over HTTPS,
+but requested an insecure XMLHttpRequest endpoint 'http://portfolio-backend...'.
+This request has been blocked; the content must be served over HTTPS.
+```
+
+**Causa**: O frontend está fazendo requisições HTTP para o backend, mas páginas HTTPS só podem fazer requisições HTTPS.
+
+**Solução**:
+
+1. **Verifique a variável `VITE_API_URL` no Frontend**:
+   - ❌ ERRADO: `http://portfolio-backend.mktdr8.easypanel.host`
+   - ✅ CORRETO: `https://portfolio-backend.mktdr8.easypanel.host`
+
+2. **IMPORTANTE: REDEPLOY o Frontend (não apenas restart!)**
+   - Variáveis `VITE_*` são compiladas no momento do BUILD
+   - Apenas mudar a variável NÃO é suficiente
+   - Você PRECISA fazer **REDEPLOY** do frontend para recompilar
+
+3. **Passos para resolver**:
+   - Acesse o serviço Frontend no Easypanel
+   - Vá para Environment Variables
+   - Altere `VITE_API_URL` para usar HTTPS
+   - Clique em **Deploy** ou **Redeploy** (NÃO apenas Restart)
+   - Aguarde 3-5 minutos para o build completar
+   - Limpe o cache do navegador (Ctrl+Shift+R)
+
+4. **Como verificar se funcionou**:
+   - Abra o DevTools (F12) → Aba Network
+   - Recarregue a página
+   - Verifique se as requisições estão usando HTTPS
+
+### Erro: Backend em Loop de Restart (502 Bad Gateway)
+
+**Sintomas**:
+- Backend inicia mas é desligado automaticamente após alguns segundos
+- Logs mostram: `INFO: Application startup complete.` seguido de `INFO: Shutting down`
+- Frontend recebe erro 502 (Bad Gateway)
+
+**Causa mais comum**: Configuração de porta incorreta no Easypanel
+
+**Solução**:
+
+1. **Verifique a porta configurada no Easypanel**:
+   - Acesse o serviço Backend → Configurações de Porta/Port
+   - Backend FastAPI roda na porta **8000** (não 80)
+   - Se estiver configurado como 80, altere para **8000**
+
+2. **Verifique o Health Check**:
+   - Path: `/health`
+   - Port: **8000** ← CRÍTICO!
+   - Initial Delay: `10s` (dar tempo para o app iniciar)
+   - Period: `30s`
+   - Timeout: `5s`
+
+3. **Teste o health check manualmente**:
+   ```bash
+   curl https://portfolio-backend.mktdr8.easypanel.host/health
+   # Deve retornar: {"status": "healthy"}
+   ```
+
+4. **Se o problema persistir**:
+   - Verifique os logs do backend para outras mensagens de erro
+   - Certifique-se de que o curl está instalado no container (já está no Dockerfile)
+   - Desative temporariamente o health check para isolar o problema
+
 ### Como verificar se as variáveis de ambiente estão corretas
 
 Você pode adicionar um endpoint temporário para verificar:
