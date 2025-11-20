@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings
 from pydantic import field_validator
 from typing import List, Union
 import json
+import os
 
 
 class Settings(BaseSettings):
@@ -27,16 +28,24 @@ class Settings(BaseSettings):
         Parse CORS_ORIGINS from environment variable.
         Aceita tanto uma lista quanto uma string JSON.
         """
+        print(f"[CONFIG] Parsing CORS_ORIGINS: type={type(v)}, value={v}")
+
         if isinstance(v, str):
             try:
                 # Tenta fazer parse como JSON
                 parsed = json.loads(v)
+                print(f"[CONFIG] Parsed as JSON: {parsed}")
                 if isinstance(parsed, list):
                     return parsed
                 return [parsed]
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as e:
+                print(f"[CONFIG] Not valid JSON, treating as CSV: {e}")
                 # Se não for JSON válido, trata como string separada por vírgula
-                return [origin.strip() for origin in v.split(',')]
+                result = [origin.strip() for origin in v.split(',')]
+                print(f"[CONFIG] Parsed as CSV: {result}")
+                return result
+
+        print(f"[CONFIG] Using default value (list): {v}")
         return v
 
     # Security
@@ -55,4 +64,15 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 
-settings = Settings()
+# Inicializar settings com tratamento de erros
+try:
+    print("[CONFIG] Initializing settings...")
+    settings = Settings()
+    print(f"[CONFIG] Settings initialized successfully!")
+    print(f"[CONFIG] CORS_ORIGINS final value: {settings.CORS_ORIGINS}")
+    print(f"[CONFIG] DEBUG: {settings.DEBUG}")
+except Exception as e:
+    print(f"[CONFIG ERROR] Failed to initialize settings: {e}")
+    import traceback
+    traceback.print_exc()
+    raise
