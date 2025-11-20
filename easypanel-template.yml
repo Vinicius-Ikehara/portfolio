@@ -1,0 +1,35 @@
+# Template para importar no EasyPanel
+# Este arquivo pode ser usado na função "Import" do EasyPanel
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "sqlite:///./data/portfolio.db"
+      DEBUG: "False"
+      SECRET_KEY: "CHANGE-THIS-SECRET-KEY"
+      CORS_ORIGINS: '["*"]'
+    volumes:
+      - backend-data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      VITE_API_URL: "http://localhost:8000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-data:
