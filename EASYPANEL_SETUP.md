@@ -33,23 +33,42 @@ O código já foi atualizado no GitHub. Agora você precisa configurar as variá
 
 5. **Adicione/Edite as seguintes variáveis**:
 
+   **CORS_ORIGINS** - Aceita dois formatos:
+
+   **Formato 1 - JSON (Recomendado)**:
    ```
    CORS_ORIGINS=["https://portfolio-frontend.mktdr8.easypanel.host"]
    ```
 
+   **Formato 2 - Separado por vírgula (Alternativo)**:
+   ```
+   CORS_ORIGINS=https://portfolio-frontend.mktdr8.easypanel.host
+   ```
+
+   Para múltiplos domínios:
+   ```
+   CORS_ORIGINS=["https://frontend1.com","https://frontend2.com"]
+   ```
+   ou
+   ```
+   CORS_ORIGINS=https://frontend1.com,https://frontend2.com
+   ```
+
    **IMPORTANTE**:
-   - Copie **exatamente** como está acima
-   - Use colchetes `[]`
-   - Use aspas duplas `"` (não aspas simples)
-   - Não adicione espaços extras
-   - Use HTTPS (não HTTP)
+   - Use HTTPS (não HTTP) em produção
+   - Não adicione barra final no domínio: ❌ `https://domain.com/`
+   - Se usar formato JSON, use aspas duplas `"` (não aspas simples)
 
    **Outras variáveis recomendadas** (se não existirem):
    ```
    DATABASE_URL=sqlite:///./portfolio.db
-   DEBUG=False
+   DEBUG=True
    SECRET_KEY=uma-chave-secreta-forte-aleatoria
    ```
+
+   **⚠️ IMPORTANTE sobre DEBUG**:
+   - Use `DEBUG=True` para poder acessar o endpoint `/debug/config`
+   - Depois de verificar que está tudo funcionando, mude para `DEBUG=False`
 
 6. **Salve as variáveis**
    - Clique em "Save", "Update" ou "Apply"
