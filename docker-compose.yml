@@ -19,11 +19,6 @@ services:
       - ./backend/data:/app/data
     networks:
       - portfolio-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   # Frontend Vue.js
   frontend:
