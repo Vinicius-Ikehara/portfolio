@@ -12,7 +12,11 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./portfolio.db"
 
     # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://portfolio-frontend.mktdr8.easypanel.host"
+    ]
 
     # Security
     SECRET_KEY: str = "your-secret-key-change-in-production"
