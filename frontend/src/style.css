@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Professional Blue Color Palette - Column 3 */
+:root {
+  --primary-50: #e8f0ff;
+  --primary-100: #d0e1ff;
+  --primary-200: #a0bbf0;
+  --primary-300: #7b9ed9;
+  --primary-400: #5b7cba;
+  --primary-500: #3b5998;
+  --primary-600: #2c4373;
+  --primary-700: #1e3a8a;
+  --primary-800: #1a2f6f;
+  --primary-900: #1a2332;
+  --primary-950: #0f1621;
+
+  --surface-0: #ffffff;
+  --surface-50: #f8fafc;
+  --surface-100: #f1f5f9;
+  --surface-200: #e2e8f0;
+  --surface-300: #cbd5e1;
+  --surface-400: #94a3b8;
+  --surface-500: #64748b;
+  --surface-600: #475569;
+  --surface-700: #334155;
+  --surface-800: #1e293b;
+  --surface-900: #0f172a;
+  --surface-950: #020617;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,9 +42,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--surface-50);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* PrimeVue Base Styles */
+.p-component {
+  font-family: inherit;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
