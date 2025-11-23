@@ -6,3 +6,6 @@ pydantic-settings==2.1.0
 python-multipart==0.0.6
 slowapi==0.1.9
 python-dotenv==1.0.0
+authlib==1.2.1
+python-jose[cryptography]==3.3.0
+httpx==0.25.2

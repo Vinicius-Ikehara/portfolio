@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schemas
 from ..database import get_db
+from ..dependencies import verify_admin_token
 
 router = APIRouter(
     prefix="/api/projects",
@@ -25,7 +26,11 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=schemas.Project)
-def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
+def create_project(
+    project: schemas.ProjectCreate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_project = models.Project(**project.model_dump())
     db.add(db_project)
     db.commit()
@@ -34,7 +39,12 @@ def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)
 
 
 @router.put("/{project_id}", response_model=schemas.Project)
-def update_project(project_id: int, project: schemas.ProjectUpdate, db: Session = Depends(get_db)):
+def update_project(
+    project_id: int,
+    project: schemas.ProjectUpdate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_project = db.query(models.Project).filter(models.Project.id == project_id).first()
     if db_project is None:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -49,7 +59,11 @@ def update_project(project_id: int, project: schemas.ProjectUpdate, db: Session 
 
 
 @router.delete("/{project_id}")
-def delete_project(project_id: int, db: Session = Depends(get_db)):
+def delete_project(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_project = db.query(models.Project).filter(models.Project.id == project_id).first()
     if db_project is None:
         raise HTTPException(status_code=404, detail="Project not found")

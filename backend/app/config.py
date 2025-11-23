@@ -52,6 +52,15 @@ class Settings(BaseSettings):
     # Security
     SECRET_KEY: str = "your-secret-key-change-in-production"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    ALGORITHM: str = "HS256"
+
+    # Google OAuth (configure via environment variables)
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+    GOOGLE_REDIRECT_URI: str = ""
+
+    # Authorized Email (only this email can access admin)
+    AUTHORIZED_EMAIL: str = "vhikehara@gmail.com"
 
     # Rate Limiting
     RATE_LIMIT_PER_MINUTE: int = 60

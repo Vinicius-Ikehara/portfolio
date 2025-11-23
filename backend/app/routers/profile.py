@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from .. import models, schemas
 from ..database import get_db
+from ..dependencies import verify_admin_token
 
 router = APIRouter(
     prefix="/api/profile",
@@ -18,7 +19,11 @@ def get_profile(db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=schemas.Profile)
-def create_profile(profile: schemas.ProfileCreate, db: Session = Depends(get_db)):
+def create_profile(
+    profile: schemas.ProfileCreate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     # Verifica se já existe um perfil
     existing_profile = db.query(models.Profile).first()
     if existing_profile:
@@ -32,7 +37,11 @@ def create_profile(profile: schemas.ProfileCreate, db: Session = Depends(get_db)
 
 
 @router.put("/", response_model=schemas.Profile)
-def update_profile(profile: schemas.ProfileUpdate, db: Session = Depends(get_db)):
+def update_profile(
+    profile: schemas.ProfileUpdate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_profile = db.query(models.Profile).first()
     if db_profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")

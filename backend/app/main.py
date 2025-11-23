@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from .database import engine, Base
-from .routers import projects, experiences, profile
+from .routers import projects, experiences, profile, auth
 from .config import settings
 
 # Criar as tabelas no banco de dados
@@ -40,6 +40,7 @@ app.add_middleware(
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # Incluir routers
+app.include_router(auth.router)
 app.include_router(projects.router)
 app.include_router(experiences.router)
 app.include_router(profile.router)

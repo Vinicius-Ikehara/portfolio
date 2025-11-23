@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schemas
 from ..database import get_db
+from ..dependencies import verify_admin_token
 
 router = APIRouter(
     prefix="/api/experiences",
@@ -25,7 +26,11 @@ def get_experience(experience_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=schemas.Experience)
-def create_experience(experience: schemas.ExperienceCreate, db: Session = Depends(get_db)):
+def create_experience(
+    experience: schemas.ExperienceCreate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_experience = models.Experience(**experience.model_dump())
     db.add(db_experience)
     db.commit()
@@ -34,7 +39,12 @@ def create_experience(experience: schemas.ExperienceCreate, db: Session = Depend
 
 
 @router.put("/{experience_id}", response_model=schemas.Experience)
-def update_experience(experience_id: int, experience: schemas.ExperienceUpdate, db: Session = Depends(get_db)):
+def update_experience(
+    experience_id: int,
+    experience: schemas.ExperienceUpdate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_experience = db.query(models.Experience).filter(models.Experience.id == experience_id).first()
     if db_experience is None:
         raise HTTPException(status_code=404, detail="Experience not found")
@@ -49,7 +59,11 @@ def update_experience(experience_id: int, experience: schemas.ExperienceUpdate, 
 
 
 @router.delete("/{experience_id}")
-def delete_experience(experience_id: int, db: Session = Depends(get_db)):
+def delete_experience(
+    experience_id: int,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(verify_admin_token)
+):
     db_experience = db.query(models.Experience).filter(models.Experience.id == experience_id).first()
     if db_experience is None:
         raise HTTPException(status_code=404, detail="Experience not found")

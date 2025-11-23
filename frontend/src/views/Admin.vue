@@ -4,9 +4,14 @@
     <header class="bg-white shadow">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
         <h1 class="text-3xl font-bold text-gray-900">Painel Administrativo</h1>
-        <router-link to="/" class="text-primary-600 hover:text-primary-700">
-          ← Voltar ao Portfólio
-        </router-link>
+        <div class="flex gap-4">
+          <router-link to="/" class="text-primary-600 hover:text-primary-700">
+            ← Voltar ao Portfólio
+          </router-link>
+          <button @click="logout" class="text-red-600 hover:text-red-700 font-medium">
+            Sair
+          </button>
+        </div>
       </div>
     </header>
 
@@ -234,9 +239,19 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { profileApi, projectsApi, experiencesApi } from '../services/api'
+import { useRouter } from 'vue-router'
+import { profileApi, projectsApi, experiencesApi, authApi } from '../services/api'
 
+const router = useRouter()
 const activeTab = ref('profile')
+
+// Logout function
+function logout() {
+  if (confirm('Tem certeza que deseja sair?')) {
+    authApi.logout()
+    router.push('/login')
+  }
+}
 
 // Profile
 const profileForm = ref({
