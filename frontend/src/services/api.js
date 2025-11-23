@@ -11,36 +11,6 @@ const api = axios.create({
   }
 })
 
-// Interceptor para adicionar token JWT em todas as requisições
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('auth_token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  }
-)
-
-// Interceptor para tratar erros de autenticação
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      // Token inválido ou expirado - redirecionar para login
-      localStorage.removeItem('auth_token')
-      localStorage.removeItem('user_info')
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
-      }
-    }
-    return Promise.reject(error)
-  }
-)
-
 // Profile API
 export const profileApi = {
   get: () => api.get('/api/profile/'),
@@ -64,18 +34,6 @@ export const experiencesApi = {
   create: (data) => api.post('/api/experiences/', data),
   update: (id, data) => api.put(`/api/experiences/${id}`, data),
   delete: (id) => api.delete(`/api/experiences/${id}`)
-}
-
-// Auth API
-export const authApi = {
-  getGoogleLoginUrl: () => {
-    return `${API_URL}/api/auth/google/login`
-  },
-  verifyToken: (token) => api.post('/api/auth/verify', { token }),
-  logout: () => {
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('user_info')
-  }
 }
 
 export default api
