@@ -47,13 +47,16 @@
 
     <!-- Experience Section -->
     <section id="experience" class="py-20 bg-gray-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Experiência Profissional</h2>
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Experiência Profissional</h2>
+          <p class="text-gray-600">Minha jornada profissional e contribuições em diferentes organizações</p>
+        </div>
         <div v-if="loading" class="text-center text-gray-600">Carregando...</div>
         <div v-else-if="experiences.length === 0" class="text-center text-gray-600">
           Nenhuma experiência cadastrada ainda.
         </div>
-        <div v-else class="space-y-6">
+        <div v-else class="ml-4">
           <ExperienceCard
             v-for="exp in experiences"
             :key="exp.id"
