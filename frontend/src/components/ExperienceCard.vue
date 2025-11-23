@@ -27,7 +27,22 @@
           </div>
         </template>
         <template #content>
-          <p class="text-surface-700 dark:text-surface-200 mb-4 leading-relaxed">{{ experience.description }}</p>
+          <div class="mb-4">
+            <p
+              class="text-surface-700 dark:text-surface-200 leading-relaxed"
+              :class="{ 'line-clamp-2': !expanded && isLongText }"
+            >
+              {{ experience.description }}
+            </p>
+            <button
+              v-if="isLongText"
+              @click="expanded = !expanded"
+              class="text-primary-600 text-sm font-medium mt-2 hover:text-primary-700 flex items-center gap-1"
+            >
+              <i :class="expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+              {{ expanded ? 'Ver menos' : 'Ver mais' }}
+            </button>
+          </div>
 
           <div class="flex flex-wrap gap-2">
             <Chip
@@ -45,6 +60,7 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue'
 import Timeline from 'primevue/timeline'
 import Card from 'primevue/card'
 import Tag from 'primevue/tag'
@@ -60,7 +76,7 @@ const props = defineProps({
 const expanded = ref(false)
 
 const isLongText = computed(() => {
-  return props.experience.description && props.experience.description.length > 150
+  return props.experience.description && props.experience.description.length > 200
 })
 
 const formatDate = (dateStr) => {
@@ -74,5 +90,12 @@ const formatDate = (dateStr) => {
 <style scoped>
 :deep(.p-timeline-event-content) {
   padding-left: 1rem;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>
