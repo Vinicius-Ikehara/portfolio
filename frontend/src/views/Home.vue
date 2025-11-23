@@ -6,8 +6,13 @@
     <section id="about" class="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row items-center gap-12">
-          <div v-if="profile?.avatar_url" class="flex-shrink-0">
-            <img :src="profile.avatar_url" alt="Avatar" class="w-48 h-48 rounded-full border-4 border-white shadow-xl">
+          <div class="flex-shrink-0">
+            <img
+              :src="avatarSrc"
+              alt="Avatar"
+              class="w-48 h-48 rounded-full border-4 border-white shadow-xl object-cover"
+              @error="handleImageError"
+            >
           </div>
           <div class="flex-1 text-center md:text-left">
             <h1 class="text-5xl font-bold mb-4">{{ profile?.name || 'Seu Nome' }}</h1>
@@ -102,16 +107,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import ProjectCard from '../components/ProjectCard.vue'
 import ExperienceCard from '../components/ExperienceCard.vue'
 import { profileApi, projectsApi, experiencesApi } from '../services/api'
 
+const DEFAULT_AVATAR = '/profile-placeholder.svg'
+
 const profile = ref(null)
 const projects = ref([])
 const experiences = ref([])
 const loading = ref(true)
+const imageError = ref(false)
+
+const avatarSrc = computed(() => {
+  if (imageError.value || !profile.value?.avatar_url) {
+    return DEFAULT_AVATAR
+  }
+  return profile.value.avatar_url
+})
+
+const handleImageError = () => {
+  imageError.value = true
+}
 
 onMounted(async () => {
   try {
