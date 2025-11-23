@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+// API URL configurada via VITE_API_URL environment variable
+// Force rebuild: 2025-11-23
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const api = axios.create({
