@@ -50,11 +50,17 @@ import Card from 'primevue/card'
 import Tag from 'primevue/tag'
 import Chip from 'primevue/chip'
 
-defineProps({
+const props = defineProps({
   experience: {
     type: Object,
     required: true
   }
+})
+
+const expanded = ref(false)
+
+const isLongText = computed(() => {
+  return props.experience.description && props.experience.description.length > 150
 })
 
 const formatDate = (dateStr) => {
