@@ -1,46 +1,61 @@
 <template>
-  <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-    <div v-if="project.image_url" class="h-48 bg-gray-200">
-      <img :src="project.image_url" :alt="project.title" class="w-full h-full object-cover">
-    </div>
-    <div class="p-6">
-      <h3 class="text-xl font-bold text-gray-900 mb-2">{{ project.title }}</h3>
-      <p class="text-gray-600 mb-4">{{ project.description }}</p>
+  <Card class="h-full overflow-hidden hover:shadow-xl transition-all">
+    <template #header>
+      <div v-if="project.image_url" class="h-48 overflow-hidden">
+        <Image :src="project.image_url" :alt="project.title" image-class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" preview />
+      </div>
+      <div v-else class="h-48 bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
+        <i class="pi pi-folder text-6xl text-white opacity-50"></i>
+      </div>
+    </template>
+    <template #title>
+      <div class="flex items-start gap-2">
+        <i class="pi pi-code text-primary-600"></i>
+        <span>{{ project.title }}</span>
+      </div>
+    </template>
+    <template #content>
+      <p class="text-surface-600 dark:text-surface-300 mb-4">{{ project.description }}</p>
 
       <div class="flex flex-wrap gap-2 mb-4">
-        <span
+        <Chip
           v-for="tech in project.technologies"
           :key="tech"
-          class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm"
-        >
-          {{ tech }}
-        </span>
+          :label="tech"
+          class="bg-primary-50 text-primary-700"
+        />
       </div>
-
-      <div class="flex gap-4">
-        <a
+    </template>
+    <template #footer>
+      <div class="flex gap-3">
+        <Button
           v-if="project.project_url"
-          :href="project.project_url"
-          target="_blank"
-          class="text-primary-600 hover:text-primary-800 font-medium"
-        >
-          Ver Projeto →
-        </a>
-        <a
+          :label="'View Project'"
+          icon="pi pi-external-link"
+          @click="openUrl(project.project_url)"
+          outlined
+          severity="primary"
+          size="small"
+        />
+        <Button
           v-if="project.github_url"
-          :href="project.github_url"
-          target="_blank"
-          class="text-gray-600 hover:text-gray-800 font-medium"
-        >
-          GitHub →
-        </a>
+          :label="'GitHub'"
+          icon="pi pi-github"
+          @click="openUrl(project.github_url)"
+          outlined
+          severity="secondary"
+          size="small"
+        />
       </div>
-    </div>
-  </div>
+    </template>
+  </Card>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import Card from 'primevue/card'
+import Button from 'primevue/button'
+import Chip from 'primevue/chip'
+import Image from 'primevue/image'
 
 defineProps({
   project: {
@@ -48,4 +63,8 @@ defineProps({
     required: true
   }
 })
+
+const openUrl = (url) => {
+  window.open(url, '_blank')
+}
 </script>
