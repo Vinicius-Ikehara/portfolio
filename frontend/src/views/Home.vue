@@ -108,40 +108,40 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-primary-900 text-white">
+    <section id="contact" class="py-24 text-white" style="background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #0c4a6e 100%);">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="mb-12">
-          <h2 class="text-4xl md:text-5xl font-bold mb-6">Let's Work Together</h2>
-          <div class="w-24 h-1 bg-primary-400 mx-auto mb-6"></div>
-          <p class="text-xl text-gray-300">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6" style="color: #ffffff;">Let's Work Together</h2>
+          <div class="w-24 h-1 mx-auto mb-6" style="background-color: #38bdf8;"></div>
+          <p class="text-xl" style="color: #d1d5db;">
             Always open to new opportunities and collaborations
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-          <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all hover:scale-105">
-            <i class="pi pi-envelope text-4xl text-primary-400 mb-4 block"></i>
-            <div class="text-sm text-gray-400 mb-2 uppercase tracking-wide">Email</div>
-            <div class="text-lg font-semibold text-white">{{ profile.email }}</div>
+          <div class="rounded-xl p-8 transition-all hover:scale-105" style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+            <i class="pi pi-envelope text-4xl mb-4 block" style="color: #38bdf8;"></i>
+            <div class="text-sm mb-2 uppercase tracking-wide" style="color: #9ca3af;">Email</div>
+            <div class="text-lg font-semibold" style="color: #ffffff;">{{ profile.email }}</div>
           </div>
 
-          <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all hover:scale-105">
-            <i class="pi pi-phone text-4xl text-primary-400 mb-4 block"></i>
-            <div class="text-sm text-gray-400 mb-2 uppercase tracking-wide">Phone</div>
-            <div class="text-lg font-semibold text-white">{{ profile.phone }}</div>
+          <div class="rounded-xl p-8 transition-all hover:scale-105" style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+            <i class="pi pi-phone text-4xl mb-4 block" style="color: #38bdf8;"></i>
+            <div class="text-sm mb-2 uppercase tracking-wide" style="color: #9ca3af;">Phone</div>
+            <div class="text-lg font-semibold" style="color: #ffffff;">{{ profile.phone }}</div>
           </div>
 
-          <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all hover:scale-105">
-            <i class="pi pi-map-marker text-4xl text-primary-400 mb-4 block"></i>
-            <div class="text-sm text-gray-400 mb-2 uppercase tracking-wide">Location</div>
-            <div class="text-lg font-semibold text-white">{{ profile.location }}</div>
+          <div class="rounded-xl p-8 transition-all hover:scale-105" style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+            <i class="pi pi-map-marker text-4xl mb-4 block" style="color: #38bdf8;"></i>
+            <div class="text-sm mb-2 uppercase tracking-wide" style="color: #9ca3af;">Location</div>
+            <div class="text-lg font-semibold" style="color: #ffffff;">{{ profile.location }}</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-950 text-gray-400 py-8 border-t border-gray-800">
+    <footer class="py-8" style="background-color: #030712; color: #9ca3af; border-top: 1px solid #1f2937;">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <p>&copy; 2024 {{ profile.name }}. All rights reserved.</p>
