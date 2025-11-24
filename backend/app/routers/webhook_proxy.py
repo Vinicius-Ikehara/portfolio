@@ -4,7 +4,7 @@ import httpx
 
 router = APIRouter(prefix="/api/webhook", tags=["webhook"])
 
-N8N_WEBHOOK_URL = "https://webhook.ikehara.dev.br/webhook/pokedex"
+N8N_WEBHOOK_URL = "https://n8n.ikehara.dev.br/webhook/pokedex"
 
 
 class PokedexRequest(BaseModel):
