@@ -71,10 +71,7 @@
           <h2 class="text-4xl md:text-5xl font-bold mb-4 text-surface-900">
             Professional Experience
           </h2>
-          <div class="w-24 h-1 bg-primary-600 mx-auto mb-6"></div>
-          <p class="text-xl text-surface-600 max-w-2xl mx-auto">
-            My professional journey and contributions across different organizations
-          </p>
+          <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
         </div>
 
         <div class="space-y-8">
