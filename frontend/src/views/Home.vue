@@ -3,7 +3,7 @@
     <Navbar :profile="profile" />
 
     <!-- Hero Section -->
-    <section id="about" class="relative overflow-hidden bg-gradient-to-br from-primary-700 via-primary-800 to-primary-900 text-white py-16">
+    <section id="about" class="relative overflow-hidden text-white py-16" style="background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #0c4a6e 100%);">
       <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 40px 40px;"></div>
       </div>
@@ -11,7 +11,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="flex flex-col md:flex-row items-center gap-10">
           <div class="flex-shrink-0">
-            <div class="w-72 h-72 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 p-1 shadow-2xl">
+            <div class="w-72 h-72 md:w-80 md:h-80 rounded-full p-1 shadow-2xl" style="background: linear-gradient(135deg, #38bdf8, #0c4a6e);">
               <img
                 :src="profile.avatar_url"
                 :alt="profile.name"
@@ -20,19 +20,19 @@
             </div>
           </div>
           <div class="flex-1 text-center md:text-left">
-            <div class="inline-block px-3 py-1.5 bg-green-500/20 border border-green-400/30 rounded-full mb-4">
-              <span class="text-green-300 font-semibold flex items-center gap-2 text-sm">
-                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+            <div class="inline-block px-3 py-1.5 rounded-full mb-4" style="background-color: rgba(34, 197, 94, 0.2); border: 1px solid rgba(74, 222, 128, 0.3);">
+              <span class="font-semibold flex items-center gap-2 text-sm" style="color: #86efac;">
+                <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: #4ade80;"></span>
                 Available for Projects
               </span>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight">
+            <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight" style="color: #ffffff;">
               {{ profile.name }}
             </h1>
-            <p class="text-xl md:text-2xl mb-4 text-primary-200 font-light">
+            <p class="text-xl md:text-2xl mb-4 font-light" style="color: #7dd3fc;">
               {{ profile.title }}
             </p>
-            <p class="text-base mb-5 text-white/90 leading-relaxed max-w-2xl">
+            <p class="text-base mb-5 leading-relaxed max-w-2xl" style="color: rgba(255,255,255,0.9);">
               {{ profile.bio }}
             </p>
 
@@ -40,7 +40,8 @@
               <span
                 v-for="skill in profile.skills"
                 :key="skill"
-                class="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm font-medium hover:bg-white/20 transition-all"
+                class="px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-white/20 transition-all"
+                style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #ffffff;"
               >
                 {{ skill }}
               </span>
@@ -53,7 +54,8 @@
                 :href="url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-lg text-white hover:bg-white/20 font-semibold transition-all hover:scale-105 text-sm"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:scale-105 text-sm"
+                style="background-color: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: #ffffff;"
               >
                 <i :class="getSocialIcon(platform)" class="text-base"></i>
                 <span>{{ platform }}</span>
