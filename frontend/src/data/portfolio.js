@@ -8,7 +8,7 @@ export const profile = {
   email: "vhikehara@gmail.com",
   phone: "+55 (11) 95151-7465",
   location: "Rio Paranaiba ,MG",
-  avatar_url: "https://lh3.googleusercontent.com/sitesv/AAzXCkfyBN-RchUV3kBLhtdqMZ9j5gW4O5KM4nICtAXJOv1HEnsUltaV0R4Q-eIQLFio6vJGlzOfMtnWUIOGou5I_wAdXNpxJCoOdWBw_HoCa-WPSL8KwujzTKAPVXrywBBNszBfJU0WdgNdvfWZt-tlXAsjJxDxiG9vvS8mGxdfRVdn57k3qMbpPK8GKX3ThrCf7N1XimJ05DRlhhT43DE8qd9Y2VWdR0qPdAl5Sy4=w1280",
+  avatar_url: "https://media.licdn.com/dms/image/v2/D4D03AQGRwrqzxMP2fw/profile-displayphoto-crop_800_800/B4DZqe4rXFJcAI-/0/1763602250834?e=1765411200&v=beta&t=OXwhUa8DdV6AQj9hLz3DvGsKu-AQOpWhx5On5XAZ648",
   skills: [
     "n8n",
     "AI",
