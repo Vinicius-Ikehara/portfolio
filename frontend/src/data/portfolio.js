@@ -60,56 +60,13 @@ export const experiences = [
 export const projects = [
   {
     id: 1,
-    title: "AI Chatbot Platform",
-    description: "Enterprise-grade conversational AI platform with multi-language support and custom training capabilities.",
-    technologies: ["Python", "GPT-4", "FastAPI", "React", "PostgreSQL"],
-    image_url: "https://via.placeholder.com/600x400",
-    project_url: "#",
-    github_url: "https://github.com/yourusername/ai-chatbot"
-  },
-  {
-    id: 2,
-    title: "Computer Vision Pipeline",
-    description: "Real-time object detection and tracking system for autonomous vehicles, achieving 95% accuracy.",
-    technologies: ["Python", "YOLO", "OpenCV", "TensorFlow", "CUDA"],
-    image_url: "https://via.placeholder.com/600x400",
-    project_url: "#",
-    github_url: "https://github.com/yourusername/cv-pipeline"
-  },
-  {
-    id: 3,
-    title: "NLP Document Analyzer",
-    description: "Automated document classification and information extraction system processing 100K+ documents monthly.",
-    technologies: ["Python", "spaCy", "BERT", "FastAPI", "Docker"],
-    image_url: "https://via.placeholder.com/600x400",
-    project_url: "#",
-    github_url: "https://github.com/yourusername/nlp-analyzer"
-  },
-  {
-    id: 4,
-    title: "ML Model Monitoring Dashboard",
-    description: "Real-time monitoring and alerting system for production ML models with drift detection.",
-    technologies: ["Python", "Prometheus", "Grafana", "MLflow", "Kubernetes"],
-    image_url: "https://via.placeholder.com/600x400",
-    project_url: "#",
-    github_url: "https://github.com/yourusername/ml-monitor"
-  },
-  {
-    id: 5,
-    title: "Recommendation Engine",
-    description: "Personalized recommendation system using collaborative filtering and deep learning.",
-    technologies: ["Python", "PyTorch", "Redis", "Apache Kafka", "Elasticsearch"],
-    image_url: "https://via.placeholder.com/600x400",
-    project_url: "#",
-    github_url: "https://github.com/yourusername/recommender"
-  },
-  {
-    id: 6,
-    title: "Time Series Forecasting Tool",
-    description: "Advanced forecasting models for demand prediction with 85% accuracy on complex datasets.",
-    technologies: ["Python", "Prophet", "LSTM", "Streamlit", "AWS"],
-    image_url: "https://via.placeholder.com/600x400",
-    project_url: "#",
-    github_url: "https://github.com/yourusername/forecasting"
+    title: "Pokédex AI Agent",
+    description: "This project is an AI-powered chatbot that answers questions about the first generation of Pokémon. Built on n8n with a PostgreSQL vector database and GPT-4o mini, it supports semantic search and delivers accurate, conversational responses. Try it out now!",
+    technologies: ["n8n", "PostgreSQL", "Vector Database", "RAG", "GPT-4o mini", "Webhook", "Semantic Search"],
+    image_url: null,
+    project_url: "/projects/pokedex",
+    github_url: null,
+    slug: "pokedex",
+    interactive: true
   }
 ]
