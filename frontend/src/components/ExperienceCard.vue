@@ -2,17 +2,17 @@
   <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
     <div class="flex flex-col lg:flex-row">
       <!-- Left side - Company info -->
-      <div class="lg:w-64 bg-gradient-to-br from-primary-600 to-primary-800 p-6 text-white flex flex-col justify-center">
+      <div class="lg:w-64 p-6 text-white flex flex-col justify-center" style="background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #0c4a6e 100%);">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-            <i class="pi pi-briefcase text-xl"></i>
+          <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: rgba(255,255,255,0.1);">
+            <i class="pi pi-briefcase text-xl" style="color: #38bdf8;"></i>
           </div>
-          <div v-if="experience.current" class="px-3 py-1 bg-green-500 rounded-full text-xs font-bold uppercase">
+          <div v-if="experience.current" class="px-3 py-1 rounded-full text-xs font-bold uppercase" style="background-color: #22c55e; color: #ffffff;">
             Current
           </div>
         </div>
-        <h3 class="text-xl font-bold mb-1">{{ experience.company }}</h3>
-        <div class="flex items-center gap-2 text-primary-200 text-sm">
+        <h3 class="text-xl font-bold mb-1" style="color: #ffffff;">{{ experience.company }}</h3>
+        <div class="flex items-center gap-2 text-sm" style="color: #7dd3fc;">
           <i class="pi pi-calendar"></i>
           <span>{{ formatDate(experience.start_date) }} - {{ experience.current ? 'Present' : formatDate(experience.end_date) }}</span>
         </div>

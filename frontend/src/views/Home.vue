@@ -11,11 +11,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="flex flex-col md:flex-row items-center gap-10">
           <div class="flex-shrink-0">
-            <div class="w-72 h-72 md:w-80 md:h-80 rounded-full p-1 shadow-2xl" style="background: linear-gradient(135deg, #38bdf8, #0c4a6e);">
+            <div class="w-72 h-72 md:w-80 md:h-80 rounded-full shadow-2xl overflow-hidden">
               <img
                 :src="profile.avatar_url"
                 :alt="profile.name"
-                class="w-full h-full rounded-full object-cover border-4 border-white/20"
+                class="w-full h-full rounded-full object-cover"
               />
             </div>
           </div>
