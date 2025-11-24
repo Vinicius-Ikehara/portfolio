@@ -74,7 +74,8 @@ const isLoading = ref(false)
 const chatScreen = ref(null)
 
 const sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-const WEBHOOK_URL = 'https://webhook.ikehara.dev.br/webhook/pokedex'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const WEBHOOK_URL = `${API_URL}/api/webhook/pokedex`
 
 const formatMessage = (text) => {
   return text.replace(/\n/g, '<br>')
