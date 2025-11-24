@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen" style="background-color: #111827;">
     <Navbar :profile="profile" />
 
     <!-- Hero Section -->
@@ -67,13 +67,13 @@
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="py-24 bg-white">
+    <section id="experience" class="py-24" style="background-color: #0f172a;">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+          <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: #ffffff;">
             Professional Experience
           </h2>
-          <div class="w-24 h-1 bg-primary-600 mx-auto"></div>
+          <div class="w-24 h-1 mx-auto" style="background-color: #38bdf8;"></div>
         </div>
 
         <div class="space-y-8">
@@ -87,14 +87,14 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-24 bg-gray-50">
+    <section id="projects" class="py-24" style="background-color: #111827;">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+          <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: #ffffff;">
             Featured Projects
           </h2>
-          <div class="w-24 h-1 bg-primary-600 mx-auto mb-6"></div>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          <div class="w-24 h-1 mx-auto mb-6" style="background-color: #38bdf8;"></div>
+          <p class="text-xl max-w-2xl mx-auto" style="color: #9ca3af;">
             Showcasing projects that demonstrate my technical expertise and problem-solving abilities
           </p>
         </div>
@@ -149,7 +149,8 @@
           <p>&copy; 2024 {{ profile.name }}. All rights reserved.</p>
           <button
             @click="scrollToTop"
-            class="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors text-white font-medium"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium"
+            style="background-color: #0284c7; color: #ffffff;"
           >
             <i class="pi pi-arrow-up"></i>
             Back to Top

@@ -1,13 +1,13 @@
 <template>
-  <nav class="bg-white sticky top-0 z-50 shadow-sm" style="border-bottom: 1px solid #e5e7eb;">
+  <nav class="sticky top-0 z-50 shadow-lg" style="background-color: #0f172a; border-bottom: 1px solid #1e293b;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo/Name -->
-        <a href="#about" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #0369a1;">
+        <a href="#about" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #38bdf8;">
           <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #0284c7;">
             <span class="text-white font-bold text-sm">{{ getInitials(profile?.name) }}</span>
           </div>
-          <span class="hidden sm:block">{{ profile?.name || 'Portfolio' }}</span>
+          <span class="hidden sm:block" style="color: #ffffff;">{{ profile?.name || 'Portfolio' }}</span>
         </a>
 
         <!-- Desktop Navigation -->
@@ -16,10 +16,10 @@
             v-for="item in menuItems"
             :key="item.id"
             :href="item.route"
-            class="font-medium transition-colors flex items-center gap-2"
-            style="color: #374151;"
+            class="font-medium transition-colors flex items-center gap-2 hover:text-sky-400"
+            style="color: #cbd5e1;"
           >
-            <i :class="item.icon" class="text-sm"></i>
+            <i :class="item.icon" class="text-sm" style="color: #38bdf8;"></i>
             <span>{{ item.label }}</span>
           </a>
         </div>
@@ -28,7 +28,7 @@
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
           class="md:hidden p-2 rounded-lg transition-colors"
-          style="color: #374151;"
+          style="color: #cbd5e1;"
         >
           <i :class="mobileMenuOpen ? 'pi pi-times' : 'pi pi-bars'" class="text-xl"></i>
         </button>
@@ -38,7 +38,7 @@
       <div
         v-show="mobileMenuOpen"
         class="md:hidden py-4 space-y-2"
-        style="border-top: 1px solid #e5e7eb;"
+        style="border-top: 1px solid #1e293b;"
       >
         <a
           v-for="item in menuItems"
@@ -46,9 +46,9 @@
           :href="item.route"
           @click="mobileMenuOpen = false"
           class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors"
-          style="color: #374151;"
+          style="color: #cbd5e1;"
         >
-          <i :class="item.icon"></i>
+          <i :class="item.icon" style="color: #38bdf8;"></i>
           <span>{{ item.label }}</span>
         </a>
       </div>
