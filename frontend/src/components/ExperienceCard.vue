@@ -1,70 +1,61 @@
 <template>
-  <Timeline :value="[experience]" class="customized-timeline">
-    <template #marker>
-      <span class="flex w-8 h-8 items-center justify-center text-white rounded-full z-10 shadow-lg" :style="{ backgroundColor: experience.current ? '#10b981' : '#3b82f6' }">
-        <i class="pi pi-briefcase"></i>
-      </span>
-    </template>
-    <template #content>
-      <Card class="mt-3 hover:shadow-lg transition-shadow">
-        <template #title>
-          <div class="flex justify-between items-start flex-wrap gap-2">
-            <div>
-              <div class="text-xl font-bold text-gray-900 mb-1">{{ experience.position }}</div>
-              <div class="flex items-center gap-2 text-primary-600 font-medium">
-                <i class="pi pi-building"></i>
-                <span>{{ experience.company }}</span>
-              </div>
-            </div>
-            <Tag :value="experience.current ? 'Current' : formatDate(experience.end_date)" :severity="experience.current ? 'success' : 'info'" icon="pi pi-calendar">
-              <template #default>
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-calendar"></i>
-                  <span>{{ formatDate(experience.start_date) }} - {{ experience.current ? 'Current' : formatDate(experience.end_date) }}</span>
-                </div>
-              </template>
-            </Tag>
+  <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+    <div class="flex flex-col lg:flex-row">
+      <!-- Left side - Company info -->
+      <div class="lg:w-64 bg-gradient-to-br from-primary-600 to-primary-800 p-6 text-white flex flex-col justify-center">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+            <i class="pi pi-briefcase text-xl"></i>
           </div>
-        </template>
-        <template #content>
-          <div class="mb-4">
-            <p
-              class="text-surface-700 dark:text-surface-200 leading-relaxed"
-              :class="{ 'line-clamp-2': !expanded && isLongText }"
-            >
-              {{ experience.description }}
-            </p>
-            <button
-              v-if="isLongText"
-              @click="expanded = !expanded"
-              class="text-primary-600 text-sm font-medium mt-2 hover:text-primary-700 flex items-center gap-1"
-            >
-              <i :class="expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
-              {{ expanded ? 'Ver menos' : 'Ver mais' }}
-            </button>
+          <div v-if="experience.current" class="px-3 py-1 bg-green-500 rounded-full text-xs font-bold uppercase">
+            Current
           </div>
+        </div>
+        <h3 class="text-xl font-bold mb-1">{{ experience.company }}</h3>
+        <div class="flex items-center gap-2 text-primary-200 text-sm">
+          <i class="pi pi-calendar"></i>
+          <span>{{ formatDate(experience.start_date) }} - {{ experience.current ? 'Present' : formatDate(experience.end_date) }}</span>
+        </div>
+      </div>
 
-          <div class="flex flex-wrap gap-2">
-            <Chip
-              v-for="tech in experience.technologies"
-              :key="tech"
-              :label="tech"
-              icon="pi pi-tag"
-              class="bg-surface-100 text-surface-700"
-            />
-          </div>
-        </template>
-      </Card>
-    </template>
-  </Timeline>
+      <!-- Right side - Details -->
+      <div class="flex-1 p-6">
+        <h4 class="text-2xl font-bold text-gray-900 mb-3">{{ experience.position }}</h4>
+
+        <div class="mb-4">
+          <p
+            class="text-gray-600 leading-relaxed"
+            :class="{ 'line-clamp-3': !expanded && isLongText }"
+          >
+            {{ experience.description }}
+          </p>
+          <button
+            v-if="isLongText"
+            @click="expanded = !expanded"
+            class="text-primary-600 text-sm font-semibold mt-3 hover:text-primary-700 flex items-center gap-1 transition-colors"
+          >
+            <i :class="expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="text-xs"></i>
+            {{ expanded ? 'Show less' : 'Show more' }}
+          </button>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <span
+            v-for="tech in experience.technologies"
+            :key="tech"
+            class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-primary-100 hover:text-primary-700 transition-colors"
+          >
+            <i class="pi pi-tag text-xs mr-1"></i>
+            {{ tech }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-import Timeline from 'primevue/timeline'
-import Card from 'primevue/card'
-import Tag from 'primevue/tag'
-import Chip from 'primevue/chip'
 
 const props = defineProps({
   experience: {
@@ -88,13 +79,9 @@ const formatDate = (dateStr) => {
 </script>
 
 <style scoped>
-:deep(.p-timeline-event-content) {
-  padding-left: 1rem;
-}
-
-.line-clamp-2 {
+.line-clamp-3 {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
