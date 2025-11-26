@@ -4,7 +4,8 @@
     <div v-if="project.image_url" class="h-48 overflow-hidden">
       <img :src="project.image_url" :alt="project.title" class="w-full h-full object-cover" />
     </div>
-    <div v-else class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 50%, #922b21 100%);">
+    <!-- Pokedex Project Cover -->
+    <div v-else-if="project.slug === 'pokedex'" class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 50%, #922b21 100%);">
       <svg class="w-24 h-24 opacity-50" viewBox="0 0 512 512">
         <circle cx="256" cy="256" r="256" fill="#FF6B6B"/>
         <path d="M256 0C145.929 0 52.094 69.472 15.923 166.957h480.154C459.906 69.472 366.071 0 256 0z" fill="#E85A5A"/>
@@ -14,6 +15,22 @@
         <circle cx="256" cy="256" r="45" fill="#E5E5E5"/>
         <circle cx="256" cy="256" r="35" fill="#FFFFFF"/>
       </svg>
+    </div>
+    <!-- FAQ Bot Project Cover -->
+    <div v-else-if="project.slug === 'faq-bot'" class="h-48 flex flex-col items-center justify-center gap-4" style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);">
+      <div class="flex gap-3">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);">
+          <i class="pi pi-comments text-3xl text-white"></i>
+        </div>
+        <div class="w-16 h-16 rounded-full flex items-center justify-center" style="background-color: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);">
+          <i class="pi pi-question-circle text-3xl text-white opacity-75"></i>
+        </div>
+      </div>
+      <div class="text-white text-sm font-medium opacity-90">Powered by Dialogflow</div>
+    </div>
+    <!-- Default Project Cover -->
+    <div v-else class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);">
+      <i class="pi pi-code text-6xl text-white opacity-40"></i>
     </div>
 
     <!-- Content -->

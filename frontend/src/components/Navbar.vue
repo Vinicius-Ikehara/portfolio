@@ -4,9 +4,7 @@
       <div class="flex justify-between items-center h-16">
         <!-- Logo/Name -->
         <a href="#about" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #38bdf8;">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #0284c7;">
-            <span class="text-white font-bold text-sm">{{ getInitials(profile?.name) }}</span>
-          </div>
+          <Logo :size="32" />
           <span class="hidden sm:block" style="color: #ffffff;">{{ profile?.name || 'Portfolio' }}</span>
         </a>
 
@@ -58,6 +56,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import Logo from './Logo.vue'
 
 defineProps({
   profile: Object
