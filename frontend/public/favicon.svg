@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="vGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100" height="100" rx="20" fill="url(#vGrad)"/>
+
+  <!-- Letter V with tech style -->
+  <g transform="translate(50, 50)">
+    <!-- Left part of V -->
+    <path d="M-25,-25 L-5,25 L5,25 L-15,-25 Z" fill="white" opacity="0.95"/>
+
+    <!-- Right part of V -->
+    <path d="M25,-25 L15,-25 L5,25 L-5,25 Z" fill="white" opacity="0.95"/>
+
+    <!-- Tech accent lines -->
+    <line x1="-20" y1="-15" x2="-10" y2="5" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+    <line x1="20" y1="-15" x2="10" y2="5" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+
+    <!-- Circuit dots -->
+    <circle cx="-15" cy="-10" r="1.5" fill="white" opacity="0.6"/>
+    <circle cx="15" cy="-10" r="1.5" fill="white" opacity="0.6"/>
+    <circle cx="0" cy="15" r="1.5" fill="white" opacity="0.6"/>
+  </g>
+</svg>
