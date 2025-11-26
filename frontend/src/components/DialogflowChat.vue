@@ -2,7 +2,7 @@
   <df-messenger
     agent-id="7bf77edb-587b-4b28-8f40-67b544d24e95"
     language-code="pt-br"
-    chat-title="FAQ_BOT_DF"
+    chat-title="Assistente Virtual"
     intent="WELCOME"
   ></df-messenger>
 </template>
