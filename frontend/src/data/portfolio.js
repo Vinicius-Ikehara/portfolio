@@ -68,5 +68,16 @@ export const projects = [
     github_url: null,
     slug: "pokedex",
     interactive: true
+  },
+  {
+    id: 2,
+    title: "Dialogflow Virtual Assistant",
+    description: "This project is a conversational chatbot built with Google's Dialogflow CX in just a few hours to explore NLP technology. Integrated directly into my portfolio, it uses natural language understanding to answer questions about my professional experience, skills, and projects through custom intent recognition. Try it out now!",
+    technologies: ["Dialogflow CX", "Natural Language Processing", "Intent Recognition", "Chatbot", "Google Cloud"],
+    image_url: "/images/dialogflow.jpg",
+    project_url: "open-chat",
+    github_url: null,
+    slug: "dialogflow-assistant",
+    interactive: true
   }
 ]

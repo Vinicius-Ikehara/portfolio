@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full rounded-xl overflow-hidden transition-all hover:scale-105" style="background-color: #1e293b; border: 1px solid #334155;">
+  <div class="h-full rounded-xl overflow-hidden transition-all hover:scale-105 flex flex-col" style="background-color: #1e293b; border: 1px solid #334155;">
     <!-- Header Image -->
     <div v-if="project.image_url" class="h-48 overflow-hidden">
       <img :src="project.image_url" :alt="project.title" class="w-full h-full object-cover" />
@@ -34,13 +34,13 @@
     </div>
 
     <!-- Content -->
-    <div class="p-6">
+    <div class="p-6 flex flex-col flex-1">
       <div class="flex items-start gap-2 mb-3">
         <i class="pi pi-code text-lg" style="color: #38bdf8;"></i>
         <h3 class="text-xl font-bold" style="color: #ffffff;">{{ project.title }}</h3>
       </div>
 
-      <p class="mb-4 leading-relaxed" style="color: #cbd5e1;">{{ project.description }}</p>
+      <p class="mb-4 leading-relaxed flex-1" style="color: #cbd5e1; min-height: 120px;">{{ project.description }}</p>
 
       <div class="flex flex-wrap gap-2 mb-4">
         <span
@@ -54,9 +54,19 @@
       </div>
 
       <div class="flex gap-3 pt-4" style="border-top: 1px solid #334155;">
+        <!-- Open Chat button -->
+        <button
+          v-if="project.project_url === 'open-chat'"
+          @click="openChat"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-90"
+          style="background-color: #0284c7; color: #ffffff;"
+        >
+          <i class="pi pi-comments"></i>
+          Try it Now
+        </button>
         <!-- Internal link (router-link) -->
         <router-link
-          v-if="project.project_url && project.project_url.startsWith('/')"
+          v-else-if="project.project_url && project.project_url.startsWith('/')"
           :to="project.project_url"
           class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-90"
           style="background-color: #0284c7; color: #ffffff;"
@@ -99,4 +109,31 @@ defineProps({
     required: true
   }
 })
+
+const openChat = () => {
+  // Procura pelo elemento do Dialogflow Messenger
+  const dfMessenger = document.querySelector('df-messenger')
+  if (!dfMessenger) return
+
+  // Tenta múltiplas formas de abrir o chat
+  if (dfMessenger.shadowRoot) {
+    // Método 1: Procura pelo botão do chat bubble no shadow DOM
+    const chatButton = dfMessenger.shadowRoot.querySelector('[opened]')
+      ? null
+      : dfMessenger.shadowRoot.querySelector('button, .chat-bubble-button, df-messenger-chat-bubble')
+
+    if (chatButton) {
+      chatButton.click()
+      return
+    }
+  }
+
+  // Método 2: Tenta abrir usando o atributo
+  dfMessenger.setAttribute('opened', 'true')
+
+  // Método 3: Dispara evento de clique no próprio elemento
+  setTimeout(() => {
+    dfMessenger.click()
+  }, 100)
+}
 </script>
