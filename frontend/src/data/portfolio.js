@@ -79,5 +79,17 @@ export const projects = [
     github_url: null,
     slug: "dialogflow-assistant",
     interactive: true
+  },
+  {
+    id: 3,
+    title: "Last.fm Music Insights",
+    description: "A data visualization dashboard that tracks and analyzes your personal Last.fm listening history. Features daily top 10 rankings, artist statistics, and interactive charts showing music trends over time. Built with Vue.js, FastAPI, and Supabase for real-time music analytics.",
+    technologies: ["Vue.js", "FastAPI", "Supabase", "Chart.js", "Last.fm API", "TailwindCSS"],
+    image_url: "/images/music-project-cover.jpg",
+    project_url: "/projects/lastfm-insights",
+    github_url: null,
+    slug: "lastfm-insights",
+    interactive: true,
+    status: "in-progress"
   }
 ]

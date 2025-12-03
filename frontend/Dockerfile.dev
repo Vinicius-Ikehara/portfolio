@@ -1,0 +1,17 @@
+# Dockerfile para Frontend Vue.js - Development Mode
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copiar package files
+COPY package*.json ./
+
+# Instalar dependências
+RUN npm install
+
+# Expor porta do Vite
+EXPOSE 3000
+
+# Comando para rodar em modo dev
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from .database import engine, Base
-from .routers import projects, experiences, profile, webhook_proxy
+from .routers import projects, experiences, profile, webhook_proxy, lastfm
 from .config import settings
 
 # Criar as tabelas no banco de dados
@@ -44,6 +44,7 @@ app.include_router(projects.router)
 app.include_router(experiences.router)
 app.include_router(profile.router)
 app.include_router(webhook_proxy.router)
+app.include_router(lastfm.router)
 
 
 @app.get("/")

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
+import LastfmInsightsProject from '../views/LastfmInsightsProject.vue'
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/projects/pokedex',
     name: 'PokedexProject',
     component: ProjectDetail
+  },
+  {
+    path: '/projects/lastfm-insights',
+    name: 'LastfmInsightsProject',
+    component: LastfmInsightsProject
   }
 ]
 
