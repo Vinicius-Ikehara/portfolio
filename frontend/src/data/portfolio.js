@@ -89,6 +89,7 @@ export const projects = [
     project_url: "/projects/lastfm-insights",
     github_url: null,
     slug: "lastfm-insights",
-    interactive: true
+    interactive: true,
+    status: "in-progress"
   }
 ]

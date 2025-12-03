@@ -52,9 +52,20 @@
 
     <!-- Content -->
     <div class="p-6 flex flex-col flex-1">
-      <div class="flex items-start gap-2 mb-3">
-        <i class="pi pi-code text-lg" style="color: #38bdf8;"></i>
-        <h3 class="text-xl font-bold" style="color: #ffffff;">{{ project.title }}</h3>
+      <div class="flex items-start justify-between gap-2 mb-3">
+        <div class="flex items-start gap-2">
+          <i class="pi pi-code text-lg" style="color: #38bdf8;"></i>
+          <h3 class="text-xl font-bold" style="color: #ffffff;">{{ project.title }}</h3>
+        </div>
+        <!-- In Progress Badge -->
+        <span
+          v-if="project.status === 'in-progress'"
+          class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
+          style="background-color: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);"
+        >
+          <i class="pi pi-clock mr-1"></i>
+          In Progress
+        </span>
       </div>
 
       <p class="mb-4 leading-relaxed flex-1" style="color: #cbd5e1; min-height: 120px;">{{ project.description }}</p>

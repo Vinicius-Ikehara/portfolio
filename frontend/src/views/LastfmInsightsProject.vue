@@ -17,10 +17,30 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Project Header -->
         <div class="text-center mb-12">
-          <h1 class="text-4xl md:text-5xl font-bold mb-4" style="color: #ffffff;">
-            {{ project.title }}
-          </h1>
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <h1 class="text-4xl md:text-5xl font-bold" style="color: #ffffff;">
+              {{ project.title }}
+            </h1>
+            <!-- In Progress Badge -->
+            <span
+              v-if="project.status === 'in-progress'"
+              class="px-4 py-2 rounded-full text-sm font-semibold"
+              style="background-color: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);"
+            >
+              <i class="pi pi-clock mr-1"></i>
+              In Progress
+            </span>
+          </div>
           <div class="w-24 h-1 mx-auto mb-6" style="background-color: #38bdf8;"></div>
+
+          <!-- Feature Status Notice -->
+          <div class="max-w-2xl mx-auto mb-6 p-4 rounded-lg" style="background-color: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2);">
+            <p class="text-sm" style="color: #fbbf24;">
+              <i class="pi pi-info-circle mr-2"></i>
+              Currently showing: <strong>Daily Top 10 Rankings</strong>. More features coming soon!
+            </p>
+          </div>
+
           <p class="text-lg max-w-3xl mx-auto mb-8" style="color: #cbd5e1;">
             {{ project.description }}
           </p>
