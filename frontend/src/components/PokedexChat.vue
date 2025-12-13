@@ -1,5 +1,6 @@
 <template>
   <div class="pokedex">
+    <!-- Top Section -->
     <div class="top-section">
       <div class="camera"></div>
       <div class="leds">
@@ -9,92 +10,119 @@
       </div>
     </div>
 
-    <div class="screen" ref="chatScreen">
-      <!-- Spinning Pokeball background -->
-      <svg class="pokeball-bg" viewBox="0 0 512 512">
-        <circle cx="256" cy="256" r="256" fill="#FF6B6B"/>
-        <path d="M256 0C145.929 0 52.094 69.472 15.923 166.957h480.154C459.906 69.472 366.071 0 256 0z" fill="#E85A5A"/>
-        <circle cx="256" cy="256" r="256" fill="#FFFFFF" style="clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%)"/>
-        <path d="M256 512c110.071 0 203.906-69.472 240.077-166.957H15.923C52.094 442.528 145.929 512 256 512z" fill="#E5E5E5"/>
-        <rect x="0" y="230" width="512" height="52" fill="#4A5568"/>
-        <circle cx="256" cy="256" r="75" fill="#4A5568"/>
-        <circle cx="256" cy="256" r="45" fill="#E5E5E5"/>
-        <circle cx="256" cy="256" r="35" fill="#FFFFFF"/>
-      </svg>
+    <!-- Dual Screen Layout -->
+    <div class="screens-container">
+      <!-- Left Screen: Chat (White) -->
+      <div class="screen-left">
+        <div class="chat-screen" ref="chatScreen">
+          <div v-if="messages.length === 0" class="welcome">
+            <span class="welcome-title">Pokédex Online</span><br>
+            Ask about any Pokémon!<br><br>
+            Examples:<br>
+            <div class="example-line">
+              <i class="pi pi-bolt"></i> "Tell me about Pikachu"
+            </div>
+            <div class="example-line">
+              <i class="pi pi-sun"></i> "What are Charizard's types?"
+            </div>
+            <div class="example-line">
+              <i class="pi pi-cloud"></i> "How does Squirtle evolve?"
+            </div>
+          </div>
 
-      <div v-if="messages.length === 0" class="welcome">
-        <span class="welcome-title">Pokédex Online</span><br>
-        Ask about any Pokémon!<br><br>
-        Examples:<br>
-        <div class="example-line electric">
-          <i class="pi pi-bolt"></i> "Tell me about Pikachu"
+          <div
+            v-for="(msg, index) in messages"
+            :key="index"
+            :class="['message', msg.type + '-message']"
+            v-html="formatMessageText(msg.text)"
+          ></div>
+
+          <div v-if="isLoading" class="typing">
+            Pokédex is thinking
+          </div>
         </div>
-        <div class="example-line fire">
-          <i class="pi pi-sun"></i> "What are Charizard's types?"
-        </div>
-        <div class="example-line water">
-          <i class="pi pi-cloud"></i> "How does Squirtle evolve?"
+
+        <!-- Controls below chat -->
+        <div class="controls">
+          <input
+            type="text"
+            v-model="question"
+            @keypress.enter="sendQuestion"
+            placeholder="Ask me about any Pokémon..."
+            maxlength="200"
+            :disabled="isLoading"
+          />
+          <button @click="sendQuestion" :disabled="isLoading || !question.trim()">
+            <i :class="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-send'"></i>
+          </button>
         </div>
       </div>
 
-      <div
-        v-for="(msg, index) in messages"
-        :key="index"
-        :class="['message', msg.type + '-message']"
-        v-html="formatMessage(msg.text)"
-      ></div>
-
-      <div v-if="isLoading" class="typing">
-        Pokédex is thinking
+      <!-- Right Screen: Image Display (Green) -->
+      <div class="screen-right">
+        <div v-if="currentImage" class="image-display">
+          <img :src="currentImage" alt="Pokemon" />
+        </div>
+        <div v-else class="empty-screen">
+          <div class="pokeball-placeholder">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="50" fill="#1a5c1a" opacity="0.3"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#0d3d0d" stroke-width="2"/>
+              <line x1="15" y1="50" x2="85" y2="50" stroke="#0d3d0d" stroke-width="2"/>
+              <circle cx="50" cy="50" r="8" fill="#0d3d0d"/>
+            </svg>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="controls">
-      <input
-        type="text"
-        v-model="question"
-        @keypress.enter="sendQuestion"
-        placeholder="Ask me about any Pokémon..."
-        maxlength="200"
-        :disabled="isLoading"
-      />
-      <button @click="sendQuestion" :disabled="isLoading || !question.trim()">
-        <i :class="isLoading ? 'pi pi-spin pi-spinner' : 'pi pi-send'"></i>
-      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 
 const question = ref('')
 const messages = ref([])
 const isLoading = ref(false)
 const chatScreen = ref(null)
+const currentImage = ref(null)
 
 const sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const WEBHOOK_URL = `${API_URL}/api/webhook/pokedex`
 
-const formatMessage = (text) => {
-  // Converte padrão [IMAGEM: url] para HTML
-  let formatted = text.replace(
-    /\[IMAGEM:\s*(https?:\/\/[^\]]+)\]/g,
-    '<img src="$1" alt="Pokemon" class="pokemon-image" onerror="this.onerror=null; this.style.display=\'none\'; this.insertAdjacentHTML(\'afterend\', \'<div class=\\\'image-error\\\'>⚠️ Imagem não disponível</div>\');" />'
-  )
+// Extract image URL from text
+const extractImageUrl = (text) => {
+  const match = text.match(/\[IMAGEM:\s*(https?:\/\/[^\]]+)\]/)
+  return match ? match[1] : null
+}
 
-  // Converte markdown de imagens para HTML (fallback para formato antigo)
-  formatted = formatted.replace(
-    /!\[([^\]]*)\]\(([^)]+)\)/g,
-    '<img src="$2" alt="$1" class="pokemon-image" onerror="this.onerror=null; this.style.display=\'none\'; this.insertAdjacentHTML(\'afterend\', \'<div class=\\\'image-error\\\'>⚠️ Imagem não disponível: $1</div>\');" />'
-  )
+// Format message text (remove image tags, keep only text)
+const formatMessageText = (text) => {
+  // Remove image tags
+  let formatted = text.replace(/\[IMAGEM:\s*https?:\/\/[^\]]+\]/g, '')
 
-  // Converte quebras de linha para <br>
+  // Converte quebras de linha
   formatted = formatted.replace(/\n/g, '<br>')
 
-  return formatted
+  // Remove <br> extras
+  formatted = formatted.replace(/(<br>\s*){3,}/g, '<br><br>')
+
+  return formatted.trim()
 }
+
+// Watch for new messages and extract image
+watch(messages, (newMessages) => {
+  if (newMessages.length > 0) {
+    const lastMessage = newMessages[newMessages.length - 1]
+    if (lastMessage.type === 'bot') {
+      const imageUrl = extractImageUrl(lastMessage.text)
+      if (imageUrl) {
+        currentImage.value = imageUrl
+      }
+    }
+  }
+}, { deep: true })
 
 const scrollToBottom = async () => {
   await nextTick()
@@ -165,177 +193,224 @@ const sendQuestion = async () => {
 
 <style scoped>
 .pokedex {
-  background: linear-gradient(145deg, #ff2e2e, #d32f2f);
+  background: linear-gradient(145deg, #dc2626, #b91c1c);
   width: 100%;
-  max-width: 750px;
+  max-width: 1000px;
   border-radius: 20px;
   border: 4px solid #000;
   box-shadow:
-    0 15px 30px rgba(0,0,0,0.4),
-    inset 0 3px 6px rgba(255,255,255,0.2),
-    inset 0 -3px 6px rgba(0,0,0,0.3);
+    0 20px 40px rgba(0,0,0,0.5),
+    inset 0 3px 6px rgba(255,255,255,0.2);
   overflow: hidden;
   margin: 0 auto;
+  padding: 20px;
 }
 
+/* Top Section */
 .top-section {
-  background: linear-gradient(145deg, #ff2e2e, #d32f2f);
-  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+  padding: 0 10px;
 }
 
 .camera {
-  width: 25px;
-  height: 25px;
-  background: linear-gradient(145deg, cyan, #17a2b8);
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle at 30% 30%, #22d3ee, #0891b2);
   border-radius: 50%;
-  border: 3px solid #000;
+  border: 4px solid #000;
   box-shadow:
-    0 3px 6px rgba(0,0,0,0.4),
-    inset 0 1px 2px rgba(255,255,255,0.3),
-    inset 0 -1px 2px rgba(0,0,0,0.3);
+    0 4px 8px rgba(0,0,0,0.5),
+    inset 0 2px 4px rgba(255,255,255,0.4);
+  position: relative;
+}
+
+.camera::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  top: 10px;
+  left: 12px;
 }
 
 .leds {
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
 .led {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 2px solid #000;
+  border: 3px solid #000;
   box-shadow:
-    0 2px 4px rgba(0,0,0,0.3),
-    inset 0 1px 2px rgba(255,255,255,0.4),
-    inset 0 -1px 1px rgba(0,0,0,0.2);
+    0 2px 4px rgba(0,0,0,0.4),
+    inset 0 2px 4px rgba(255,255,255,0.5);
 }
 
-.led.red { background: linear-gradient(145deg, #ff0000, #cc0000); }
-.led.yellow { background: linear-gradient(145deg, #ffff00, #cccc00); }
-.led.green { background: linear-gradient(145deg, #00ff00, #00cc00); }
+.led.red { background: radial-gradient(circle at 30% 30%, #ff4444, #cc0000); }
+.led.yellow { background: radial-gradient(circle at 30% 30%, #ffff44, #cccc00); }
+.led.green { background: radial-gradient(circle at 30% 30%, #44ff44, #00cc00); }
 
-.screen {
-  background: linear-gradient(145deg, #fff, #f8f9fa);
-  margin: 0 15px;
-  border: 3px solid #000;
-  border-radius: 10px;
-  height: 450px;
+/* Dual Screen Container */
+.screens-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: 500px;
+}
+
+/* Left Screen (White - Chat) */
+.screen-left {
+  background: #e5e5e5;
+  border: 4px solid #000;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.chat-screen {
+  flex: 1;
+  background: linear-gradient(145deg, #ffffff, #f5f5f5);
   padding: 15px;
   overflow-y: auto;
-  font-size: 16px;
-  line-height: 1.6;
-  position: relative;
-  box-shadow:
-    inset 0 3px 6px rgba(0,0,0,0.2),
-    inset 0 -1px 3px rgba(255,255,255,0.3);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .controls {
-  background: linear-gradient(145deg, cyan, #17a2b8);
-  padding: 15px;
+  background: #d4d4d4;
+  padding: 12px;
   display: flex;
-  gap: 10px;
-  align-items: center;
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.2),
-    inset 0 -2px 4px rgba(0,0,0,0.2);
+  gap: 8px;
+  border-top: 3px solid #000;
 }
 
 .controls input {
   flex: 1;
-  padding: 12px 16px;
-  border: 3px solid #000;
-  border-radius: 25px;
-  font-size: 14px;
+  padding: 10px 14px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  font-size: 13px;
   outline: none;
-  background: linear-gradient(145deg, #fff, #f8f9fa);
-  box-shadow:
-    inset 0 2px 4px rgba(0,0,0,0.2),
-    0 1px 2px rgba(255,255,255,0.3);
-  transition: all 0.3s ease;
+  background: #fff;
 }
 
 .controls input:focus {
-  box-shadow:
-    inset 0 2px 6px rgba(0,0,0,0.3),
-    0 0 0 3px rgba(46, 204, 113, 0.3);
-}
-
-.controls input::placeholder {
-  color: #95a5a6;
-  font-style: italic;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.5);
 }
 
 .controls button {
-  background: linear-gradient(145deg, #2ecc71, #27ae60);
+  background: linear-gradient(145deg, #22c55e, #16a34a);
   color: white;
-  border: 3px solid #000;
+  border: 2px solid #000;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 18px;
-  width: 50px;
-  height: 50px;
+  font-size: 16px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 4px 8px rgba(0,0,0,0.3),
-    inset 0 2px 4px rgba(255,255,255,0.3),
-    inset 0 -2px 4px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .controls button:hover:not(:disabled) {
-  background: linear-gradient(145deg, #27ae60, #229954);
-  transform: scale(1.1);
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #16a34a, #15803d);
 }
 
 .controls button:disabled {
-  background: linear-gradient(145deg, #6c757d, #495057);
+  background: #9ca3af;
   cursor: not-allowed;
-  transform: none;
 }
 
-.message {
-  margin-bottom: 10px;
-  padding: 10px 14px;
+/* Right Screen (Green - Image) */
+.screen-right {
+  background: #16a34a;
+  border: 4px solid #000;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.4);
   position: relative;
-  z-index: 2;
+}
+
+.image-display {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.image-display img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.empty-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pokeball-placeholder {
+  width: 120px;
+  height: 120px;
+  opacity: 0.3;
+}
+
+/* Messages */
+.message {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  max-width: 90%;
+  word-wrap: break-word;
 }
 
 .user-message {
-  background: #3498db;
+  background: #3b82f6;
   color: white;
-  margin-left: 40px;
-  border-bottom-right-radius: 4px;
+  margin-left: auto;
+  border-bottom-right-radius: 3px;
 }
 
 .bot-message {
-  background: #ecf0f1;
-  color: #2c3e50;
-  margin-right: 40px;
-  border-bottom-left-radius: 4px;
+  background: #f3f4f6;
+  color: #1f2937;
+  border-bottom-left-radius: 3px;
+  margin-right: 0;
 }
 
 .system-message {
-  background: #f39c12;
-  color: white;
+  background: #fbbf24;
+  color: #78350f;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
+  max-width: 100%;
 }
 
 .typing {
-  position: relative;
-  z-index: 2;
-  color: #7f8c8d;
+  color: #6b7280;
   font-style: italic;
   padding: 8px;
+  font-size: 13px;
 }
 
 .typing::after {
@@ -353,71 +428,49 @@ const sendQuestion = async () => {
 
 .welcome {
   text-align: center;
-  color: #7f8c8d;
-  font-style: italic;
-  position: relative;
-  z-index: 2;
+  color: #6b7280;
+  font-size: 13px;
   padding: 20px;
 }
 
 .welcome-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
-  color: #e74c3c;
+  color: #dc2626;
   font-style: normal;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .example-line {
-  margin: 8px 0;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.1);
   font-style: normal;
   text-align: left;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  font-size: 12px;
+  color: #374151;
 }
 
-.electric { color: #f1c40f; }
-.fire { color: #e74c3c; }
-.water { color: #3498db; }
+/* Responsive */
+@media (max-width: 768px) {
+  .screens-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
 
-.pokeball-bg {
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.06;
-  pointer-events: none;
-  animation: spin 15s linear infinite;
-  z-index: 1;
-}
+  .screen-right {
+    min-height: 300px;
+  }
 
-@keyframes spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.pokemon-image {
-  max-width: 200px;
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin: 10px 0;
-  display: block;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  background: white;
-  border: 3px solid #000;
-}
-
-.bot-message .pokemon-image {
-  margin-left: 0;
-}
-
-.user-message .pokemon-image {
-  margin-left: auto;
+  .pokedex {
+    max-width: 100%;
+    margin: 0 10px;
+    padding: 15px;
+  }
 }
 </style>
