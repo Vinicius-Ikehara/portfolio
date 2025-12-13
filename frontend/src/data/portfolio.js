@@ -61,8 +61,8 @@ export const projects = [
   {
     id: 1,
     title: "Pokédex AI Agent",
-    description: "This project is an AI-powered chatbot that answers questions about the first generation of Pokémon. Built on n8n with a PostgreSQL vector database and GPT-4o mini, it supports semantic search and delivers accurate, conversational responses. Try it out now!",
-    technologies: ["n8n", "PostgreSQL", "Vector Database", "RAG", "GPT-4o mini", "Webhook", "Semantic Search"],
+    description: "An AI-powered Pokédex built using a RAG architecture and semantic vector search. Pokémon data is stored in a Supabase database with embeddings for semantic retrieval, while images are hosted in an S3 bucket. User queries are answered by an AI agent that retrieves the most relevant data and generates contextualized responses based on this knowledge base.",
+    technologies: ["n8n", "Supabase", "Vector Database", "RAG", "GPT-4.1 mini", "S3", "Semantic Search", "Guardrail"],
     image_url: null,
     project_url: "/projects/pokedex",
     github_url: null,
