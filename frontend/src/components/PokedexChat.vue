@@ -99,16 +99,19 @@ const extractImageUrl = (text) => {
 
 // Format message text (remove image tags, keep only text)
 const formatMessageText = (text) => {
-  // Remove image tags
-  let formatted = text.replace(/\[IMAGEM:\s*https?:\/\/[^\]]+\]/g, '')
+  // Remove image tags and surrounding line breaks
+  let formatted = text.replace(/\n*\[IMAGEM:\s*https?:\/\/[^\]]+\]\n*/g, '')
 
-  // Converte quebras de linha
+  // Remove multiple consecutive line breaks
+  formatted = formatted.replace(/\n{3,}/g, '\n\n')
+
+  // Trim whitespace
+  formatted = formatted.trim()
+
+  // Converte quebras de linha para <br>
   formatted = formatted.replace(/\n/g, '<br>')
 
-  // Remove <br> extras
-  formatted = formatted.replace(/(<br>\s*){3,}/g, '<br><br>')
-
-  return formatted.trim()
+  return formatted
 }
 
 // Watch for new messages and extract image
