@@ -78,8 +78,17 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const WEBHOOK_URL = `${API_URL}/api/webhook/pokedex`
 
 const formatMessage = (text) => {
-  // Converte markdown de imagens para HTML
-  let formatted = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="pokemon-image" />')
+  // Converte padrão [IMAGEM: url] para HTML
+  let formatted = text.replace(
+    /\[IMAGEM:\s*(https?:\/\/[^\]]+)\]/g,
+    '<img src="$1" alt="Pokemon" class="pokemon-image" onerror="this.onerror=null; this.style.display=\'none\'; this.insertAdjacentHTML(\'afterend\', \'<div class=\\\'image-error\\\'>⚠️ Imagem não disponível</div>\');" />'
+  )
+
+  // Converte markdown de imagens para HTML (fallback para formato antigo)
+  formatted = formatted.replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    '<img src="$2" alt="$1" class="pokemon-image" onerror="this.onerror=null; this.style.display=\'none\'; this.insertAdjacentHTML(\'afterend\', \'<div class=\\\'image-error\\\'>⚠️ Imagem não disponível: $1</div>\');" />'
+  )
 
   // Converte quebras de linha para <br>
   formatted = formatted.replace(/\n/g, '<br>')
