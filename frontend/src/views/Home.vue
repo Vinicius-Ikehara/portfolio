@@ -20,12 +20,6 @@
             </div>
           </div>
           <div class="flex-1 text-center md:text-left">
-            <div class="inline-block px-3 py-1.5 rounded-full mb-4" style="background-color: rgba(34, 197, 94, 0.2); border: 1px solid rgba(74, 222, 128, 0.3);">
-              <span class="font-semibold flex items-center gap-2 text-sm" style="color: #86efac;">
-                <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: #4ade80;"></span>
-                Available for Projects
-              </span>
-            </div>
             <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight" style="color: #ffffff;">
               {{ profile.name }}
             </h1>
