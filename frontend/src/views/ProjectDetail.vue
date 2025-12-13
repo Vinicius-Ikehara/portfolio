@@ -22,7 +22,9 @@
           </h1>
           <div class="w-24 h-1 mx-auto mb-6" style="background-color: #38bdf8;"></div>
           <p class="text-lg max-w-3xl mx-auto mb-8" style="color: #cbd5e1;">
-            {{ project.description }}
+            An AI-powered Pokédex built using a RAG architecture and semantic vector search.
+            Pokémon data is stored in a Supabase database with embeddings for semantic retrieval, while images are hosted in an S3 bucket.
+            User queries are answered by an AI agent that retrieves the most relevant data and generates contextualized responses based on this knowledge base.
           </p>
 
           <!-- Technologies -->
@@ -75,9 +77,9 @@
               <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(56, 189, 248, 0.2);">
                 <i class="pi pi-search text-2xl" style="color: #38bdf8;"></i>
               </div>
-              <h3 class="font-bold mb-2" style="color: #ffffff;">2. RAG Search</h3>
+              <h3 class="font-bold mb-2" style="color: #ffffff;">2. RAG Search + Guardrail</h3>
               <p class="text-sm" style="color: #9ca3af;">
-                The system performs semantic search on the PostgreSQL vector database
+                The system performs semantic search on the PostgreSQL vector database with a guardrail node to ensure relevant and safe responses
               </p>
             </div>
 
@@ -87,9 +89,28 @@
               </div>
               <h3 class="font-bold mb-2" style="color: #ffffff;">3. AI Response</h3>
               <p class="text-sm" style="color: #9ca3af;">
-                GPT-4o mini generates an accurate, conversational response
+                GPT-4.1 mini generates an accurate, conversational response
               </p>
             </div>
+          </div>
+        </div>
+
+        <!-- Workflow Diagram -->
+        <div class="mt-12 rounded-2xl p-6 md:p-8" style="background-color: #1e293b; border: 1px solid #334155;">
+          <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ffffff;">
+            <i class="pi pi-sitemap mr-2" style="color: #38bdf8;"></i>
+            Workflow Architecture
+          </h2>
+          <p class="text-center mb-6" style="color: #9ca3af;">
+            This diagram shows the complete n8n workflow architecture, including the RAG pipeline, guardrail validation, and AI response generation.
+          </p>
+          <div class="flex justify-center">
+            <img
+              src="/images/pokedex_wf.png"
+              alt="Pokédex Workflow Diagram"
+              class="rounded-lg shadow-lg max-w-full h-auto"
+              style="border: 2px solid #334155;"
+            />
           </div>
         </div>
       </div>
