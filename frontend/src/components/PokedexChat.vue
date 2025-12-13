@@ -78,7 +78,13 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const WEBHOOK_URL = `${API_URL}/api/webhook/pokedex`
 
 const formatMessage = (text) => {
-  return text.replace(/\n/g, '<br>')
+  // Converte markdown de imagens para HTML
+  let formatted = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="pokemon-image" />')
+
+  // Converte quebras de linha para <br>
+  formatted = formatted.replace(/\n/g, '<br>')
+
+  return formatted
 }
 
 const scrollToBottom = async () => {
@@ -384,5 +390,25 @@ const sendQuestion = async () => {
 @keyframes spin {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.pokemon-image {
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 10px 0;
+  display: block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  background: white;
+  border: 3px solid #000;
+}
+
+.bot-message .pokemon-image {
+  margin-left: 0;
+}
+
+.user-message .pokemon-image {
+  margin-left: auto;
 }
 </style>
