@@ -8,7 +8,7 @@ export const profile = {
   email: "vhikehara@gmail.com",
   phone: "+55 (11) 95151-7465",
   location: "Rio Paranaiba ,MG",
-  avatar_url: "https://media.licdn.com/dms/image/v2/D4D03AQGRwrqzxMP2fw/profile-displayphoto-crop_800_800/B4DZqe4rXFJcAI-/0/1763602250834?e=1765411200&v=beta&t=OXwhUa8DdV6AQj9hLz3DvGsKu-AQOpWhx5On5XAZ648",
+  avatar_url: "/images/perfil.png",
   skills: [
     "n8n",
     "AI",
@@ -83,8 +83,8 @@ export const projects = [
   {
     id: 3,
     title: "Last.fm Music Insights",
-    description: "A data visualization dashboard that tracks and analyzes your personal Last.fm listening history. Features daily top 10 rankings, artist statistics, and interactive charts showing music trends over time. Built with Vue.js, FastAPI, and Supabase for real-time music analytics.",
-    technologies: ["Vue.js", "FastAPI", "Supabase", "Chart.js", "Last.fm API", "TailwindCSS"],
+    description: "An AI-powered system that analyzes and tracks changes in your Last.fm music rankings over time. Using machine learning, it identifies significant shifts in listening patterns, emerging trends, and provides intelligent insights into your musical journey. Currently displays daily top 10 rankings as foundation for upcoming AI analysis features.",
+    technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "Last.fm API", "TailwindCSS"],
     image_url: "/images/music-project-cover.jpg",
     project_url: "/projects/lastfm-insights",
     github_url: null,
