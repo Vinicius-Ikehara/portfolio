@@ -88,7 +88,8 @@ const chatScreen = ref(null)
 const currentImage = ref(null)
 
 const sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// Use runtime config first, fallback to build-time env
+const API_URL = (typeof window !== 'undefined' && window.APP_CONFIG?.API_URL) || import.meta.env.VITE_API_URL || 'http://localhost:8000'
 const WEBHOOK_URL = `${API_URL}/api/webhook/pokedex`
 
 // Extract image URL from text
