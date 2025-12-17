@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import httpx
+from app.config import settings
 
 router = APIRouter(prefix="/api/webhook", tags=["webhook"])
-
-N8N_WEBHOOK_URL = "https://n8n.ikehara.dev.br/webhook/pokedex"
 
 
 class PokedexRequest(BaseModel):
@@ -21,7 +20,7 @@ async def proxy_pokedex(request: PokedexRequest):
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
-                N8N_WEBHOOK_URL,
+                settings.WEBHOOK_URL,
                 json={
                     "pergunta": request.pergunta,
                     "sessionId": request.sessionId
