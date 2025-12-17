@@ -85,7 +85,7 @@ export const projects = [
     title: "Last.fm AI Newsletter",
     description: "An automated ETL pipeline that collects daily Last.fm listening data (only accessible for the current day), stores it in Supabase, and uses AI to analyze the top 50 tracks. The system generates a curated newsletter highlighting significant ranking changes, emerging artists, and musical trends. Features a dual-view dashboard showing both AI-generated insights and daily top 10 rankings.",
     technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "Last.fm API", "ETL Pipeline", "TailwindCSS"],
-    image_url: "/images/musicas.png",
+    image_url: "/images/musica.jpg",
     project_url: "/projects/lastfm-insights",
     github_url: null,
     slug: "lastfm-insights",
