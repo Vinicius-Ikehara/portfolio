@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     SUPABASE_URL: str = ""
     SUPABASE_KEY: str = ""
 
+    # Webhooks
+    WEBHOOK_URL: str = ""
+
     class Config:
         env_file = ".env"
         case_sensitive = True
