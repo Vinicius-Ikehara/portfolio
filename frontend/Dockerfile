@@ -14,7 +14,15 @@ RUN npm install --frozen-lockfile || npm install
 # Copiar código fonte
 COPY . .
 
-# Build da aplicação com placeholder
+# Accept build arguments
+ARG VITE_API_URL
+ARG VITE_REBUILD_TIMESTAMP
+
+# Set as environment variables for build
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_REBUILD_TIMESTAMP=$VITE_REBUILD_TIMESTAMP
+
+# Build da aplicação com variáveis de ambiente
 RUN npm run build
 
 # Etapa 2: Servir com Nginx
