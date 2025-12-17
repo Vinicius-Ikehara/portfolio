@@ -91,3 +91,62 @@ async def ranking_top10(
             status_code=500,
             detail=f"Erro ao buscar ranking: {str(e)}"
         )
+
+
+@router.get("/newsletter/{data}")
+async def newsletter_with_images(
+    data: date,
+    supabase: Client = Depends(get_supabase),
+):
+    """Retorna newsletter com imagens dos artistas baseado na data específica"""
+    try:
+        # 1. Buscar artistas únicos do ranking da data com suas imagens
+        rankings_response = (
+            supabase.table("rankings_diarios")
+            .select("musicas(artista, imagem_url)")
+            .eq("data", data.isoformat())
+            .order("posicao")
+            .execute()
+        )
+
+        # 2. Processar para pegar apenas um artista de cada (DISTINCT ON logic)
+        artistas_map = {}
+        if rankings_response.data:
+            for item in rankings_response.data:
+                if item.get("musicas"):
+                    artista = item["musicas"].get("artista")
+                    imagem_url = item["musicas"].get("imagem_url")
+
+                    # Pegar apenas a primeira ocorrência (menor posição) de cada artista
+                    if artista and imagem_url and artista not in artistas_map:
+                        artistas_map[artista] = imagem_url
+
+        # 3. Buscar newsletter da data específica e adicionar as imagens
+        newsletter_response = (
+            supabase.table("newsletter")
+            .select("*")
+            .eq("data", data.isoformat())
+            .execute()
+        )
+
+        if not newsletter_response.data:
+            return []
+
+        # 4. Combinar newsletter com imagens dos artistas
+        result = []
+        for newsletter_item in newsletter_response.data:
+            artista = newsletter_item.get("artista")
+            result.append({
+                **newsletter_item,
+                "imagem_url": artistas_map.get(artista)
+            })
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro ao buscar newsletter: {str(e)}"
+        )

@@ -82,14 +82,13 @@ export const projects = [
   },
   {
     id: 3,
-    title: "Last.fm Music Insights",
-    description: "An AI-powered system that analyzes and tracks changes in your Last.fm music rankings over time. Using machine learning, it identifies significant shifts in listening patterns, emerging trends, and provides intelligent insights into your musical journey. Currently displays daily top 10 rankings as foundation for upcoming AI analysis features.",
-    technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "Last.fm API", "TailwindCSS"],
-    image_url: "/images/music-project-cover.jpg",
+    title: "Last.fm AI Newsletter",
+    description: "An automated ETL pipeline that collects daily Last.fm listening data (only accessible for the current day), stores it in Supabase, and uses AI to analyze the top 50 tracks. The system generates a curated newsletter highlighting significant ranking changes, emerging artists, and musical trends. Features a dual-view dashboard showing both AI-generated insights and daily top 10 rankings.",
+    technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "Last.fm API", "ETL Pipeline", "TailwindCSS"],
+    image_url: "/images/musicas.png",
     project_url: "/projects/lastfm-insights",
     github_url: null,
     slug: "lastfm-insights",
-    interactive: true,
-    status: "in-progress"
+    interactive: true
   }
 ]
