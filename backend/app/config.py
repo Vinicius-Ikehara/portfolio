@@ -25,12 +25,22 @@ class Settings(BaseSettings):
     MAX_FILE_SIZE: int = 5 * 1024 * 1024  # 5MB
     ALLOWED_IMAGE_TYPES: List[str] = ["image/jpeg", "image/png", "image/webp"]
 
-    # Supabase
+    # Supabase - Last.fm Analytics
     SUPABASE_URL: str = ""
     SUPABASE_KEY: str = ""
 
-    # Webhooks
-    WEBHOOK_URL: str = ""
+    # Supabase - Pokédex (Vector Store + Chat Memory)
+    SUPABASE_POKEDEX_URL: str = ""
+    SUPABASE_POKEDEX_KEY: str = ""
+
+    # OpenAI API (para Pokédex RAG)
+    OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-5.2"
+
+    # LangSmith (opcional - para observabilidade)
+    LANGCHAIN_TRACING_V2: bool = False
+    LANGCHAIN_API_KEY: str = ""
+    LANGCHAIN_PROJECT: str = "pokedex-agent"
 
     class Config:
         env_file = ".env"
