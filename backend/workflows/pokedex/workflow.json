@@ -1,0 +1,253 @@
+{
+  "name": "Pokedex - Fluxo principal",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.pergunta }}",
+        "options": {
+          "systemMessage": "# Pokédex - Intelligent Pokémon Assistant\n\nYou are an intelligent Pokédex containing complete information about all Pokémon.\n\n## CRITICAL RULE - LANGUAGE DETECTION:\n\n**ALWAYS respond in the SAME language as the user's question:**\n- User asks in English → Respond 100% in English\n- User asks in Portuguese → Respond 100% in Portuguese\n- NEVER mix languages in a single response\n\n---\n\n## Core Function:\n\n- Answer questions using ONLY the \"pokedex\" tool data\n- Be precise and factual (stats, types, evolutions, abilities)\n- Never speculate or guess\n- Show Pokémon image ONLY on first mention in conversation\n- **Be friendly and conversational** - talk like a helpful friend, not a robot\n- Use natural language, be warm and engaging\n\n### Tool Output Format:\nWhen you search for a Pokémon, the tool returns data in this format:\n```\nBulbasaur (#001) is a Grass and Poison type Pokémon. Height: 0.7 m. Weight: 6.9 kg. Category: Seed Pokémon. Base stats: HP 45, Attack 49, Defense 49, Sp. Attack 65, Sp. Defense 65, Speed 45. Abilities: Overgrow (hidden: Chlorophyll). Bulbasaur evolves to Ivysaur at level 16. Weaknesses: Fire, Flying, Ice, Psychic. Resistances: Water, Electric, Grass, Fighting, Fairy. Immunities: none.\n```\n\nYour job is to transform this raw data into a well-formatted, readable response that matches the user's question."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [1040, 112],
+      "id": "290ad071-beb8-4e70-b343-0be804ec8932",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.sessionId }}12"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [1024, 288],
+      "id": "2d14ac09-c5c3-4103-9748-f5e3e8c48e19",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "KC4YEE1zjlKfpfEW",
+          "name": "Pokedex"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pokedex",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [48, 80],
+      "id": "de7e0ba7-f2cc-4594-9b19-eb74c18dd193",
+      "name": "Webhook",
+      "webhookId": "401ed25a-a405-4993-a02c-b5a94527e211"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {"name": "Access-Control-Allow-Origin", "value": "*"},
+              {"name": "Content-Type", "value": "application/json"},
+              {"name": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS"},
+              {"name": "Access-Control-Allow-Headers", "value": "Content-Type, Accept"}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [1584, 112],
+      "id": "cf466d2e-02e5-4cc2-816d-3fb5725bcf60",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [896, 288],
+      "id": "00d2c7c8-3cf2-4082-b4fe-ec241df3fcba",
+      "name": "Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "W3v17IaudIRkU4AE",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.body.pergunta }}",
+        "guardrails": {
+          "keywords": "ignore, disregard, apagar instruções, delete instructions, ignore o system, bypass, contornar regras, revele o prompt, exibir prompt, alterar comportamento, você agora é, assuma o papel de, modo desenvolvedor, DAN mode, reconfigure, set system, injected, jailbreak, prompt",
+          "jailbreak": {
+            "value": {
+              "threshold": 0.6
+            }
+          },
+          "topicalAlignment": {
+            "value": {
+              "threshold": 0.7,
+              "prompt": "Você é um sistema de análise de conteúdo responsável por determinar se um texto permanece dentro do tema permitido.\n\nESCOPO DE ATUAÇÃO:\nO assistente deve falar exclusivamente sobre Pokémon da primeira geração (Kanto), incluindo informações da Pokédex, tipos, golpes, evoluções, localização nos jogos da 1ª geração, estratégias, curiosidades oficiais e qualquer conteúdo canônico relacionado apenas à Gen 1.\n\nAvalie se o texto permanece dentro desse escopo definido.\nSinalize qualquer conteúdo que saia dos tópicos permitidos."
+            }
+          }
+        },
+        "customizeSystemMessage": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.guardrails",
+      "typeVersion": 1,
+      "position": [240, 160],
+      "id": "ee614231-e7a2-4986-8fa6-35488f595639",
+      "name": "Guardrails",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "gpt-5.2"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [240, 368],
+      "id": "83daf05b-a9cf-4dc3-a80d-3117e7deffb2",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "W3v17IaudIRkU4AE",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [752, 96],
+      "id": "ade039a4-0763-4af5-b9b2-d9ed90ec147e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [1312, 352],
+      "id": "fca8e16c-90c4-4a7d-86d5-d24392d4cd2e",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "W3v17IaudIRkU4AE",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Base de dados com informações dos pokemons",
+        "tableName": {
+          "__rl": true,
+          "value": "pokedex_vs",
+          "mode": "list",
+          "cachedResultName": "pokedex_vs"
+        },
+        "topK": 5,
+        "useReranker": "={{ false }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [1280, 240],
+      "id": "2818f3b8-426e-4a1f-be54-2a797d379e42",
+      "name": "Pokedex",
+      "credentials": {
+        "supabaseApi": {
+          "id": "MCVEVL5x7Q8l32Mt",
+          "name": "Pokedex"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"output\": \"Message blocked due to rule violation.\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [688, 384],
+      "id": "bbc74206-f22a-471f-b0b3-f9a55a6607a1",
+      "name": "Fail Guardrails"
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [[{"node": "Respond to Webhook", "type": "main", "index": 0}]]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [[{"node": "AI Agent", "type": "ai_memory", "index": 0}]]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {"node": "Guardrails", "type": "main", "index": 0},
+          {"node": "Merge", "type": "main", "index": 0}
+        ]
+      ]
+    },
+    "Model": {
+      "ai_languageModel": [[{"node": "AI Agent", "type": "ai_languageModel", "index": 0}]]
+    },
+    "Guardrails": {
+      "main": [
+        [{"node": "Merge", "type": "main", "index": 1}],
+        [{"node": "Fail Guardrails", "type": "main", "index": 0}]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [[{"node": "Guardrails", "type": "ai_languageModel", "index": 0}]]
+    },
+    "Merge": {
+      "main": [[{"node": "AI Agent", "type": "main", "index": 0}]]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [[{"node": "Pokedex", "type": "ai_embedding", "index": 0}]]
+    },
+    "Pokedex": {
+      "ai_tool": [[{"node": "AI Agent", "type": "ai_tool", "index": 0}]]
+    }
+  },
+  "active": true,
+  "settings": {"executionOrder": "v1"},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ddbc1826336fc623dcb4cc00cc66408c684d8b8b462ae06105ba05405fbf3433"
+  },
+  "id": "VJTz95AgCWiN1efV"
+}

@@ -61,8 +61,8 @@ export const projects = [
   {
     id: 1,
     title: "Pokédex AI Agent",
-    description: "An AI-powered Pokédex built using a RAG architecture and semantic vector search. Pokémon data is stored in a Supabase database with embeddings for semantic retrieval, while images are hosted in an S3 bucket. User queries are answered by an AI agent that retrieves the most relevant data and generates contextualized responses based on this knowledge base.",
-    technologies: ["n8n", "Supabase", "Vector Database", "RAG", "GPT-4.1 mini", "S3", "Semantic Search", "Guardrail"],
+    description: "An AI-powered Pokédex chatbot built with Python, FastAPI, and the Agno AI framework. Features a complete RAG pipeline with Supabase pgvector for semantic search, guardrails for jailbreak protection, and session-based memory. The agent retrieves Pokémon data through embeddings and generates contextualized responses about Gen 1 Pokémon with stats, abilities, evolutions, and images.",
+    technologies: ["Python", "FastAPI", "Agno", "Supabase", "pgvector", "RAG", "GPT-5.2", "OpenAI Embeddings", "Guardrails"],
     image_url: null,
     project_url: "/projects/pokedex",
     github_url: null,
@@ -82,13 +82,14 @@ export const projects = [
   },
   {
     id: 3,
-    title: "Last.fm AI Newsletter",
-    description: "An automated ETL pipeline that collects daily Last.fm listening data (only accessible for the current day), stores it in Supabase, and uses AI to analyze the top 50 tracks. The system generates a curated newsletter highlighting significant ranking changes, emerging artists, and musical trends. Features a dual-view dashboard showing both AI-generated insights and daily top 10 rankings.",
-    technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "Last.fm API", "ETL Pipeline", "TailwindCSS"],
-    image_url: "/images/musica.jpg",
-    project_url: "/projects/lastfm-insights",
+    title: "AI Newsletter",
+    description: "An intelligent newsletter system powered by AI that curates and delivers personalized content. Currently in development - stay tuned for updates!",
+    technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "ETL Pipeline"],
+    image_url: null,
+    project_url: null,
     github_url: null,
-    slug: "lastfm-insights",
-    interactive: true
+    slug: "ai-newsletter",
+    interactive: false,
+    comingSoon: true
   }
 ]

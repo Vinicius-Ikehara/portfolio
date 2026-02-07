@@ -28,13 +28,16 @@
       </div>
       <div class="text-white text-sm font-medium opacity-90">Powered by Dialogflow</div>
     </div>
-    <!-- Last.fm Insights Project Cover -->
-    <div v-else-if="project.slug === 'lastfm-insights'" class="h-48 flex items-center justify-center gap-6" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #0c4a6e 100%);">
+    <!-- AI Newsletter Project Cover (Coming Soon) -->
+    <div v-else-if="project.slug === 'ai-newsletter'" class="h-48 flex items-center justify-center gap-6 relative" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #0c4a6e 100%);">
+      <!-- Coming Soon Overlay -->
+      <div v-if="project.comingSoon" class="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+        <span class="px-4 py-2 rounded-full text-lg font-bold" style="background-color: rgba(251, 191, 36, 0.9); color: #1e293b;">
+          Coming Soon
+        </span>
+      </div>
       <div class="flex items-center justify-center w-20 h-20 rounded-full" style="background-color: rgba(56, 189, 248, 0.2); border: 2px solid #38bdf8;">
-        <svg class="w-12 h-12" viewBox="0 0 24 24" fill="#38bdf8">
-          <path d="M12 3v9.28l7.07 7.07a8 8 0 1 0-14.14 0L12 12.28V3z"/>
-          <circle cx="12" cy="19" r="2" fill="#38bdf8"/>
-        </svg>
+        <i class="pi pi-envelope text-4xl" style="color: #38bdf8;"></i>
       </div>
       <div class="flex flex-col gap-2">
         <div class="flex gap-2">
@@ -82,9 +85,18 @@
       </div>
 
       <div class="flex gap-3 pt-4" style="border-top: 1px solid #334155;">
+        <!-- Coming Soon Badge (no buttons) -->
+        <span
+          v-if="project.comingSoon"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium"
+          style="background-color: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);"
+        >
+          <i class="pi pi-clock"></i>
+          Coming Soon
+        </span>
         <!-- Open Chat button -->
         <button
-          v-if="project.project_url === 'open-chat'"
+          v-else-if="project.project_url === 'open-chat'"
           @click="openChat"
           class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-90"
           style="background-color: #0284c7; color: #ffffff;"
@@ -115,7 +127,7 @@
           View Project
         </a>
         <a
-          v-if="project.github_url"
+          v-if="project.github_url && !project.comingSoon"
           :href="project.github_url"
           target="_blank"
           rel="noopener noreferrer"

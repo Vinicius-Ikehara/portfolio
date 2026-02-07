@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-import httpx
-from app.config import settings
 
 router = APIRouter(prefix="/api/webhook", tags=["webhook"])
 
@@ -12,34 +10,35 @@ class PokedexRequest(BaseModel):
 
 
 @router.post("/pokedex")
-async def proxy_pokedex(request: PokedexRequest):
+async def pokedex_chat(request: PokedexRequest):
     """
-    Proxy endpoint for Pokedex webhook.
-    Forwards requests to n8n and returns the response.
+    Endpoint para o chatbot Pokédex.
+
+    Usa o workflow local Python/Agno com:
+    - Guardrails (jailbreak + topic detection)
+    - RAG com Supabase pgvector
+    - Agent Agno + GPT-5.2
+    - Memory por sessão
     """
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                settings.WEBHOOK_URL,
-                json={
-                    "pergunta": request.pergunta,
-                    "sessionId": request.sessionId
-                },
-                headers={
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }
-            )
+        from workflows.pokedex import handle_pokedex_request
+        from workflows.pokedex.handler import PokedexRequest as WorkflowRequest
 
-            if response.status_code != 200:
-                raise HTTPException(
-                    status_code=response.status_code,
-                    detail=f"n8n webhook error: {response.text}"
-                )
+        # Cria request para o workflow
+        workflow_request = WorkflowRequest(
+            pergunta=request.pergunta,
+            sessionId=request.sessionId
+        )
 
-            return response.json()
+        # Executa workflow
+        response = await handle_pokedex_request(workflow_request)
 
-    except httpx.TimeoutException:
-        raise HTTPException(status_code=504, detail="Webhook timeout")
-    except httpx.RequestError as e:
-        raise HTTPException(status_code=502, detail=f"Connection error: {str(e)}")
+        # Retorna resposta
+        return {"output": response.output}
+
+    except Exception as e:
+        print(f"Workflow error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Desculpe, ocorreu um erro ao processar sua pergunta. Por favor, tente novamente."
+        )
