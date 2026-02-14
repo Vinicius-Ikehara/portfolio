@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
 import LastfmInsightsProject from '../views/LastfmInsightsProject.vue'
+import LangfuseDashboard from '../views/LangfuseDashboard.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/projects/lastfm-insights',
     name: 'LastfmInsightsProject',
     component: LastfmInsightsProject
+  },
+  {
+    path: '/projects/ai-ops',
+    name: 'LangfuseDashboard',
+    component: LangfuseDashboard
   }
 ]
 
