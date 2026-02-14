@@ -17,6 +17,12 @@ SUPABASE_POKEDEX_KEY = settings.SUPABASE_POKEDEX_KEY
 OPENAI_API_KEY = settings.OPENAI_API_KEY
 OPENAI_MODEL = settings.OPENAI_MODEL
 
+# Langfuse Observability
+LANGFUSE_ENABLED = settings.LANGFUSE_ENABLED
+LANGFUSE_PUBLIC_KEY = settings.LANGFUSE_PUBLIC_KEY
+LANGFUSE_SECRET_KEY = settings.LANGFUSE_SECRET_KEY
+LANGFUSE_BASE_URL = settings.LANGFUSE_BASE_URL
+
 # =============================================================================
 # VECTOR STORE CONFIG
 # =============================================================================

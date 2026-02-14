@@ -24,7 +24,8 @@ portfolio/
 │   │   ├── executor/          # Executa código
 │   │   ├── frontend-reviewer/ # Review Vue.js/UX
 │   │   ├── security-reviewer/ # Análise OWASP
-│   │   └── build-tester/      # Testes e build
+│   │   ├── build-tester/      # Testes e build
+│   │   └── langfuse-specialist/ # Observabilidade LLM
 │   ├── skills/
 │   │   └── pipeline/          # Orquestra agents
 │   ├── commands/              # Slash commands
@@ -68,6 +69,7 @@ Plan → Execute → Frontend Review → Security Review → Build/Test
 | **frontend-reviewer** | Mudanças Vue.js | Valida UX, a11y, PrimeVue |
 | **security-reviewer** | Qualquer mudança | Checa OWASP, vulnerabilidades |
 | **build-tester** | Final da pipeline | Roda testes, build, verifica tudo |
+| **langfuse-specialist** | Observabilidade LLM | Langfuse, tracing, custos, troubleshooting |
 
 ### Regras dos Agents
 
@@ -105,6 +107,7 @@ Chatbot RAG nativo em Python que responde sobre Pokémon Gen 1:
 - **Memory**: Histórico por sessão (Supabase `n8n_chat_histories`)
 - **VectorStore**: RAG com pgvector + embeddings OpenAI
 - **Agent**: Agno framework + GPT-5.2
+- **Observability**: Langfuse (self-hosted) + OpenLIT auto-instrumentation
 
 **Endpoint**: `POST /api/webhook/pokedex`
 ```json
@@ -167,6 +170,12 @@ SUPABASE_POKEDEX_KEY=eyJ...
 # OpenAI
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-5.2
+
+# Langfuse (opcional - observabilidade LLM)
+LANGFUSE_ENABLED=false
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_BASE_URL=https://langfuse.seu-dominio.com
 ```
 
 ---

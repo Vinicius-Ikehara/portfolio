@@ -28,23 +28,17 @@
       </div>
       <div class="text-white text-sm font-medium opacity-90">Powered by Dialogflow</div>
     </div>
-    <!-- AI Newsletter Project Cover (Coming Soon) -->
-    <div v-else-if="project.slug === 'ai-newsletter'" class="h-48 flex items-center justify-center gap-6 relative" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #0c4a6e 100%);">
-      <!-- Coming Soon Overlay -->
-      <div v-if="project.comingSoon" class="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-        <span class="px-4 py-2 rounded-full text-lg font-bold" style="background-color: rgba(251, 191, 36, 0.9); color: #1e293b;">
-          Coming Soon
-        </span>
-      </div>
-      <div class="flex items-center justify-center w-20 h-20 rounded-full" style="background-color: rgba(56, 189, 248, 0.2); border: 2px solid #38bdf8;">
-        <i class="pi pi-envelope text-4xl" style="color: #38bdf8;"></i>
+    <!-- AI Ops Dashboard Project Cover -->
+    <div v-else-if="project.slug === 'ai-ops'" class="h-48 flex items-center justify-center gap-6" style="background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 50%, #1e3a5f 100%);">
+      <div class="flex items-center justify-center w-20 h-20 rounded-full" style="background-color: rgba(139, 92, 246, 0.2); border: 2px solid #8b5cf6;">
+        <i class="pi pi-chart-line text-4xl" style="color: #8b5cf6;"></i>
       </div>
       <div class="flex flex-col gap-2">
-        <div class="flex gap-2">
-          <div class="h-16 w-8 rounded" style="background: linear-gradient(to top, #22c55e 0%, #22c55e 80%, transparent 100%);"></div>
-          <div class="h-20 w-8 rounded" style="background: linear-gradient(to top, #38bdf8 0%, #38bdf8 90%, transparent 100%);"></div>
-          <div class="h-18 w-8 rounded" style="background: linear-gradient(to top, #a855f7 0%, #a855f7 85%, transparent 100%);"></div>
-          <div class="h-14 w-8 rounded" style="background: linear-gradient(to top, #f59e0b 0%, #f59e0b 75%, transparent 100%);"></div>
+        <div class="flex gap-2 items-end">
+          <div class="h-10 w-8 rounded" style="background: linear-gradient(to top, #8b5cf6, #6d28d9);"></div>
+          <div class="h-16 w-8 rounded" style="background: linear-gradient(to top, #3b82f6, #2563eb);"></div>
+          <div class="h-12 w-8 rounded" style="background: linear-gradient(to top, #8b5cf6, #6d28d9);"></div>
+          <div class="h-20 w-8 rounded" style="background: linear-gradient(to top, #3b82f6, #2563eb);"></div>
         </div>
       </div>
     </div>

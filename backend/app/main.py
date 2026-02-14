@@ -1,13 +1,33 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from .database import engine, Base
-from .routers import projects, experiences, profile, webhook_proxy, lastfm
+from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard
 from .config import settings
 
 # Criar as tabelas no banco de dados
 Base.metadata.create_all(bind=engine)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    try:
+        from workflows.pokedex.observability import init_observability
+        init_observability()
+    except Exception as e:
+        print(f"[Startup] Observability init skipped: {e}")
+    yield
+    # Shutdown
+    try:
+        from workflows.pokedex.observability import shutdown_observability
+        shutdown_observability()
+    except Exception:
+        pass
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -15,6 +35,7 @@ app = FastAPI(
     version=settings.APP_VERSION,
     docs_url="/docs" if settings.DEBUG else None,  # Desabilitar docs em produção
     redoc_url="/redoc" if settings.DEBUG else None,
+    lifespan=lifespan,
 )
 
 # Security Headers Middleware
@@ -45,6 +66,7 @@ app.include_router(experiences.router)
 app.include_router(profile.router)
 app.include_router(webhook_proxy.router)
 app.include_router(lastfm.router)
+app.include_router(langfuse_dashboard.router)
 
 
 @app.get("/")

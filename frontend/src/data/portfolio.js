@@ -82,14 +82,13 @@ export const projects = [
   },
   {
     id: 3,
-    title: "AI Newsletter",
-    description: "An intelligent newsletter system powered by AI that curates and delivers personalized content. Currently in development - stay tuned for updates!",
-    technologies: ["Vue.js", "FastAPI", "Supabase", "AI/ML", "ETL Pipeline"],
+    title: "AI Ops Dashboard",
+    description: "A real-time observability dashboard that pulls production metrics from Langfuse, showing AI traces, token usage, costs, and latency. Demonstrates end-to-end LLM monitoring with OpenTelemetry auto-instrumentation, self-hosted Langfuse, and a custom Vue.js frontend.",
+    technologies: ["Vue.js", "FastAPI", "Langfuse", "OpenTelemetry", "OpenLIT", "LLM Observability"],
     image_url: null,
-    project_url: null,
+    project_url: "/projects/ai-ops",
     github_url: null,
-    slug: "ai-newsletter",
-    interactive: false,
-    comingSoon: true
+    slug: "ai-ops",
+    interactive: true
   }
 ]
