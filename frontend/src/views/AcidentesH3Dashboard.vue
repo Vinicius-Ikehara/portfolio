@@ -377,6 +377,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { cellToBoundary } from 'h3-js'
 import { projects } from '../data/portfolio.js'
 import api from '../services/api'
 
@@ -405,26 +406,33 @@ const fetchAll = async () => {
   loading.value = true
   error.value = null
   try {
-    const [summaryRes, hexRes, hourRes, causeRes, hwRes, dowRes] = await Promise.all([
+    const [summaryRes, hexRes] = await Promise.all([
       api.get('/acidentes/summary'),
       api.get('/acidentes/h3-hexagons', { params: { metric: selectedMetric.value } }),
-      api.get('/acidentes/by-hour'),
-      api.get('/acidentes/by-cause'),
-      api.get('/acidentes/by-highway'),
-      api.get('/acidentes/by-day-of-week'),
     ])
     summary.value = summaryRes.data
     hexagons.value = hexRes.data
-    hourlyData.value = hourRes.data
-    causeData.value = causeRes.data
-    highwayData.value = hwRes.data
-    dowData.value = dowRes.data
   } catch {
     error.value = 'Failed to load data from ClickHouse. Please try again.'
   } finally {
     loading.value = false
     await nextTick()
     initMap()
+  }
+  // Load charts in background (non-blocking)
+  try {
+    const [hourRes, causeRes, hwRes, dowRes] = await Promise.all([
+      api.get('/acidentes/by-hour'),
+      api.get('/acidentes/by-cause'),
+      api.get('/acidentes/by-highway'),
+      api.get('/acidentes/by-day-of-week'),
+    ])
+    hourlyData.value = hourRes.data
+    causeData.value = causeRes.data
+    highwayData.value = hwRes.data
+    dowData.value = dowRes.data
+  } catch {
+    // charts are optional, don't block
   }
 }
 
@@ -438,29 +446,13 @@ const fetchHexagons = async () => {
   }
 }
 
-// Visual hexagon radius in degrees (much larger than real H3 res8 for visibility)
-const HEX_RADIUS_DEG = 0.008
-
-function hexPolygonFromCenter(lat, lng) {
-  const radiusLng = HEX_RADIUS_DEG / Math.cos(lat * Math.PI / 180)
-  const coords = []
-  for (let i = 0; i < 6; i++) {
-    const angle = (Math.PI / 180) * (60 * i + 30)
-    coords.push([
-      lng + radiusLng * Math.cos(angle),
-      lat + HEX_RADIUS_DEG * Math.sin(angle),
-    ])
-  }
-  coords.push(coords[0])
-  return coords
-}
-
 function getColor(value, maxValue) {
   const ratio = Math.min(value / (maxValue || 1), 1)
-  if (ratio < 0.25) return 'rgba(220, 38, 38, 0.4)'
-  if (ratio < 0.5) return 'rgba(220, 38, 38, 0.6)'
-  if (ratio < 0.75) return 'rgba(239, 68, 68, 0.8)'
-  return 'rgba(255, 0, 0, 0.95)'
+  if (ratio < 0.2) return '#fca5a5'   // light red
+  if (ratio < 0.4) return '#f87171'   // medium light
+  if (ratio < 0.6) return '#ef4444'   // medium
+  if (ratio < 0.8) return '#dc2626'   // dark
+  return '#991b1b'                     // darkest
 }
 
 function buildHexGeoJSON() {
@@ -468,9 +460,11 @@ function buildHexGeoJSON() {
   const features = []
 
   for (const hex of hexagons.value) {
-    const lat = Number(hex.center_lat)
-    const lng = Number(hex.center_lng)
-    if (!lat || !lng) continue
+    if (!hex.h3_hex) continue
+    // cellToBoundary already returns [lng, lat] in h3-js v4
+    const boundary = cellToBoundary(hex.h3_hex)
+    const coords = [...boundary]
+    coords.push(coords[0]) // close polygon
 
     features.push({
       type: 'Feature',
@@ -485,7 +479,7 @@ function buildHexGeoJSON() {
       },
       geometry: {
         type: 'Polygon',
-        coordinates: [hexPolygonFromCenter(lat, lng)],
+        coordinates: [coords],
       },
     })
   }
@@ -517,7 +511,7 @@ function initMap() {
       ],
     },
     center: [-43.2, -22.9],
-    zoom: 10,
+    zoom: 13,
   })
 
   map.addControl(new window.maplibregl.NavigationControl(), 'top-right')
@@ -547,7 +541,7 @@ function initMap() {
 }
 
 function updateMapLayer() {
-  if (!map || !map.isStyleLoaded()) return
+  if (!map) return
 
   const geojson = buildHexGeoJSON()
 
@@ -562,7 +556,7 @@ function updateMapLayer() {
       source: 'h3-source',
       paint: {
         'fill-color': ['get', 'color'],
-        'fill-opacity': 0.7,
+        'fill-opacity': 0.75,
       },
     })
 
@@ -571,7 +565,7 @@ function updateMapLayer() {
       type: 'line',
       source: 'h3-source',
       paint: {
-        'line-color': 'rgba(255, 255, 255, 0.4)',
+        'line-color': 'rgba(255, 255, 255, 0.3)',
         'line-width': 0.5,
       },
     })
