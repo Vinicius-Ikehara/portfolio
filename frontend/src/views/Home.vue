@@ -8,7 +8,7 @@
         <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 40px 40px;"></div>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="flex flex-col md:flex-row items-center gap-10">
           <div class="flex-shrink-0">
             <div class="w-72 h-72 md:w-80 md:h-80 rounded-full shadow-2xl overflow-hidden">
@@ -62,7 +62,7 @@
 
     <!-- Experience Section -->
     <section id="experience" class="py-24" style="background-color: #0f172a;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: #ffffff;">
             Professional Experience
@@ -82,7 +82,7 @@
 
     <!-- Projects Section -->
     <section id="projects" class="py-24" style="background-color: #111827;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: #ffffff;">
             Featured Projects
@@ -93,7 +93,7 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <ProjectCard
             v-for="project in projects"
             :key="project.id"
@@ -138,7 +138,7 @@
 
     <!-- Footer -->
     <footer class="py-8" style="background-color: #030712; color: #9ca3af; border-top: 1px solid #1f2937;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <p>&copy; 2024 {{ profile.name }}. All rights reserved.</p>
           <button

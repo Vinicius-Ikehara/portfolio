@@ -43,6 +43,9 @@ class Settings(BaseSettings):
     LANGFUSE_SECRET_KEY: str = ""
     LANGFUSE_BASE_URL: str = "http://localhost:3000"
 
+    # ClickHouse (acidentes H3)
+    CLICKHOUSE_URL: str = "http://localhost:8123"
+
     class Config:
         env_file = ".env"
         case_sensitive = True

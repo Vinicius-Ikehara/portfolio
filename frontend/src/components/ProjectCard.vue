@@ -42,6 +42,24 @@
         </div>
       </div>
     </div>
+    <!-- Acidentes H3 Project Cover -->
+    <div v-else-if="project.slug === 'acidentes-h3'" class="h-48 flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+      <!-- Road -->
+      <div class="absolute inset-0">
+        <div class="absolute left-1/2 -translate-x-1/2 h-full w-28" style="background: linear-gradient(180deg, #374151, #1f2937);"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 h-full w-0.5 opacity-50" style="background: repeating-linear-gradient(180deg, #fbbf24 0px, #fbbf24 12px, transparent 12px, transparent 24px);"></div>
+      </div>
+      <!-- Hexagon with warning sign -->
+      <svg class="relative z-10" width="110" height="120" viewBox="0 0 110 120">
+        <polygon points="55,5 100,27 100,72 55,95 10,72 10,27" fill="rgba(220,38,38,0.25)" stroke="#ef4444" stroke-width="2"/>
+        <polygon points="55,18 88,35 88,65 55,82 22,65 22,35" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+        <!-- Warning triangle -->
+        <polygon points="55,32 75,68 35,68" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round"/>
+        <text x="55" y="62" text-anchor="middle" fill="#fbbf24" font-size="20" font-weight="bold">!</text>
+        <!-- H3 label -->
+        <text x="55" y="110" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="11" font-family="monospace">H3</text>
+      </svg>
+    </div>
     <!-- Default Project Cover -->
     <div v-else class="h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);">
       <i class="pi pi-code text-6xl text-white opacity-40"></i>
