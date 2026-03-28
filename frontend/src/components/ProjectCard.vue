@@ -49,15 +49,14 @@
         <div class="absolute left-1/2 -translate-x-1/2 h-full w-28" style="background: linear-gradient(180deg, #374151, #1f2937);"></div>
         <div class="absolute left-1/2 -translate-x-1/2 h-full w-0.5 opacity-50" style="background: repeating-linear-gradient(180deg, #fbbf24 0px, #fbbf24 12px, transparent 12px, transparent 24px);"></div>
       </div>
-      <!-- Hexagon with warning sign -->
-      <svg class="relative z-10" width="110" height="120" viewBox="0 0 110 120">
-        <polygon points="55,5 100,27 100,72 55,95 10,72 10,27" fill="rgba(220,38,38,0.25)" stroke="#ef4444" stroke-width="2"/>
-        <polygon points="55,18 88,35 88,65 55,82 22,65 22,35" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>
+      <!-- Single hexagon with warning sign -->
+      <svg class="relative z-10" width="120" height="130" viewBox="0 0 120 130">
+        <polygon points="60,5 108,30 108,80 60,105 12,80 12,30" fill="rgba(220,38,38,0.25)" stroke="#ef4444" stroke-width="2"/>
         <!-- Warning triangle -->
-        <polygon points="55,32 75,68 35,68" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round"/>
-        <text x="55" y="62" text-anchor="middle" fill="#fbbf24" font-size="20" font-weight="bold">!</text>
+        <polygon points="60,30 85,72 35,72" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linejoin="round"/>
+        <text x="60" y="66" text-anchor="middle" fill="#fbbf24" font-size="22" font-weight="bold">!</text>
         <!-- H3 label -->
-        <text x="55" y="110" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="11" font-family="monospace">H3</text>
+        <text x="60" y="122" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="12" font-family="monospace">H3</text>
       </svg>
     </div>
     <!-- Default Project Cover -->
