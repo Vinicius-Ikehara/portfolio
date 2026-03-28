@@ -17,24 +17,19 @@ def _is_cache_valid(key: str) -> bool:
     return entry is not None and (time.time() - entry["timestamp"]) < _CACHE_TTL
 
 
-def _get_client():
-    """Get ClickHouse HTTP client using httpx."""
-    import httpx
-    return httpx.Client(
-        base_url=settings.CLICKHOUSE_URL,
-        timeout=30.0,
-    )
-
 
 def _query_clickhouse(query: str) -> list[dict]:
     """Execute a ClickHouse query and return rows as dicts."""
     import httpx
+    url = f"{settings.CLICKHOUSE_URL}/?user={settings.CLICKHOUSE_USER}&password={settings.CLICKHOUSE_PASSWORD}"
     response = httpx.post(
-        settings.CLICKHOUSE_URL,
-        content=query + " FORMAT JSON",
+        url,
+        content=(query + " FORMAT JSON").encode("utf-8"),
+        headers={"Content-Type": "text/plain"},
         timeout=30.0,
     )
-    response.raise_for_status()
+    if response.status_code != 200:
+        raise Exception(response.text)
     data = response.json()
     return data.get("data", [])
 
@@ -85,7 +80,9 @@ async def get_h3_hexagons(metric: str = "acidentes"):
     try:
         rows = _query_clickhouse(f"""
             SELECT
-                h3ToString(h3_index) as h3_index,
+                h3ToString(h3_index) as h3_hex,
+                h3ToGeo(h3_index).2 as center_lat,
+                h3ToGeo(h3_index).1 as center_lng,
                 {value_col},
                 countDistinct(id) as acidentes,
                 sum(mortos) as mortos,
@@ -93,7 +90,7 @@ async def get_h3_hexagons(metric: str = "acidentes"):
                 any(uf) as uf,
                 any(concat('BR-', toString(br))) as rodovia
             FROM acidentes.ocorrencias
-            WHERE h3_index > 0
+            WHERE h3_index > toUInt64(0)
             GROUP BY h3_index
             HAVING countDistinct(id) >= 2
             ORDER BY value DESC
