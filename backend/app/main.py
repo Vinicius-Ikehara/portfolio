@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from .database import engine, Base
-from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard
+from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard, acidentes_h3
 from .config import settings
 
 # Criar as tabelas no banco de dados
@@ -67,6 +67,7 @@ app.include_router(profile.router)
 app.include_router(webhook_proxy.router)
 app.include_router(lastfm.router)
 app.include_router(langfuse_dashboard.router)
+app.include_router(acidentes_h3.router)
 
 
 @app.get("/")

@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
 import LastfmInsightsProject from '../views/LastfmInsightsProject.vue'
 import LangfuseDashboard from '../views/LangfuseDashboard.vue'
+import AcidentesH3Dashboard from '../views/AcidentesH3Dashboard.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/projects/ai-ops',
     name: 'LangfuseDashboard',
     component: LangfuseDashboard
+  },
+  {
+    path: '/projects/acidentes-h3',
+    name: 'AcidentesH3Dashboard',
+    component: AcidentesH3Dashboard
   }
 ]
 

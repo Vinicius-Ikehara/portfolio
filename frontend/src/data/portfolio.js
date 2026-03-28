@@ -90,5 +90,16 @@ export const projects = [
     github_url: null,
     slug: "ai-ops",
     interactive: true
+  },
+  {
+    id: 4,
+    title: "Highway Accidents H3",
+    description: "Geospatial analysis of Brazilian federal highway accidents using Uber's H3 hexagonal indexing and ClickHouse. Features an interactive heatmap with H3 hexagons rendered on MapLibre GL, real-time aggregations from ClickHouse's native H3 functions, and analytical dashboards revealing accident hotspots, lethality patterns, and temporal trends from PRF open data.",
+    technologies: ["ClickHouse", "H3", "MapLibre GL", "Vue.js", "FastAPI", "Geospatial", "Open Data"],
+    image_url: null,
+    project_url: "/projects/acidentes-h3",
+    github_url: null,
+    slug: "acidentes-h3",
+    interactive: true
   }
 ]
