@@ -37,6 +37,10 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-5.2"
 
+    # Gemini API (Video Q&A)
+    GEMINI_API_KEY: str = ""
+    VIDEO_QA_MAX_DURATION_SECONDS: int = 180
+
     # Langfuse (opcional - para observabilidade LLM)
     LANGFUSE_ENABLED: bool = False
     LANGFUSE_PUBLIC_KEY: str = ""
