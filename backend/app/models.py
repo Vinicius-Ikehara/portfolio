@@ -1,4 +1,6 @@
+import enum
 from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
+from sqlalchemy import Enum as SAEnum
 from datetime import datetime
 from .database import Base
 
@@ -44,3 +46,25 @@ class Profile(Base):
     avatar_url = Column(String)
     social_links = Column(JSON)  # {"github": "url", "linkedin": "url", ...}
     skills = Column(JSON)  # Lista de habilidades principais
+
+
+class VideoQAStatus(str, enum.Enum):
+    processing = "processing"
+    ready = "ready"
+    error = "error"
+
+
+class VideoQASession(Base):
+    __tablename__ = "video_qa_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    session_token = Column(String, nullable=True, index=True, unique=True)
+    gemini_file_uri = Column(String, nullable=True)
+    gemini_file_name = Column(String, nullable=True)
+    original_filename = Column(String, nullable=True)
+    duration_seconds = Column(Integer, nullable=True)
+    video_title = Column(String, nullable=True)
+    transcript_markdown = Column(Text, nullable=True)
+    status = Column(SAEnum(VideoQAStatus), default=VideoQAStatus.processing, nullable=False)
+    error_message = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)

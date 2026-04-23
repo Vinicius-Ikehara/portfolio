@@ -101,5 +101,16 @@ export const projects = [
     github_url: null,
     slug: "acidentes-h3",
     interactive: true
+  },
+  {
+    id: 5,
+    title: "Video Agent",
+    description: "An AI agent that actually watches your videos. Upload a short clip (up to 3 minutes) and chat with it — Gemini 2.5 Flash fuses audio and visuals, extracts timestamps, and answers questions about what it saw.",
+    technologies: ["Gemini 2.5 Flash", "FastAPI", "Vue.js", "Multimodal AI"],
+    image_url: null,
+    project_url: "/projects/video-agent",
+    github_url: null,
+    slug: "video-agent",
+    interactive: true
   }
 ]
