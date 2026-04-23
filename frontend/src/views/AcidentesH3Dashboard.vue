@@ -377,6 +377,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { cellToBoundary } from 'h3-js'
 import { projects } from '../data/portfolio.js'
 import api from '../services/api'
 
@@ -405,28 +406,33 @@ const fetchAll = async () => {
   loading.value = true
   error.value = null
   try {
-    const [summaryRes, hexRes, hourRes, causeRes, hwRes, dowRes] = await Promise.all([
+    const [summaryRes, hexRes] = await Promise.all([
       api.get('/acidentes/summary'),
       api.get('/acidentes/h3-hexagons', { params: { metric: selectedMetric.value } }),
+    ])
+    summary.value = summaryRes.data
+    hexagons.value = hexRes.data
+  } catch {
+    error.value = 'Failed to load data from ClickHouse. Please try again.'
+  } finally {
+    loading.value = false
+    await nextTick()
+    initMap()
+  }
+  // Load charts in background (non-blocking)
+  try {
+    const [hourRes, causeRes, hwRes, dowRes] = await Promise.all([
       api.get('/acidentes/by-hour'),
       api.get('/acidentes/by-cause'),
       api.get('/acidentes/by-highway'),
       api.get('/acidentes/by-day-of-week'),
     ])
-    summary.value = summaryRes.data
-    hexagons.value = hexRes.data
     hourlyData.value = hourRes.data
     causeData.value = causeRes.data
     highwayData.value = hwRes.data
     dowData.value = dowRes.data
-
-    await nextTick()
-    initMap()
-  } catch (err) {
-    console.error('Error fetching data:', err)
-    error.value = 'Failed to load data from ClickHouse. Please try again.'
-  } finally {
-    loading.value = false
+  } catch {
+    // charts are optional, don't block
   }
 }
 
@@ -435,41 +441,34 @@ const fetchHexagons = async () => {
     const res = await api.get('/acidentes/h3-hexagons', { params: { metric: selectedMetric.value } })
     hexagons.value = res.data
     updateMapLayer()
-  } catch (err) {
-    console.error('Error fetching hexagons:', err)
+  } catch {
+    // silently handle metric switch errors
   }
-}
-
-function h3ToPolygon(h3Index) {
-  // Convert H3 index to polygon coordinates using the h3-js library loaded via CDN
-  if (!window.h3) return null
-  const boundary = window.h3.cellToBoundary(h3Index)
-  // h3-js returns [lat, lng] pairs, MapLibre needs [lng, lat]
-  const coords = boundary.map(([lat, lng]) => [lng, lat])
-  coords.push(coords[0]) // close the polygon
-  return coords
 }
 
 function getColor(value, maxValue) {
   const ratio = Math.min(value / (maxValue || 1), 1)
-  if (ratio < 0.25) return 'rgba(254, 240, 138, 0.6)'  // yellow light
-  if (ratio < 0.5) return 'rgba(251, 191, 36, 0.7)'    // amber
-  if (ratio < 0.75) return 'rgba(249, 115, 22, 0.8)'   // orange
-  return 'rgba(220, 38, 38, 0.9)'                       // red
+  if (ratio < 0.2) return '#fca5a5'   // light red
+  if (ratio < 0.4) return '#f87171'   // medium light
+  if (ratio < 0.6) return '#ef4444'   // medium
+  if (ratio < 0.8) return '#dc2626'   // dark
+  return '#991b1b'                     // darkest
 }
 
-function buildGeoJSON() {
+function buildHexGeoJSON() {
   const maxValue = Math.max(...hexagons.value.map(h => Number(h.value)), 1)
   const features = []
 
   for (const hex of hexagons.value) {
-    const coords = h3ToPolygon(hex.h3_index)
-    if (!coords) continue
+    if (!hex.h3_hex) continue
+    // cellToBoundary already returns [lng, lat] in h3-js v4
+    const boundary = cellToBoundary(hex.h3_hex)
+    const coords = [...boundary]
+    coords.push(coords[0]) // close polygon
 
     features.push({
       type: 'Feature',
       properties: {
-        h3: hex.h3_index,
         value: Number(hex.value),
         acidentes: Number(hex.acidentes),
         mortos: Number(hex.mortos),
@@ -496,24 +495,23 @@ function initMap() {
     style: {
       version: 8,
       sources: {
-        osm: {
+        'carto-dark': {
           type: 'raster',
-          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+          tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
           tileSize: 256,
-          attribution: '&copy; OpenStreetMap contributors',
+          attribution: '&copy; CARTO &copy; OpenStreetMap contributors',
         },
       },
       layers: [
         {
-          id: 'osm',
+          id: 'carto-dark',
           type: 'raster',
-          source: 'osm',
-          paint: { 'raster-saturation': -0.8, 'raster-brightness-max': 0.4 },
+          source: 'carto-dark',
         },
       ],
     },
-    center: [-49.5, -15.5],
-    zoom: 4,
+    center: [-43.2, -22.9],
+    zoom: 13,
   })
 
   map.addControl(new window.maplibregl.NavigationControl(), 'top-right')
@@ -521,10 +519,9 @@ function initMap() {
   map.on('load', () => {
     updateMapLayer()
 
-    // Popup on click
     map.on('click', 'h3-fill', (e) => {
       const props = e.features[0].properties
-      new window.maplibregl.Popup({ className: 'h3-popup' })
+      new window.maplibregl.Popup()
         .setLngLat(e.lngLat)
         .setHTML(`
           <div style="color:#111827;font-size:13px;line-height:1.5;">
@@ -544,9 +541,9 @@ function initMap() {
 }
 
 function updateMapLayer() {
-  if (!map || !map.isStyleLoaded()) return
+  if (!map) return
 
-  const geojson = buildGeoJSON()
+  const geojson = buildHexGeoJSON()
 
   if (map.getSource('h3-source')) {
     map.getSource('h3-source').setData(geojson)
@@ -559,7 +556,7 @@ function updateMapLayer() {
       source: 'h3-source',
       paint: {
         'fill-color': ['get', 'color'],
-        'fill-opacity': 0.8,
+        'fill-opacity': 0.75,
       },
     })
 
@@ -586,7 +583,7 @@ const barWidth = (value, data, field) => {
 }
 
 const formatDow = (day) => {
-  const map = {
+  const days = {
     'segunda-feira': 'Mon',
     'terça-feira': 'Tue',
     'quarta-feira': 'Wed',
@@ -595,7 +592,7 @@ const formatDow = (day) => {
     'sábado': 'Sat',
     'domingo': 'Sun',
   }
-  return map[day] || day
+  return days[day] || day
 }
 
 onMounted(fetchAll)

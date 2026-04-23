@@ -45,6 +45,8 @@ class Settings(BaseSettings):
 
     # ClickHouse (acidentes H3)
     CLICKHOUSE_URL: str = "http://localhost:8123"
+    CLICKHOUSE_USER: str = "clickhouse"
+    CLICKHOUSE_PASSWORD: str = "clickhouse"
 
     class Config:
         env_file = ".env"
