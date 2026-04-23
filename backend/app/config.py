@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     # Application
     APP_NAME: str = "Portfolio API"
     APP_VERSION: str = "1.0.0"
-    DEBUG: bool = True
+    DEBUG: bool = False
 
     # Database
     DATABASE_URL: str = "sqlite:///./portfolio.db"
@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
 
     # Security
-    SECRET_KEY: str = "your-secret-key-change-in-production"
+    SECRET_KEY: str = ""
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     # Rate Limiting
@@ -54,3 +54,7 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+if not settings.DEBUG and not settings.SECRET_KEY:
+    import warnings
+    warnings.warn("SECRET_KEY is empty in non-DEBUG mode — set it in .env before exposing to the internet.", RuntimeWarning)
