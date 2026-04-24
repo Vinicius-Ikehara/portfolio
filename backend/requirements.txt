@@ -19,3 +19,6 @@ openinference-instrumentation-agno>=0.1.0
 openinference-instrumentation-openai>=0.1.0
 opentelemetry-sdk>=1.20.0
 opentelemetry-exporter-otlp>=1.20.0
+
+# MCP Server (expose accident data to Claude Desktop / Cursor / any MCP client)
+mcp>=1.0.0

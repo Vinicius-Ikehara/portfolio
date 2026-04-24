@@ -4,6 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.responses import JSONResponse
+from starlette.requests import Request
 from .database import engine, Base
 from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard, acidentes_h3
 from .config import settings
@@ -68,6 +70,24 @@ app.include_router(webhook_proxy.router)
 app.include_router(lastfm.router)
 app.include_router(langfuse_dashboard.router)
 app.include_router(acidentes_h3.router)
+
+
+@app.middleware("http")
+async def mcp_bearer_auth(request: Request, call_next):
+    if request.url.path.startswith("/mcp"):
+        token = settings.MCP_API_TOKEN
+        if token:
+            auth = request.headers.get("Authorization", "")
+            if not auth.startswith("Bearer ") or auth[7:] != token:
+                return JSONResponse({"detail": "Unauthorized"}, status_code=401)
+    return await call_next(request)
+
+
+try:
+    from .mcp_server import mcp
+    app.mount("/mcp", mcp.streamable_http_app())
+except Exception as e:
+    print(f"[Startup] MCP server not mounted: {e}")
 
 
 @app.get("/")

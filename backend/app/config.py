@@ -43,6 +43,9 @@ class Settings(BaseSettings):
     LANGFUSE_SECRET_KEY: str = ""
     LANGFUSE_BASE_URL: str = "http://localhost:3000"
 
+    # MCP Server (bearer token for remote Claude Desktop / Cursor / etc.)
+    MCP_API_TOKEN: str = ""
+
     # ClickHouse (acidentes H3)
     CLICKHOUSE_URL: str = "http://localhost:8123"
     CLICKHOUSE_USER: str = "clickhouse"
