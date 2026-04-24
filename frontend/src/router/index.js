@@ -4,6 +4,7 @@ import ProjectDetail from '../views/ProjectDetail.vue'
 import LastfmInsightsProject from '../views/LastfmInsightsProject.vue'
 import LangfuseDashboard from '../views/LangfuseDashboard.vue'
 import AcidentesH3Dashboard from '../views/AcidentesH3Dashboard.vue'
+import VideoQADashboard from '../views/VideoQADashboard.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/projects/acidentes-h3',
     name: 'AcidentesH3Dashboard',
     component: AcidentesH3Dashboard
+  },
+  {
+    path: '/projects/video-agent',
+    name: 'VideoAgentDashboard',
+    component: VideoQADashboard
   }
 ]
 

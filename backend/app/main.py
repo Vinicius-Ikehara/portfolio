@@ -7,7 +7,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from starlette.requests import Request
 from .database import engine, Base
-from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard, acidentes_h3
+from .rate_limit import limiter
+from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard, acidentes_h3, video_qa
 from .config import settings
 
 # Criar as tabelas no banco de dados
@@ -40,6 +41,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 # Security Headers Middleware
 @app.middleware("http")
 async def add_security_headers(request, call_next):
@@ -70,6 +74,7 @@ app.include_router(webhook_proxy.router)
 app.include_router(lastfm.router)
 app.include_router(langfuse_dashboard.router)
 app.include_router(acidentes_h3.router)
+app.include_router(video_qa.router)
 
 
 @app.middleware("http")
