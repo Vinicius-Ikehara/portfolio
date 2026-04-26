@@ -1,28 +1,28 @@
-fastapi==0.115.5
-uvicorn[standard]==0.30.6
-sqlalchemy==2.0.23
-pydantic==2.10.6
-pydantic-settings==2.7.0
-python-multipart==0.0.18
-slowapi==0.1.9
-python-dotenv==1.0.0
-httpx==0.28.1
-supabase==2.29.0
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+sqlalchemy>=2.0.0
+pydantic>=2.11.7
+pydantic-settings>=2.7.0
+python-multipart>=0.0.9
+slowapi>=0.1.9
+python-dotenv>=1.0.0
+httpx>=0.28.1,<1.0
+supabase>=2.29.0
 
 # Pokédex Workflow - AI Agent
-agno==1.4.4
-openai==2.31.0
+agno>=1.4.4
+openai>=1.0.0
 
 # Observability - Langfuse via OpenTelemetry
-langfuse==3.1.1
+langfuse>=3.1.1
 openinference-instrumentation-agno>=0.1.0
 openinference-instrumentation-openai>=0.1.0
-opentelemetry-sdk==1.33.1
-opentelemetry-exporter-otlp==1.33.1
+opentelemetry-sdk>=1.33.0
+opentelemetry-exporter-otlp>=1.33.0
 
 # Video Agent - Gemini multimodal
-google-genai==1.16.0
-filetype==1.2.0
+google-genai>=1.16.0
+filetype>=1.2.0
 
 # MCP Server (expose accident data to Claude Desktop / Cursor / any MCP client)
-mcp==1.9.0
+mcp>=1.9.0
