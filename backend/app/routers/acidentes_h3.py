@@ -102,6 +102,65 @@ async def get_h3_hexagons(metric: str = "acidentes"):
     return rows
 
 
+@router.get("/acidentes/h3-hexagons/{h3_hex}/origins")
+async def get_hex_origins(h3_hex: str, limit: int = 50):
+    """Individual accidents aggregated into a specific H3 hex (ordered by severity)."""
+    # Defend against injection — h3_hex must be short and purely hex
+    if not (1 <= len(h3_hex) <= 20) or not all(c in "0123456789abcdefABCDEF" for c in h3_hex):
+        raise HTTPException(status_code=400, detail="Invalid H3 hex index")
+    try:
+        h3_int = int(h3_hex, 16)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid H3 hex index")
+    # Clamp limit to sane bounds
+    limit = max(1, min(int(limit or 50), 200))
+
+    cache_key = f"origins_{h3_int}_{limit}"
+    if _is_cache_valid(cache_key):
+        return _cache[cache_key]["data"]
+
+    # Filter on the raw UInt64 index (pushed down, no per-row string compute)
+    try:
+        rows = _query_clickhouse(f"""
+            SELECT
+                toString(id) as id,
+                toString(data_inversa) as data,
+                horario,
+                dia_semana,
+                fase_dia,
+                concat('BR-', toString(br)) as rodovia,
+                km,
+                municipio,
+                uf,
+                causa_acidente,
+                tipo_acidente,
+                classificacao_acidente,
+                condicao_metereologica,
+                tipo_pista,
+                tracado_via,
+                latitude,
+                longitude,
+                count() as envolvidos,
+                sum(mortos) as mortos,
+                sum(feridos_graves) as feridos_graves,
+                sum(feridos_leves) as feridos_leves,
+                sum(ilesos) as ilesos
+            FROM acidentes.ocorrencias
+            WHERE h3_index = {h3_int}
+            GROUP BY id, data_inversa, horario, dia_semana, fase_dia, br, km,
+                     municipio, uf, causa_acidente, tipo_acidente,
+                     classificacao_acidente, condicao_metereologica,
+                     tipo_pista, tracado_via, latitude, longitude
+            ORDER BY mortos DESC, feridos_graves DESC, feridos_leves DESC, data_inversa DESC
+            LIMIT {limit}
+        """)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"ClickHouse error: {e}")
+
+    _cache[cache_key] = {"data": rows, "timestamp": time.time()}
+    return rows
+
+
 @router.get("/acidentes/by-state")
 async def get_by_state():
     """Accidents aggregated by state."""

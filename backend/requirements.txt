@@ -3,7 +3,7 @@ uvicorn[standard]==0.30.6
 sqlalchemy==2.0.23
 pydantic==2.10.6
 pydantic-settings==2.7.0
-python-multipart==0.0.6
+python-multipart==0.0.18
 slowapi==0.1.9
 python-dotenv==1.0.0
 httpx==0.27.2
@@ -15,8 +15,8 @@ openai==2.31.0
 
 # Observability - Langfuse via OpenTelemetry
 langfuse==3.1.1
-openinference-instrumentation-agno==0.1.6
-openinference-instrumentation-openai==0.1.22
+openinference-instrumentation-agno>=0.1.0
+openinference-instrumentation-openai>=0.1.0
 opentelemetry-sdk==1.33.1
 opentelemetry-exporter-otlp==1.33.1
 
