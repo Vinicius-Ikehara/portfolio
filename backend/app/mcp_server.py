@@ -10,7 +10,7 @@ from mcp.server.fastmcp import FastMCP
 
 from .routers.acidentes_h3 import _query_clickhouse
 
-mcp = FastMCP("acidentes-h3-brazil", streamable_http_path="/")
+mcp = FastMCP("acidentes-h3-brazil", stateless_http=True)
 
 _BR_STATES = {
     "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
