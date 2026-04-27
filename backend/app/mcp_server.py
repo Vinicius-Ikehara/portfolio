@@ -7,10 +7,15 @@ main.py at /mcp and protected by a bearer-token middleware.
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
 from .routers.acidentes_h3 import _query_clickhouse
 
-mcp = FastMCP("acidentes-h3-brazil", stateless_http=True)
+mcp = FastMCP(
+    "acidentes-h3-brazil",
+    stateless_http=True,
+    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
+)
 
 _BR_STATES = {
     "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
