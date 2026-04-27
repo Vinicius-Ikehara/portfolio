@@ -27,8 +27,25 @@ async def lifespan(app: FastAPI):
         init_observability()
     except Exception as e:
         print(f"[Startup] Observability init skipped: {e}")
+
+    mcp_cm = None
+    try:
+        from .mcp_server import mcp
+        mcp_cm = mcp.session_manager.run()
+        await mcp_cm.__aenter__()
+        print("[Startup] MCP session manager started")
+    except Exception as e:
+        mcp_cm = None
+        print(f"[Startup] MCP session manager skipped: {e}")
+
     yield
-    # Shutdown
+
+    if mcp_cm is not None:
+        try:
+            await mcp_cm.__aexit__(None, None, None)
+        except Exception:
+            pass
+
     try:
         from workflows.pokedex.observability import shutdown_observability
         shutdown_observability()
