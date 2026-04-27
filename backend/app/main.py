@@ -8,6 +8,10 @@ from fastapi.responses import JSONResponse
 from starlette.requests import Request
 from .database import engine, Base
 from .rate_limit import limiter
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 from .routers import projects, experiences, profile, webhook_proxy, lastfm, langfuse_dashboard, acidentes_h3, video_qa
 from .config import settings
 
