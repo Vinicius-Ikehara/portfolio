@@ -138,6 +138,7 @@
             <div class="space-y-4">
               <div class="rounded-2xl overflow-hidden" style="border: 1px solid #334155; background-color: #000;">
                 <video
+                  ref="videoPlayer"
                   v-if="localVideoUrl"
                   :src="localVideoUrl"
                   controls
@@ -166,6 +167,7 @@
                 aria-live="polite"
                 aria-label="Chat messages"
                 style="max-height: 380px;"
+                @click="handleChatClick"
               >
                 <div v-if="messages.length === 0" class="text-center py-8" style="color: #64748b;">
                   <i class="pi pi-comments text-3xl mb-3 block"></i>
@@ -184,7 +186,7 @@
                     :style="msg.role === 'user'
                       ? 'background-color: #6366f1; color: #ffffff; border-bottom-right-radius: 4px;'
                       : 'background-color: #0f172a; color: #e2e8f0; border-bottom-left-radius: 4px; border: 1px solid #334155;'"
-                    v-text="msg.content"
+                    v-html="formatMessage(msg.content, msg.role === 'user')"
                   ></div>
                 </div>
 
@@ -297,6 +299,7 @@ const chatInput = ref('')
 const isChatLoading = ref(false)
 const chatContainer = ref(null)
 const fileInput = ref(null)
+const videoPlayer = ref(null)
 
 let pollingInterval = null
 
@@ -456,6 +459,73 @@ async function pollStatus() {
   }
 }
 
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function formatMessage(content, isUser) {
+  if (isUser) {
+    return escapeHtml(content).replace(/\n/g, '<br>')
+  }
+
+  let html = escapeHtml(content)
+
+  // Bold: **text**
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+
+  // Timestamps [MM:SS] → clickable chip
+  html = html.replace(/\[(\d{1,2}):(\d{2})\]/g, (_, mm, ss) => {
+    const secs = parseInt(mm) * 60 + parseInt(ss)
+    return `<span class="ts-link" data-seconds="${secs}" title="Jump to ${mm}:${ss} in video">${mm}:${ss}</span>`
+  })
+
+  // Process lines: detect bullet/numbered lists, convert the rest to <br>
+  const lines = html.split('\n')
+  const result = []
+  let listTag = null
+
+  for (const line of lines) {
+    const bulletMatch = line.match(/^[-*•]\s+(.+)/)
+    const numberedMatch = line.match(/^\d+\.\s+(.+)/)
+
+    if (bulletMatch) {
+      if (listTag !== 'ul') {
+        if (listTag) result.push(`</${listTag}>`)
+        result.push('<ul>')
+        listTag = 'ul'
+      }
+      result.push(`<li>${bulletMatch[1]}</li>`)
+    } else if (numberedMatch) {
+      if (listTag !== 'ol') {
+        if (listTag) result.push(`</${listTag}>`)
+        result.push('<ol>')
+        listTag = 'ol'
+      }
+      result.push(`<li>${numberedMatch[1]}</li>`)
+    } else {
+      if (listTag) { result.push(`</${listTag}>`); listTag = null }
+      result.push(line === '' ? '<br>' : line + '<br>')
+    }
+  }
+
+  if (listTag) result.push(`</${listTag}>`)
+
+  return result.join('').replace(/(<br>)+$/, '')
+}
+
+function handleChatClick(event) {
+  const el = event.target.closest('.ts-link')
+  if (!el || !videoPlayer.value) return
+  const seconds = parseFloat(el.dataset.seconds)
+  if (isNaN(seconds)) return
+  videoPlayer.value.currentTime = seconds
+  videoPlayer.value.play().catch(() => {})
+}
+
 async function sendMessage() {
   const text = chatInput.value.trim()
   if (!text || isChatLoading.value) return
@@ -541,6 +611,49 @@ onBeforeUnmount(() => {
 
 input::placeholder {
   color: #475569;
+}
+
+:deep(.ts-link) {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background-color: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 4px;
+  padding: 0 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+:deep(.ts-link::before) {
+  content: '▶';
+  font-size: 0.6rem;
+}
+
+:deep(.ts-link:hover) {
+  background-color: rgba(99, 102, 241, 0.35);
+  color: #c7d2fe;
+}
+
+:deep(ul), :deep(ol) {
+  margin: 4px 0;
+  padding-left: 1.25rem;
+}
+
+:deep(ul) {
+  list-style-type: disc;
+}
+
+:deep(ol) {
+  list-style-type: decimal;
+}
+
+:deep(li) {
+  margin: 2px 0;
 }
 
 input:focus, label:hover {
