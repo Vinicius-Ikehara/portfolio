@@ -69,7 +69,39 @@
         </div>
       </Transition>
 
-      <button class="details-btn" @click="emit('open', current)">
+      <!-- Vai direto para o projeto. O destino varia por projeto: rota interna,
+           widget de chat do Dialogflow ou link externo. -->
+      <button
+        v-if="current.project_url === 'open-chat'"
+        class="details-btn"
+        @click="emit('open-chat')"
+      >
+        See project
+        <i class="pi pi-arrow-right text-xs"></i>
+      </button>
+
+      <router-link
+        v-else-if="isInternal(current.project_url)"
+        :to="current.project_url"
+        class="details-btn"
+      >
+        See project
+        <i class="pi pi-arrow-right text-xs"></i>
+      </router-link>
+
+      <a
+        v-else-if="current.project_url"
+        :href="current.project_url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="details-btn"
+      >
+        See project
+        <i class="pi pi-external-link text-xs"></i>
+      </a>
+
+      <!-- Sem link ainda: cai no modal, que ao menos mostra techs e GitHub -->
+      <button v-else class="details-btn" @click="emit('open', current)">
         See details
         <i class="pi pi-arrow-right text-xs"></i>
       </button>
@@ -85,7 +117,9 @@ const props = defineProps({
   projects: { type: Array, required: true }
 })
 
-const emit = defineEmits(['open'])
+const emit = defineEmits(['open', 'open-chat'])
+
+const isInternal = (url) => Boolean(url) && url.startsWith('/')
 
 const active = ref(0)
 const current = computed(() => props.projects[active.value])
@@ -287,7 +321,7 @@ const onPointerUp = () => { dragging = false }
   margin-right: auto;
   /* Altura reservada: as descrições variam muito de tamanho e sem isso
      os controles pulavam para cima e para baixo a cada troca de projeto. */
-  min-height: 11.5rem;
+  min-height: 15rem;
 }
 
 .active-title {
@@ -302,10 +336,9 @@ const onPointerUp = () => { dragging = false }
   line-height: 1.55;
   color: var(--text-muted);
   margin-bottom: 0.75rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  /* Texto completo, sem corte. A altura reservada cabe a descrição mais longa
+     (~380 caracteres), para os controles não pularem ao trocar de projeto. */
+  min-height: 6.8rem;
 }
 
 .fade-enter-active,
