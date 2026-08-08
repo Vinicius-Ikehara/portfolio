@@ -233,7 +233,11 @@ const onPointerUp = () => { dragging = false }
 
 .stage {
   position: relative;
-  height: 300px;
+  /* Os cards são absolutos, então não empurram altura nenhuma: este valor
+     precisa acompanhar a altura real do card, ou sobra espaço morto antes dos
+     controles. Hoje: capa lg (h-48 = 12rem) + faixa do título (~2.6rem) + bordas.
+     Se a altura da capa mudar em ProjectCover.vue, ajustar aqui também. */
+  height: 14.8rem;
   touch-action: pan-y;
 }
 
@@ -274,7 +278,7 @@ const onPointerUp = () => { dragging = false }
   align-items: center;
   justify-content: center;
   gap: 1.25rem;
-  margin-top: 1.25rem;
+  margin-top: 0.5rem;
 }
 
 .arrow {
