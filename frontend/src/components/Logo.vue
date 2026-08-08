@@ -10,18 +10,12 @@
     <!-- Background -->
     <rect width="100" height="100" rx="20" fill="url(#vGradient)"/>
 
-    <!-- Letter V, stylized serif -->
-    <text
-      x="50"
-      y="52"
-      text-anchor="middle"
-      dominant-baseline="central"
-      font-family="Georgia, 'Times New Roman', serif"
-      font-style="italic"
-      font-weight="700"
-      font-size="58"
+    <!-- Letter V as an outline, matching favicon.svg exactly. Kept as a path
+         rather than <text> so the mark never depends on a font being present. -->
+    <path
+      d="M 24,29 L 47,29 L 47,35 L 41,35 L 52,63 L 64,35 L 58,35 L 58,29 L 78,29 L 78,35 L 71,35 L 57,76 L 46,76 L 30,35 L 24,35 Z"
       fill="white"
-    >V</text>
+    />
   </svg>
 </template>
 
