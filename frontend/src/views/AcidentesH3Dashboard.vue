@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen" style="background-color: #111827;">
+  <div class="min-h-screen" style="background-color: #1c1a17;">
     <!-- Header -->
-    <header class="sticky top-0 z-50 shadow-lg" style="background-color: #0f172a; border-bottom: 1px solid #1e293b;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-50 shadow-lg" style="background-color: #1c1a17; border-bottom: 1px solid #3a352f;">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <router-link to="/" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #38bdf8;">
+          <router-link to="/" class="flex items-center gap-2 text-xl font-bold transition-colors hover:opacity-80" style="color: #c8703f;">
             <i class="pi pi-arrow-left"></i>
             <span>Back to Portfolio</span>
           </router-link>
@@ -14,7 +14,7 @@
 
     <!-- Project Content -->
     <main class="py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Project Header -->
         <div class="text-center mb-12">
           <div class="flex items-center justify-center gap-3 mb-4">
@@ -28,11 +28,11 @@
               Live Data
             </span>
           </div>
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #ffffff;">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #ede7df;">
             Highway Accidents H3
           </h1>
           <div class="w-24 h-1 mx-auto mb-6" style="background: linear-gradient(90deg, #ef4444, #f59e0b);"></div>
-          <p class="text-lg max-w-2xl mx-auto" style="color: #94a3b8;">
+          <p class="text-lg max-w-2xl mx-auto" style="color: #a39b8f;">
             Geospatial analysis of Brazilian federal highway accidents using
             <span class="font-semibold" style="color: #f87171;">Uber's H3</span>
             hexagonal indexing, powered by
@@ -44,14 +44,14 @@
         <!-- Loading State -->
         <div v-if="loading" class="text-center py-12">
           <i class="pi pi-spin pi-spinner text-4xl" style="color: #ef4444;"></i>
-          <p class="mt-4 text-lg" style="color: #cbd5e1;">Loading accident data from ClickHouse...</p>
+          <p class="mt-4 text-lg" style="color: #a39b8f;">Loading accident data from ClickHouse...</p>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="rounded-xl p-6 text-center" style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);">
           <i class="pi pi-exclamation-triangle text-4xl mb-4" style="color: #ef4444;"></i>
           <p class="text-lg font-semibold mb-2" style="color: #fca5a5;">{{ error }}</p>
-          <button @click="fetchAll" class="mt-4 px-4 py-2 rounded-lg text-sm font-medium" style="background-color: #dc2626; color: #ffffff;">
+          <button @click="fetchAll" class="mt-4 px-4 py-2 rounded-lg text-sm font-medium" style="background-color: #dc2626; color: #ede7df;">
             Retry
           </button>
         </div>
@@ -61,7 +61,7 @@
           <!-- Data Source Banner -->
           <div class="flex items-center gap-3 rounded-lg px-4 py-3 mb-6" style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2);">
             <i class="pi pi-database" style="color: #ef4444;"></i>
-            <span class="text-sm" style="color: #cbd5e1;">
+            <span class="text-sm" style="color: #a39b8f;">
               Data source: <span class="font-semibold" style="color: #f87171;">ClickHouse</span>
               &mdash; Brazilian Federal Highway Police (PRF) open data, H3 resolution 8
             </span>
@@ -69,53 +69,53 @@
 
           <!-- Summary Cards -->
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="rounded-xl p-5" style="background-color: #1e293b; border: 1px solid #334155;">
+            <div class="rounded-xl p-5" style="background-color: #262320; border: 1px solid #3a352f;">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(239, 68, 68, 0.2);">
                   <i class="pi pi-car text-lg" style="color: #ef4444;"></i>
                 </div>
-                <span class="text-xs font-medium uppercase tracking-wider" style="color: #94a3b8;">Accidents</span>
+                <span class="text-xs font-medium uppercase tracking-wider" style="color: #a39b8f;">Accidents</span>
               </div>
-              <p class="text-3xl font-bold" style="color: #ffffff;">{{ Number(summary.total_acidentes || 0).toLocaleString() }}</p>
+              <p class="text-3xl font-bold" style="color: #ede7df;">{{ Number(summary.total_acidentes || 0).toLocaleString() }}</p>
             </div>
 
-            <div class="rounded-xl p-5" style="background-color: #1e293b; border: 1px solid #334155;">
+            <div class="rounded-xl p-5" style="background-color: #262320; border: 1px solid #3a352f;">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(251, 191, 36, 0.2);">
                   <i class="pi pi-users text-lg" style="color: #fbbf24;"></i>
                 </div>
-                <span class="text-xs font-medium uppercase tracking-wider" style="color: #94a3b8;">Involved</span>
+                <span class="text-xs font-medium uppercase tracking-wider" style="color: #a39b8f;">Involved</span>
               </div>
-              <p class="text-3xl font-bold" style="color: #ffffff;">{{ Number(summary.total_envolvidos || 0).toLocaleString() }}</p>
+              <p class="text-3xl font-bold" style="color: #ede7df;">{{ Number(summary.total_envolvidos || 0).toLocaleString() }}</p>
             </div>
 
-            <div class="rounded-xl p-5" style="background-color: #1e293b; border: 1px solid #334155;">
+            <div class="rounded-xl p-5" style="background-color: #262320; border: 1px solid #3a352f;">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(220, 38, 38, 0.2);">
                   <i class="pi pi-heart text-lg" style="color: #dc2626;"></i>
                 </div>
-                <span class="text-xs font-medium uppercase tracking-wider" style="color: #94a3b8;">Deaths</span>
+                <span class="text-xs font-medium uppercase tracking-wider" style="color: #a39b8f;">Deaths</span>
               </div>
-              <p class="text-3xl font-bold" style="color: #ffffff;">{{ Number(summary.total_mortos || 0).toLocaleString() }}</p>
+              <p class="text-3xl font-bold" style="color: #ede7df;">{{ Number(summary.total_mortos || 0).toLocaleString() }}</p>
             </div>
 
-            <div class="rounded-xl p-5" style="background-color: #1e293b; border: 1px solid #334155;">
+            <div class="rounded-xl p-5" style="background-color: #262320; border: 1px solid #3a352f;">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(251, 146, 60, 0.2);">
                   <i class="pi pi-exclamation-circle text-lg" style="color: #fb923c;"></i>
                 </div>
-                <span class="text-xs font-medium uppercase tracking-wider" style="color: #94a3b8;">Severe Injuries</span>
+                <span class="text-xs font-medium uppercase tracking-wider" style="color: #a39b8f;">Severe Injuries</span>
               </div>
-              <p class="text-3xl font-bold" style="color: #ffffff;">{{ Number(summary.total_feridos_graves || 0).toLocaleString() }}</p>
+              <p class="text-3xl font-bold" style="color: #ede7df;">{{ Number(summary.total_feridos_graves || 0).toLocaleString() }}</p>
             </div>
           </div>
 
           <!-- H3 Map -->
-          <div class="rounded-2xl overflow-hidden mb-8" style="border: 1px solid #334155;">
-            <div class="flex items-center justify-between px-6 py-4" style="background-color: #1e293b;">
+          <div class="rounded-2xl overflow-hidden mb-8" style="border: 1px solid #3a352f;">
+            <div class="flex items-center justify-between px-6 py-4" style="background-color: #262320;">
               <div class="flex items-center gap-3">
                 <i class="pi pi-map text-xl" style="color: #ef4444;"></i>
-                <h2 class="text-xl font-bold" style="color: #ffffff;">H3 Hexagonal Heatmap</h2>
+                <h2 class="text-xl font-bold" style="color: #ede7df;">H3 Hexagonal Heatmap</h2>
               </div>
               <div class="flex gap-2">
                 <button
@@ -125,7 +125,7 @@
                   class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                   :style="selectedMetric === m.key
                     ? 'background-color: rgba(239, 68, 68, 0.3); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.5);'
-                    : 'background-color: #0f172a; color: #94a3b8; border: 1px solid #334155;'"
+                    : 'background-color: #131110; color: #a39b8f; border: 1px solid #3a352f;'"
                 >
                   {{ m.label }}
                 </button>
@@ -137,10 +137,10 @@
           <!-- Charts Row -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <!-- Accidents by Hour -->
-            <div class="rounded-2xl p-6 md:p-8" style="background-color: #1e293b; border: 1px solid #334155;">
+            <div class="rounded-2xl p-6 md:p-8" style="background-color: #262320; border: 1px solid #3a352f;">
               <div class="flex items-center gap-3 mb-6">
                 <i class="pi pi-clock text-xl" style="color: #fbbf24;"></i>
-                <h2 class="text-xl font-bold" style="color: #ffffff;">Accidents by Hour</h2>
+                <h2 class="text-xl font-bold" style="color: #ede7df;">Accidents by Hour</h2>
               </div>
               <div class="flex items-end gap-1 h-40">
                 <div
@@ -148,7 +148,7 @@
                   :key="h.hora"
                   class="flex-1 flex flex-col items-center gap-1"
                 >
-                  <span class="text-[9px] font-medium" style="color: #cbd5e1;">{{ h.total_acidentes }}</span>
+                  <span class="text-[9px] font-medium" style="color: #a39b8f;">{{ h.total_acidentes }}</span>
                   <div
                     class="w-full rounded-t-sm transition-all"
                     :style="{
@@ -159,16 +159,16 @@
                       minHeight: '4px'
                     }"
                   ></div>
-                  <span class="text-[9px] mt-1" style="color: #64748b;">{{ h.hora }}h</span>
+                  <span class="text-[9px] mt-1" style="color: #6b6258;">{{ h.hora }}h</span>
                 </div>
               </div>
             </div>
 
             <!-- Accidents by Day of Week -->
-            <div class="rounded-2xl p-6 md:p-8" style="background-color: #1e293b; border: 1px solid #334155;">
+            <div class="rounded-2xl p-6 md:p-8" style="background-color: #262320; border: 1px solid #3a352f;">
               <div class="flex items-center gap-3 mb-6">
                 <i class="pi pi-calendar text-xl" style="color: #38bdf8;"></i>
-                <h2 class="text-xl font-bold" style="color: #ffffff;">Accidents by Day of Week</h2>
+                <h2 class="text-xl font-bold" style="color: #ede7df;">Accidents by Day of Week</h2>
               </div>
               <div class="space-y-3">
                 <div
@@ -176,8 +176,8 @@
                   :key="d.dia_semana"
                   class="flex items-center gap-3"
                 >
-                  <span class="text-xs w-24 text-right truncate" style="color: #94a3b8;">{{ formatDow(d.dia_semana) }}</span>
-                  <div class="flex-1 rounded-full h-6 overflow-hidden" style="background-color: #0f172a;">
+                  <span class="text-xs w-24 text-right truncate" style="color: #a39b8f;">{{ formatDow(d.dia_semana) }}</span>
+                  <div class="flex-1 rounded-full h-6 overflow-hidden" style="background-color: #131110;">
                     <div
                       class="h-full rounded-full flex items-center px-2 transition-all"
                       :style="{
@@ -186,7 +186,7 @@
                         minWidth: '40px'
                       }"
                     >
-                      <span class="text-[10px] font-bold" style="color: #ffffff;">{{ d.total_acidentes }}</span>
+                      <span class="text-[10px] font-bold" style="color: #ede7df;">{{ d.total_acidentes }}</span>
                     </div>
                   </div>
                   <span class="text-xs font-mono w-16 text-right" style="color: #f87171;">{{ d.taxa_letalidade }}%</span>
@@ -196,19 +196,19 @@
           </div>
 
           <!-- Top Causes Table -->
-          <div class="rounded-2xl p-6 md:p-8 mb-8" style="background-color: #1e293b; border: 1px solid #334155;">
+          <div class="rounded-2xl p-6 md:p-8 mb-8" style="background-color: #262320; border: 1px solid #3a352f;">
             <div class="flex items-center gap-3 mb-6">
               <i class="pi pi-exclamation-triangle text-xl" style="color: #ef4444;"></i>
-              <h2 class="text-xl font-bold" style="color: #ffffff;">Top Accident Causes</h2>
+              <h2 class="text-xl font-bold" style="color: #ede7df;">Top Accident Causes</h2>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
                 <thead>
-                  <tr style="border-bottom: 2px solid #334155;">
-                    <th class="text-left py-3 px-3 font-semibold" style="color: #94a3b8;">Cause</th>
-                    <th class="text-right py-3 px-3 font-semibold" style="color: #94a3b8;">Accidents</th>
-                    <th class="text-right py-3 px-3 font-semibold" style="color: #94a3b8;">Deaths</th>
-                    <th class="text-right py-3 px-3 font-semibold" style="color: #94a3b8;">Lethality</th>
+                  <tr style="border-bottom: 2px solid #3a352f;">
+                    <th class="text-left py-3 px-3 font-semibold" style="color: #a39b8f;">Cause</th>
+                    <th class="text-right py-3 px-3 font-semibold" style="color: #a39b8f;">Accidents</th>
+                    <th class="text-right py-3 px-3 font-semibold" style="color: #a39b8f;">Deaths</th>
+                    <th class="text-right py-3 px-3 font-semibold" style="color: #a39b8f;">Lethality</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -216,14 +216,14 @@
                     v-for="c in causeData"
                     :key="c.causa_acidente"
                     class="transition-colors"
-                    style="border-bottom: 1px solid #1e293b;"
-                    @mouseenter="$event.currentTarget.style.backgroundColor = '#0f172a'"
+                    style="border-bottom: 1px solid #262320;"
+                    @mouseenter="$event.currentTarget.style.backgroundColor = '#131110'"
                     @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
                   >
                     <td class="py-3 px-3">
-                      <span class="font-medium" style="color: #e2e8f0;">{{ tr('causa_acidente', c.causa_acidente) }}</span>
+                      <span class="font-medium" style="color: #ede7df;">{{ tr('causa_acidente', c.causa_acidente) }}</span>
                     </td>
-                    <td class="py-3 px-3 text-right font-mono" style="color: #cbd5e1;">{{ Number(c.total_acidentes).toLocaleString() }}</td>
+                    <td class="py-3 px-3 text-right font-mono" style="color: #a39b8f;">{{ Number(c.total_acidentes).toLocaleString() }}</td>
                     <td class="py-3 px-3 text-right font-mono" style="color: #f87171;">{{ c.total_mortos }}</td>
                     <td class="py-3 px-3 text-right">
                       <span
@@ -242,20 +242,20 @@
           </div>
 
           <!-- Top Highways Table -->
-          <div class="rounded-2xl p-6 md:p-8 mb-8" style="background-color: #1e293b; border: 1px solid #334155;">
+          <div class="rounded-2xl p-6 md:p-8 mb-8" style="background-color: #262320; border: 1px solid #3a352f;">
             <div class="flex items-center gap-3 mb-6">
               <i class="pi pi-directions text-xl" style="color: #fbbf24;"></i>
-              <h2 class="text-xl font-bold" style="color: #ffffff;">Most Dangerous Highways</h2>
+              <h2 class="text-xl font-bold" style="color: #ede7df;">Most Dangerous Highways</h2>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
                 <thead>
-                  <tr style="border-bottom: 2px solid #334155;">
-                    <th class="text-left py-3 px-3 font-semibold" style="color: #94a3b8;">Highway</th>
-                    <th class="text-left py-3 px-3 font-semibold" style="color: #94a3b8;">State</th>
-                    <th class="text-right py-3 px-3 font-semibold" style="color: #94a3b8;">Accidents</th>
-                    <th class="text-right py-3 px-3 font-semibold" style="color: #94a3b8;">Deaths</th>
-                    <th class="text-right py-3 px-3 font-semibold" style="color: #94a3b8;">Lethality</th>
+                  <tr style="border-bottom: 2px solid #3a352f;">
+                    <th class="text-left py-3 px-3 font-semibold" style="color: #a39b8f;">Highway</th>
+                    <th class="text-left py-3 px-3 font-semibold" style="color: #a39b8f;">State</th>
+                    <th class="text-right py-3 px-3 font-semibold" style="color: #a39b8f;">Accidents</th>
+                    <th class="text-right py-3 px-3 font-semibold" style="color: #a39b8f;">Deaths</th>
+                    <th class="text-right py-3 px-3 font-semibold" style="color: #a39b8f;">Lethality</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -263,17 +263,17 @@
                     v-for="h in highwayData"
                     :key="h.rodovia + h.uf"
                     class="transition-colors"
-                    style="border-bottom: 1px solid #1e293b;"
-                    @mouseenter="$event.currentTarget.style.backgroundColor = '#0f172a'"
+                    style="border-bottom: 1px solid #262320;"
+                    @mouseenter="$event.currentTarget.style.backgroundColor = '#131110'"
                     @mouseleave="$event.currentTarget.style.backgroundColor = 'transparent'"
                   >
                     <td class="py-3 px-3">
                       <span class="font-bold" style="color: #fbbf24;">{{ h.rodovia }}</span>
                     </td>
                     <td class="py-3 px-3">
-                      <span class="px-2 py-0.5 rounded text-xs font-semibold" style="background-color: rgba(56, 189, 248, 0.15); color: #38bdf8;">{{ h.uf }}</span>
+                      <span class="px-2 py-0.5 rounded text-xs font-semibold" style="background-color: rgba(200, 112, 63, 0.15); color: #c8703f;">{{ h.uf }}</span>
                     </td>
-                    <td class="py-3 px-3 text-right font-mono" style="color: #cbd5e1;">{{ Number(h.total_acidentes).toLocaleString() }}</td>
+                    <td class="py-3 px-3 text-right font-mono" style="color: #a39b8f;">{{ Number(h.total_acidentes).toLocaleString() }}</td>
                     <td class="py-3 px-3 text-right font-mono" style="color: #f87171;">{{ h.total_mortos }}</td>
                     <td class="py-3 px-3 text-right">
                       <span
@@ -290,8 +290,8 @@
           </div>
 
           <!-- How it Works -->
-          <div class="rounded-2xl p-6 md:p-8 mb-8" style="background-color: #1e293b; border: 1px solid #334155;">
-            <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ffffff;">
+          <div class="rounded-2xl p-6 md:p-8 mb-8" style="background-color: #262320; border: 1px solid #3a352f;">
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ede7df;">
               <i class="pi pi-cog mr-2" style="color: #ef4444;"></i>
               How it Works
             </h2>
@@ -301,8 +301,8 @@
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(239, 68, 68, 0.2);">
                   <i class="pi pi-database text-2xl" style="color: #ef4444;"></i>
                 </div>
-                <h3 class="font-bold mb-2" style="color: #ffffff;">1. Open Data</h3>
-                <p class="text-sm" style="color: #9ca3af;">
+                <h3 class="font-bold mb-2" style="color: #ede7df;">1. Open Data</h3>
+                <p class="text-sm" style="color: #a39b8f;">
                   31,725 accident records from PRF (Brazilian Federal Highway Police) with lat/lng coordinates
                 </p>
               </div>
@@ -311,18 +311,18 @@
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(251, 191, 36, 0.2);">
                   <i class="pi pi-bolt text-2xl" style="color: #fbbf24;"></i>
                 </div>
-                <h3 class="font-bold mb-2" style="color: #ffffff;">2. ClickHouse</h3>
-                <p class="text-sm" style="color: #9ca3af;">
+                <h3 class="font-bold mb-2" style="color: #ede7df;">2. ClickHouse</h3>
+                <p class="text-sm" style="color: #a39b8f;">
                   Column-oriented OLAP database with native H3 functions for blazing-fast geospatial aggregations
                 </p>
               </div>
 
               <div class="text-center p-4">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(56, 189, 248, 0.2);">
-                  <i class="pi pi-th-large text-2xl" style="color: #38bdf8;"></i>
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(200, 112, 63, 0.2);">
+                  <i class="pi pi-th-large text-2xl" style="color: #c8703f;"></i>
                 </div>
-                <h3 class="font-bold mb-2" style="color: #ffffff;">3. H3 Indexing</h3>
-                <p class="text-sm" style="color: #9ca3af;">
+                <h3 class="font-bold mb-2" style="color: #ede7df;">3. H3 Indexing</h3>
+                <p class="text-sm" style="color: #a39b8f;">
                   Uber's hierarchical hexagonal grid system converts lat/lng into spatial indexes at resolution 8
                 </p>
               </div>
@@ -331,8 +331,8 @@
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(34, 197, 94, 0.2);">
                   <i class="pi pi-map text-2xl" style="color: #22c55e;"></i>
                 </div>
-                <h3 class="font-bold mb-2" style="color: #ffffff;">4. Visualization</h3>
-                <p class="text-sm" style="color: #9ca3af;">
+                <h3 class="font-bold mb-2" style="color: #ede7df;">4. Visualization</h3>
+                <p class="text-sm" style="color: #a39b8f;">
                   Interactive map renders H3 hexagons as colored polygons, revealing accident hotspots across Brazil
                 </p>
               </div>
@@ -340,8 +340,8 @@
           </div>
 
           <!-- Tech Stack -->
-          <div class="rounded-2xl p-6 md:p-8 text-center" style="background-color: #1e293b; border: 1px solid #334155;">
-            <p class="text-lg max-w-3xl mx-auto mb-6" style="color: #cbd5e1;">
+          <div class="rounded-2xl p-6 md:p-8 text-center" style="background-color: #262320; border: 1px solid #3a352f;">
+            <p class="text-lg max-w-3xl mx-auto mb-6" style="color: #a39b8f;">
               {{ project.description }}
             </p>
             <div class="flex flex-wrap gap-2 justify-center">
@@ -373,20 +373,20 @@
         <!-- Panel -->
         <aside
           class="w-full max-w-xl h-full overflow-hidden flex flex-col shadow-2xl"
-          style="background-color: #0f172a; border-left: 1px solid #1e293b;"
+          style="background-color: #131110; border-left: 1px solid #262320;"
         >
-          <header class="px-6 py-4 flex items-start justify-between gap-3" style="border-bottom: 1px solid #1e293b;">
+          <header class="px-6 py-4 flex items-start justify-between gap-3" style="border-bottom: 1px solid #262320;">
             <div class="min-w-0">
               <div class="flex items-center gap-2 mb-1">
                 <span class="px-2 py-0.5 rounded text-xs font-semibold" style="background-color: rgba(239,68,68,0.15); color: #f87171;">
                   H3 Hex
                 </span>
-                <span class="text-xs font-mono truncate" style="color: #64748b;">{{ drawerHex?.h3_hex }}</span>
+                <span class="text-xs font-mono truncate" style="color: #6b6258;">{{ drawerHex?.h3_hex }}</span>
               </div>
-              <h3 id="drawer-title" class="text-lg font-bold truncate" style="color: #ffffff;">
-                {{ drawerHex?.municipio }} <span style="color: #94a3b8; font-weight: 500;">— {{ drawerHex?.uf }}</span>
+              <h3 id="drawer-title" class="text-lg font-bold truncate" style="color: #ede7df;">
+                {{ drawerHex?.municipio }} <span style="color: #a39b8f; font-weight: 500;">— {{ drawerHex?.uf }}</span>
               </h3>
-              <p class="text-sm mt-0.5" style="color: #94a3b8;">
+              <p class="text-sm mt-0.5" style="color: #a39b8f;">
                 {{ drawerHex?.acidentes }} accidents · {{ drawerHex?.mortos }} deaths
               </p>
             </div>
@@ -394,14 +394,14 @@
               @click="closeDrawer"
               aria-label="Close origins panel"
               class="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
-              style="background-color: #1e293b; color: #cbd5e1;"
+              style="background-color: #262320; color: #a39b8f;"
             >
               <i class="pi pi-times"></i>
             </button>
           </header>
 
           <!-- Filters -->
-          <div class="px-6 py-3 flex items-center gap-2" style="border-bottom: 1px solid #1e293b;">
+          <div class="px-6 py-3 flex items-center gap-2" style="border-bottom: 1px solid #262320;">
             <button
               v-for="f in [
                 { key: 'all', label: 'All', count: drawerOrigins.length },
@@ -412,8 +412,8 @@
               @click="drawerFilter = f.key"
               class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
               :style="drawerFilter === f.key
-                ? 'background-color: #dc2626; color: #ffffff;'
-                : 'background-color: #1e293b; color: #94a3b8;'"
+                ? 'background-color: #dc2626; color: #ede7df;'
+                : 'background-color: #262320; color: #a39b8f;'"
             >
               {{ f.label }} <span style="opacity: 0.75;">({{ f.count }})</span>
             </button>
@@ -421,7 +421,7 @@
 
           <!-- Body -->
           <div class="flex-1 overflow-y-auto px-2 py-3" aria-live="polite">
-            <div v-if="drawerLoading" class="flex items-center justify-center py-12" style="color: #94a3b8;">
+            <div v-if="drawerLoading" class="flex items-center justify-center py-12" style="color: #a39b8f;">
               <i class="pi pi-spin pi-spinner text-2xl mr-3"></i>
               Loading origin accidents...
             </div>
@@ -430,7 +430,7 @@
               <p class="text-sm" style="color: #f87171;">{{ drawerError }}</p>
             </div>
 
-            <div v-else-if="filteredOrigins.length === 0" class="text-center py-12" style="color: #64748b;">
+            <div v-else-if="filteredOrigins.length === 0" class="text-center py-12" style="color: #6b6258;">
               <i class="pi pi-inbox text-3xl mb-3 block"></i>
               <p class="text-sm">No accidents match this filter.</p>
             </div>
@@ -440,17 +440,17 @@
                 v-for="row in filteredOrigins"
                 :key="row.id"
                 class="rounded-lg p-3 cursor-pointer transition-colors"
-                style="background-color: #1e293b; border: 1px solid transparent;"
+                style="background-color: #262320; border: 1px solid transparent;"
                 @click="focusOrigin(row)"
-                @mouseenter="ev => ev.currentTarget.style.borderColor = '#38bdf8'"
+                @mouseenter="ev => ev.currentTarget.style.borderColor = '#c8703f'"
                 @mouseleave="ev => ev.currentTarget.style.borderColor = 'transparent'"
               >
                 <div class="flex items-start justify-between gap-3 mb-1.5">
                   <div class="flex items-center gap-2 min-w-0">
-                    <span class="text-xs font-mono px-1.5 py-0.5 rounded" style="background-color: #0f172a; color: #7dd3fc;">
+                    <span class="text-xs font-mono px-1.5 py-0.5 rounded" style="background-color: #131110; color: #dd9660;">
                       {{ formatDate(row.data) }} {{ String(row.horario || '').slice(0, 5) }}
                     </span>
-                    <span class="text-xs" style="color: #94a3b8;">{{ trDow(row.dia_semana) }}</span>
+                    <span class="text-xs" style="color: #a39b8f;">{{ trDow(row.dia_semana) }}</span>
                   </div>
                   <div class="flex items-center gap-1 text-xs font-semibold flex-shrink-0">
                     <span v-if="Number(row.mortos) > 0" class="px-1.5 py-0.5 rounded" style="background-color: rgba(220,38,38,0.2); color: #fca5a5;">
@@ -464,24 +464,24 @@
                     </span>
                   </div>
                 </div>
-                <div class="text-sm font-semibold mb-1" style="color: #e2e8f0;">
+                <div class="text-sm font-semibold mb-1" style="color: #ede7df;">
                   {{ tr('tipo_acidente', row.tipo_acidente) }}
                 </div>
-                <div class="text-xs mb-2" style="color: #94a3b8;">
+                <div class="text-xs mb-2" style="color: #a39b8f;">
                   {{ row.rodovia }} · km {{ Number(row.km).toFixed(1) }} · {{ tr('classificacao_acidente', row.classificacao_acidente) }}
                 </div>
-                <div class="text-xs italic" style="color: #cbd5e1;">
+                <div class="text-xs italic" style="color: #a39b8f;">
                   {{ tr('causa_acidente', row.causa_acidente) }}
                 </div>
                 <div class="flex flex-wrap gap-1.5 mt-2">
                   <span v-if="row.condicao_metereologica && row.condicao_metereologica !== 'Céu Claro'"
-                        class="text-xs px-1.5 py-0.5 rounded" style="background-color: #0f172a; color: #94a3b8;">
+                        class="text-xs px-1.5 py-0.5 rounded" style="background-color: #131110; color: #a39b8f;">
                     ☁ {{ tr('condicao_metereologica', row.condicao_metereologica) }}
                   </span>
-                  <span v-if="row.fase_dia" class="text-xs px-1.5 py-0.5 rounded" style="background-color: #0f172a; color: #94a3b8;">
+                  <span v-if="row.fase_dia" class="text-xs px-1.5 py-0.5 rounded" style="background-color: #131110; color: #a39b8f;">
                     {{ tr('fase_dia', row.fase_dia) }}
                   </span>
-                  <span v-if="row.tracado_via" class="text-xs px-1.5 py-0.5 rounded" style="background-color: #0f172a; color: #94a3b8;">
+                  <span v-if="row.tracado_via" class="text-xs px-1.5 py-0.5 rounded" style="background-color: #131110; color: #a39b8f;">
                     {{ tr('tracado_via', row.tracado_via) }}
                   </span>
                 </div>
@@ -489,7 +489,7 @@
             </ul>
           </div>
 
-          <footer class="px-6 py-3 text-xs" style="background-color: #0f172a; color: #64748b; border-top: 1px solid #1e293b;">
+          <footer class="px-6 py-3 text-xs" style="background-color: #131110; color: #6b6258; border-top: 1px solid #262320;">
             Click a row to pinpoint on the map. Showing up to 100 accidents ordered by severity.
           </footer>
         </aside>
@@ -497,12 +497,12 @@
     </transition>
 
     <!-- Footer -->
-    <footer class="py-8" style="background-color: #030712; color: #9ca3af; border-top: 1px solid #1f2937;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <footer class="py-8" style="background-color: #131110; color: #a39b8f; border-top: 1px solid #3a352f;">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <router-link
           to="/"
           class="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-colors font-medium"
-          style="background-color: #dc2626; color: #ffffff;"
+          style="background-color: #c8703f; color: #1c1a17;"
         >
           <i class="pi pi-arrow-left"></i>
           Back to Portfolio

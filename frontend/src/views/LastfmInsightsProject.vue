@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen" style="background-color: #111827;">
+  <div class="min-h-screen" style="background-color: #1c1a17;">
     <!-- Header -->
-    <header class="sticky top-0 z-50 shadow-lg" style="background-color: #0f172a; border-bottom: 1px solid #1e293b;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-50 shadow-lg" style="background-color: #1c1a17; border-bottom: 1px solid #3a352f;">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <router-link to="/" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #38bdf8;">
+          <router-link to="/" class="flex items-center gap-2 text-xl font-bold transition-colors hover:opacity-80" style="color: #c8703f;">
             <i class="pi pi-arrow-left"></i>
             <span>Back to Portfolio</span>
           </router-link>
@@ -14,39 +14,39 @@
 
     <!-- Project Content -->
     <main class="py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Project Header -->
         <div class="text-center mb-12">
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #ffffff;">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #ede7df;">
             {{ project.title }}
           </h1>
-          <div class="w-24 h-1 mx-auto mb-6" style="background-color: #38bdf8;"></div>
+          <div class="w-24 h-1 mx-auto mb-6" style="background-color: #c8703f;"></div>
         </div>
 
         <!-- Loading State -->
         <div v-if="loading" class="text-center py-12">
-          <i class="pi pi-spin pi-spinner text-4xl" style="color: #38bdf8;"></i>
-          <p class="mt-4 text-lg" style="color: #cbd5e1;">Loading ranking data...</p>
+          <i class="pi pi-spin pi-spinner text-4xl" style="color: #c8703f;"></i>
+          <p class="mt-4 text-lg" style="color: #a39b8f;">Loading ranking data...</p>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="rounded-xl p-6 text-center" style="background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);">
           <i class="pi pi-exclamation-triangle text-4xl mb-4" style="color: #ef4444;"></i>
           <p class="text-lg font-semibold mb-2" style="color: #fca5a5;">{{ error }}</p>
-          <p class="text-sm" style="color: #9ca3af;">Try selecting a different date</p>
+          <p class="text-sm" style="color: #a39b8f;">Try selecting a different date</p>
         </div>
 
         <!-- Rankings Display - Single Container -->
-        <div v-else-if="rankings.length > 0" class="rounded-2xl p-6 md:p-8" style="background-color: #1e293b; border: 1px solid #334155;">
+        <div v-else-if="rankings.length > 0" class="rounded-2xl p-6 md:p-8" style="background-color: #262320; border: 1px solid #3a352f;">
           <!-- Header with Date Selector -->
-          <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 mb-6" style="border-bottom: 2px solid #334155;">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-6 mb-6" style="border-bottom: 2px solid #3a352f;">
             <div class="flex items-center gap-3">
-              <i class="pi pi-chart-line text-2xl" style="color: #38bdf8;"></i>
-              <h2 class="text-2xl font-bold" style="color: #ffffff;">Music Analytics Dashboard</h2>
+              <i class="pi pi-chart-line text-2xl" style="color: #c8703f;"></i>
+              <h2 class="text-2xl font-bold" style="color: #ede7df;">Music Analytics Dashboard</h2>
             </div>
             <div class="flex items-center gap-3">
-              <label class="text-sm font-medium" style="color: #cbd5e1;">
-                <i class="pi pi-calendar mr-2" style="color: #38bdf8;"></i>
+              <label class="text-sm font-medium" style="color: #a39b8f;">
+                <i class="pi pi-calendar mr-2" style="color: #c8703f;"></i>
                 Date:
               </label>
               <input
@@ -55,7 +55,7 @@
                 @change="fetchRanking"
                 @click="(e) => e.target.showPicker()"
                 class="px-6 py-3 rounded-lg font-medium border-2 focus:outline-none transition-all hover:scale-105 cursor-pointer min-w-[200px]"
-                style="background-color: #ffffff; color: #1e293b; border-color: #38bdf8; font-weight: 600; font-size: 1rem;"
+                style="background-color: #ede7df; color: #262320; border-color: #c8703f; font-weight: 600; font-size: 1rem;"
                 :max="today"
               />
             </div>
@@ -64,19 +64,19 @@
           <!-- Dual Layout: Newsletter (66%) + Top 10 (33%) -->
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:items-stretch">
             <!-- Newsletter Section (66% - 2 columns) -->
-            <div class="lg:col-span-2 rounded-2xl p-6 md:p-8 flex flex-col" style="background-color: #0f172a; border: 1px solid #334155;">
+            <div class="lg:col-span-2 rounded-2xl p-6 md:p-8 flex flex-col" style="background-color: #131110; border: 1px solid #3a352f;">
               <div v-if="newsletter.length > 0" class="grid grid-cols-2 gap-4 flex-1">
                 <!-- Headline Title (spans 2 columns) -->
-                <div class="col-span-2 rounded-xl p-6 text-center" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 2px solid #38bdf8;">
+                <div class="col-span-2 rounded-xl p-6 text-center" style="background: linear-gradient(135deg, #131110 0%, #262320 100%); border: 2px solid #c8703f;">
                   <div class="flex items-center justify-center gap-3 mb-2">
-                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%);"></div>
-                    <i class="pi pi-sparkles text-2xl" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%);"></div>
+                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #c8703f 0%, #c8703f 100%);"></div>
+                    <i class="pi pi-sparkles text-2xl" style="background: linear-gradient(135deg, #c8703f 0%, #c8703f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #c8703f 0%, #c8703f 100%);"></div>
                   </div>
-                  <h2 class="text-3xl font-black uppercase tracking-wide" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Arial Black', sans-serif; text-shadow: 2px 2px 8px rgba(56, 189, 248, 0.3);">
+                  <h2 class="text-3xl font-black uppercase tracking-wide" style="background: linear-gradient(135deg, #c8703f 0%, #c8703f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Arial Black', sans-serif; text-shadow: 2px 2px 8px rgba(200, 112, 63, 0.3);">
                     AI-Curated Newsletter
                   </h2>
-                  <p class="text-xs mt-2 uppercase tracking-widest" style="color: #94a3b8;">✨ Personalized Artist Insights by AI ✨</p>
+                  <p class="text-xs mt-2 uppercase tracking-widest" style="color: #a39b8f;">✨ Personalized Artist Insights by AI ✨</p>
                 </div>
 
                 <!-- Card Wrapper -->
@@ -88,7 +88,7 @@
                   <div class="flip-card-container">
                     <div class="flip-card-inner">
                       <!-- Front Face -->
-                      <div class="flip-card-front rounded-xl overflow-hidden relative" style="border: 2px solid #334155;">
+                      <div class="flip-card-front rounded-xl overflow-hidden relative" style="border: 2px solid #3a352f;">
                         <!-- Artist Image 100% -->
                         <img
                           v-if="item.imagem_url"
@@ -99,9 +99,9 @@
                         <div
                           v-else
                           class="w-full h-full flex items-center justify-center"
-                          style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);"
+                          style="background: linear-gradient(135deg, #262320 0%, #131110 100%);"
                         >
-                          <i class="pi pi-user text-4xl" style="color: #64748b;"></i>
+                          <i class="pi pi-user text-4xl" style="color: #6b6258;"></i>
                         </div>
 
                         <!-- Title Overlay (Bottom) -->
@@ -109,7 +109,7 @@
                           <p class="text-xs font-bold uppercase mb-1" style="color: #a855f7; letter-spacing: 0.05em;">
                             {{ item.artista }}
                           </p>
-                          <h3 class="font-bold text-sm leading-tight line-clamp-2" style="color: #ffffff; font-family: 'Arial', sans-serif;">
+                          <h3 class="font-bold text-sm leading-tight line-clamp-2" style="color: #ede7df; font-family: 'Arial', sans-serif;">
                             {{ item.titulo || 'Trending Artist' }}
                           </h3>
                         </div>
@@ -123,13 +123,13 @@
                       </div>
 
                       <!-- Back Face -->
-                      <div class="flip-card-back rounded-xl p-4 flex flex-col justify-center" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 2px solid #38bdf8;">
+                      <div class="flip-card-back rounded-xl p-4 flex flex-col justify-center" style="background: linear-gradient(135deg, #262320 0%, #131110 100%); border: 2px solid #c8703f;">
                         <div class="text-center">
-                          <h3 class="font-bold text-xl mb-3" style="color: #38bdf8;">
+                          <h3 class="font-bold text-xl mb-3" style="color: #c8703f;">
                             {{ item.artista }}
                           </h3>
-                          <div class="w-12 h-1 mx-auto mb-3" style="background-color: #38bdf8;"></div>
-                          <p class="text-sm leading-relaxed" style="color: #cbd5e1;">
+                          <div class="w-12 h-1 mx-auto mb-3" style="background-color: #c8703f;"></div>
+                          <p class="text-sm leading-relaxed" style="color: #a39b8f;">
                             {{ item.descricao || 'No description available for this artist.' }}
                           </p>
                         </div>
@@ -142,30 +142,30 @@
               <!-- Newsletter Empty State -->
               <div v-else class="flex-1 flex flex-col">
                 <!-- Headline Title -->
-                <div class="rounded-xl p-6 text-center mb-4" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 2px solid #38bdf8;">
+                <div class="rounded-xl p-6 text-center mb-4" style="background: linear-gradient(135deg, #131110 0%, #262320 100%); border: 2px solid #c8703f;">
                   <div class="flex items-center justify-center gap-3 mb-2">
-                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%);"></div>
-                    <i class="pi pi-sparkles text-2xl" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%);"></div>
+                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #c8703f 0%, #c8703f 100%);"></div>
+                    <i class="pi pi-sparkles text-2xl" style="background: linear-gradient(135deg, #c8703f 0%, #c8703f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+                    <div class="w-8 h-0.5" style="background: linear-gradient(90deg, #c8703f 0%, #c8703f 100%);"></div>
                   </div>
-                  <h2 class="text-3xl font-black uppercase tracking-wide" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Arial Black', sans-serif; text-shadow: 2px 2px 8px rgba(56, 189, 248, 0.3);">
+                  <h2 class="text-3xl font-black uppercase tracking-wide" style="background: linear-gradient(135deg, #c8703f 0%, #c8703f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Arial Black', sans-serif; text-shadow: 2px 2px 8px rgba(200, 112, 63, 0.3);">
                     AI-Curated Newsletter
                   </h2>
-                  <p class="text-xs mt-2 uppercase tracking-widest" style="color: #94a3b8;">✨ Personalized Artist Insights by AI ✨</p>
+                  <p class="text-xs mt-2 uppercase tracking-widest" style="color: #a39b8f;">✨ Personalized Artist Insights by AI ✨</p>
                 </div>
                 <!-- Empty message -->
                 <div class="flex-1 flex items-center justify-center">
                   <div class="text-center">
-                    <i class="pi pi-inbox text-4xl mb-3" style="color: #6b7280;"></i>
-                    <p class="text-sm" style="color: #9ca3af;">No artists available</p>
+                    <i class="pi pi-inbox text-4xl mb-3" style="color: #6b6258;"></i>
+                    <p class="text-sm" style="color: #a39b8f;">No artists available</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Top 10 Ranking (33% - 1 column) -->
-            <div class="lg:col-span-1 rounded-2xl p-6 md:p-8" style="background-color: #0f172a; border: 1px solid #334155;">
-              <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ffffff;">
+            <div class="lg:col-span-1 rounded-2xl p-6 md:p-8" style="background-color: #131110; border: 1px solid #3a352f;">
+              <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ede7df;">
                 <i class="pi pi-trophy mr-2" style="color: #fbbf24;"></i>
                 Daily Top 10
               </h2>
@@ -175,7 +175,7 @@
                   v-for="(item, index) in rankings"
                   :key="item.id"
                   class="flex items-center gap-3 p-2 rounded-xl transition-all hover:scale-[1.02]"
-                  style="background-color: #0f172a; border: 1px solid #334155;"
+                  style="background-color: #131110; border: 1px solid #3a352f;"
                 >
                   <!-- Position -->
                   <div
@@ -197,18 +197,18 @@
                     <div
                       v-else
                       class="w-12 h-12 rounded-lg flex items-center justify-center"
-                      style="background-color: #334155;"
+                      style="background-color: #3a352f;"
                     >
-                      <i class="pi pi-image text-xl" style="color: #64748b;"></i>
+                      <i class="pi pi-image text-xl" style="color: #6b6258;"></i>
                     </div>
                   </div>
 
                   <!-- Song Info -->
                   <div class="flex-1 min-w-0">
-                    <h3 class="font-bold text-sm mb-0.5 truncate" style="color: #ffffff;">
+                    <h3 class="font-bold text-sm mb-0.5 truncate" style="color: #ede7df;">
                       {{ item.musicas?.nome || 'Unknown Track' }}
                     </h3>
-                    <p class="text-xs truncate" style="color: #9ca3af;">
+                    <p class="text-xs truncate" style="color: #a39b8f;">
                       <i class="pi pi-user mr-1"></i>
                       {{ item.musicas?.artista || 'Unknown Artist' }}
                     </p>
@@ -233,7 +233,7 @@
                       <span
                         v-else
                         class="text-xs font-semibold flex items-center gap-1"
-                        style="color: #9ca3af;"
+                        style="color: #a39b8f;"
                       >
                         <i class="pi pi-minus"></i>
                         No change
@@ -248,24 +248,24 @@
 
         <!-- Empty State -->
         <div v-else class="text-center py-12">
-          <i class="pi pi-inbox text-6xl mb-4" style="color: #6b7280;"></i>
-          <p class="text-lg" style="color: #9ca3af;">No data available for this date</p>
+          <i class="pi pi-inbox text-6xl mb-4" style="color: #6b6258;"></i>
+          <p class="text-lg" style="color: #a39b8f;">No data available for this date</p>
         </div>
 
         <!-- How it works -->
-        <div class="mt-12 rounded-2xl p-6 md:p-8" style="background-color: #1e293b; border: 1px solid #334155;">
-          <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ffffff;">
-            <i class="pi pi-cog mr-2" style="color: #38bdf8;"></i>
+        <div class="mt-12 rounded-2xl p-6 md:p-8" style="background-color: #262320; border: 1px solid #3a352f;">
+          <h2 class="text-2xl font-bold mb-6 text-center" style="color: #ede7df;">
+            <i class="pi pi-cog mr-2" style="color: #c8703f;"></i>
             How the ETL Pipeline Works
           </h2>
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="text-center p-4">
-              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(56, 189, 248, 0.2);">
-                <i class="pi pi-download text-2xl" style="color: #38bdf8;"></i>
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(200, 112, 63, 0.2);">
+                <i class="pi pi-download text-2xl" style="color: #c8703f;"></i>
               </div>
-              <h3 class="font-bold mb-2" style="color: #ffffff;">1. Daily Extract</h3>
-              <p class="text-sm" style="color: #9ca3af;">
+              <h3 class="font-bold mb-2" style="color: #ede7df;">1. Daily Extract</h3>
+              <p class="text-sm" style="color: #a39b8f;">
                 Automated ETL runs daily to extract Last.fm data (only available for current day)
               </p>
             </div>
@@ -274,8 +274,8 @@
               <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(168, 85, 247, 0.2);">
                 <i class="pi pi-database text-2xl" style="color: #a855f7;"></i>
               </div>
-              <h3 class="font-bold mb-2" style="color: #ffffff;">2. Store & Transform</h3>
-              <p class="text-sm" style="color: #9ca3af;">
+              <h3 class="font-bold mb-2" style="color: #ede7df;">2. Store & Transform</h3>
+              <p class="text-sm" style="color: #a39b8f;">
                 Data is stored in Supabase and transformed to calculate rankings and position changes
               </p>
             </div>
@@ -284,8 +284,8 @@
               <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(34, 197, 94, 0.2);">
                 <i class="pi pi-sparkles text-2xl" style="color: #22c55e;"></i>
               </div>
-              <h3 class="font-bold mb-2" style="color: #ffffff;">3. AI Analysis</h3>
-              <p class="text-sm" style="color: #9ca3af;">
+              <h3 class="font-bold mb-2" style="color: #ede7df;">3. AI Analysis</h3>
+              <p class="text-sm" style="color: #a39b8f;">
                 AI analyzes top 50 tracks to identify trends, ranking shifts, and generates personalized insights
               </p>
             </div>
@@ -294,8 +294,8 @@
               <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: rgba(251, 191, 36, 0.2);">
                 <i class="pi pi-send text-2xl" style="color: #fbbf24;"></i>
               </div>
-              <h3 class="font-bold mb-2" style="color: #ffffff;">4. Newsletter</h3>
-              <p class="text-sm" style="color: #9ca3af;">
+              <h3 class="font-bold mb-2" style="color: #ede7df;">4. Newsletter</h3>
+              <p class="text-sm" style="color: #a39b8f;">
                 Curated newsletter is generated with artist highlights and served via FastAPI dashboard
               </p>
             </div>
@@ -303,8 +303,8 @@
         </div>
 
         <!-- Project Description -->
-        <div class="mt-12 rounded-2xl p-6 md:p-8 text-center" style="background-color: #1e293b; border: 1px solid #334155;">
-          <p class="text-lg max-w-3xl mx-auto mb-6" style="color: #cbd5e1;">
+        <div class="mt-12 rounded-2xl p-6 md:p-8 text-center" style="background-color: #262320; border: 1px solid #3a352f;">
+          <p class="text-lg max-w-3xl mx-auto mb-6" style="color: #a39b8f;">
             {{ project.description }}
           </p>
 
@@ -314,7 +314,7 @@
               v-for="tech in project.technologies"
               :key="tech"
               class="px-3 py-1.5 rounded-lg text-sm font-medium"
-              style="background-color: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3);"
+              style="background-color: rgba(200, 112, 63, 0.15); color: #dd9660; border: 1px solid rgba(200, 112, 63, 0.3);"
             >
               {{ tech }}
             </span>
@@ -324,12 +324,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-8" style="background-color: #030712; color: #9ca3af; border-top: 1px solid #1f2937;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <footer class="py-8" style="background-color: #131110; color: #a39b8f; border-top: 1px solid #3a352f;">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <router-link
           to="/"
           class="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-colors font-medium"
-          style="background-color: #0284c7; color: #ffffff;"
+          style="background-color: #c8703f; color: #1c1a17;"
         >
           <i class="pi pi-arrow-left"></i>
           Back to Portfolio
@@ -380,13 +380,13 @@ const formatDate = (dateStr) => {
 // Get position badge style
 const getPositionStyle = (position) => {
   if (position === 1) {
-    return 'background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #ffffff;'
+    return 'background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #ede7df;'
   } else if (position === 2) {
     return 'background: linear-gradient(135deg, #d4d4d8 0%, #a1a1aa 100%); color: #18181b;'
   } else if (position === 3) {
-    return 'background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%); color: #ffffff;'
+    return 'background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%); color: #ede7df;'
   } else {
-    return 'background-color: #334155; color: #cbd5e1;'
+    return 'background-color: #3a352f; color: #a39b8f;'
   }
 }
 

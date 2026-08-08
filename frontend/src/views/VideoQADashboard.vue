@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen" style="background-color: #111827;">
+  <div class="min-h-screen" style="background-color: #1c1a17;">
     <!-- Header -->
-    <header class="sticky top-0 z-50 shadow-lg" style="background-color: #0f172a; border-bottom: 1px solid #1e293b;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-50 shadow-lg" style="background-color: #1c1a17; border-bottom: 1px solid #3a352f;">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-          <router-link to="/" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #38bdf8;">
+          <router-link to="/" class="flex items-center gap-2 text-xl font-bold transition-colors hover:opacity-80" style="color: #c8703f;">
             <i class="pi pi-arrow-left"></i>
             <span>Back to Portfolio</span>
           </router-link>
@@ -14,25 +14,25 @@
 
     <!-- Project Content -->
     <main class="py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Project Header -->
         <div class="text-center mb-12">
           <div class="flex items-center justify-center gap-3 mb-4">
             <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" style="background-color: rgba(99, 102, 241, 0.2); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3);">
               Gemini 2.5 Flash
             </span>
-            <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" style="background-color: rgba(56, 189, 248, 0.2); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3);">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" style="background-color: rgba(200, 112, 63, 0.2); color: #dd9660; border: 1px solid rgba(200, 112, 63, 0.3);">
               Video Upload
             </span>
             <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" style="background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);">
               Multimodal AI
             </span>
           </div>
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #ffffff;">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4" style="color: #ede7df;">
             Video Agent
           </h1>
           <div class="w-24 h-1 mx-auto mb-6" style="background: linear-gradient(90deg, #6366f1, #38bdf8);"></div>
-          <p class="text-lg max-w-2xl mx-auto" style="color: #94a3b8;">
+          <p class="text-lg max-w-2xl mx-auto" style="color: #a39b8f;">
             An AI agent that actually watches your videos. Upload a short clip (up to 3 minutes) and ask away —
             powered by <span class="font-semibold" style="color: #a5b4fc;">Gemini 2.5 Flash</span> multimodal analysis.
           </p>
@@ -40,12 +40,12 @@
 
         <!-- Phase (a): File Picker -->
         <div v-if="!sessionId" class="max-w-2xl mx-auto">
-          <div class="rounded-2xl p-8" style="background-color: #1e293b; border: 1px solid #334155;">
+          <div class="rounded-2xl p-8" style="background-color: #262320; border: 1px solid #3a352f;">
             <div class="flex items-center gap-3 mb-6">
               <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: rgba(99, 102, 241, 0.2);">
                 <i class="pi pi-video text-xl" style="color: #a5b4fc;"></i>
               </div>
-              <h2 class="text-xl font-bold" style="color: #ffffff;">Upload a video</h2>
+              <h2 class="text-xl font-bold" style="color: #ede7df;">Upload a video</h2>
             </div>
 
             <div class="space-y-4">
@@ -54,11 +54,11 @@
                 class="block w-full cursor-pointer rounded-lg text-center py-8 px-4 transition-all"
                 :style="fileError
                   ? 'background-color: rgba(239, 68, 68, 0.08); border: 2px dashed #ef4444; color: #fca5a5;'
-                  : 'background-color: #0f172a; border: 2px dashed #334155; color: #94a3b8;'"
+                  : 'background-color: #131110; border: 2px dashed #3a352f; color: #a39b8f;'"
               >
                 <i class="pi pi-cloud-upload text-3xl mb-2 block"></i>
                 <span v-if="!selectedFile" class="block text-sm font-medium">Click to choose a video file</span>
-                <span v-else class="block text-sm font-medium" style="color: #e2e8f0;">{{ selectedFile.name }}</span>
+                <span v-else class="block text-sm font-medium" style="color: #ede7df;">{{ selectedFile.name }}</span>
                 <span class="block text-xs mt-1">MP4, MOV, WebM · up to {{ maxSizeMB }}MB · max {{ maxDurationMin }} min</span>
               </label>
               <input
@@ -68,10 +68,10 @@
                 accept="video/*"
                 class="hidden"
                 @change="onFileSelected"
-                aria-label="Selecionar arquivo de vídeo"
+                aria-label="Select video file"
               />
 
-              <div v-if="selectedFile && !fileError" class="p-3 rounded-lg text-xs flex items-center gap-3" style="background-color: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); color: #7dd3fc;">
+              <div v-if="selectedFile && !fileError" class="p-3 rounded-lg text-xs flex items-center gap-3" style="background-color: rgba(200, 112, 63, 0.08); border: 1px solid rgba(200, 112, 63, 0.2); color: #dd9660;">
                 <i class="pi pi-info-circle"></i>
                 <span>{{ fileSummary }}</span>
               </div>
@@ -84,7 +84,7 @@
                 @click="submitUpload"
                 :disabled="isSubmitting || !selectedFile || !!fileError"
                 class="w-full py-3 px-6 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2"
-                style="background-color: #6366f1; color: #ffffff;"
+                style="background-color: #6366f1; color: #ede7df;"
                 :class="{ 'opacity-50 cursor-not-allowed': isSubmitting || !selectedFile || !!fileError }"
               >
                 <i :class="isSubmitting ? 'pi pi-spin pi-spinner' : 'pi pi-play'"></i>
@@ -94,10 +94,10 @@
 
             <div class="mt-6 p-4 rounded-lg" style="background-color: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2);">
               <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: #a5b4fc;">How it works</p>
-              <ol class="space-y-1 text-sm" style="color: #94a3b8;">
-                <li><span class="font-medium" style="color: #cbd5e1;">1.</span> Upload a short video from your device</li>
-                <li><span class="font-medium" style="color: #cbd5e1;">2.</span> Gemini watches it (audio + visual fusion)</li>
-                <li><span class="font-medium" style="color: #cbd5e1;">3.</span> Ask any question about the content</li>
+              <ol class="space-y-1 text-sm" style="color: #a39b8f;">
+                <li><span class="font-medium" style="color: #a39b8f;">1.</span> Upload a short video from your device</li>
+                <li><span class="font-medium" style="color: #a39b8f;">2.</span> Gemini watches it (audio + visual fusion)</li>
+                <li><span class="font-medium" style="color: #a39b8f;">3.</span> Ask any question about the content</li>
               </ol>
             </div>
           </div>
@@ -105,7 +105,7 @@
 
         <!-- Phase (b): Processing -->
         <div v-else-if="sessionStatus === 'processing'" class="space-y-6">
-          <div class="rounded-2xl overflow-hidden" style="border: 1px solid #334155; background-color: #000;">
+          <div class="rounded-2xl overflow-hidden" style="border: 1px solid #3a352f; background-color: #000;">
             <video
               v-if="localVideoUrl"
               :src="localVideoUrl"
@@ -115,13 +115,13 @@
             ></video>
           </div>
 
-          <div class="rounded-2xl p-8 text-center" style="background-color: #1e293b; border: 1px solid #334155;">
+          <div class="rounded-2xl p-8 text-center" style="background-color: #262320; border: 1px solid #3a352f;">
             <i class="pi pi-spin pi-spinner text-4xl mb-4" style="color: #6366f1;"></i>
-            <h2 class="text-xl font-bold mb-2" style="color: #ffffff;">Gemini is watching the video...</h2>
-            <p class="text-sm" style="color: #94a3b8;">
+            <h2 class="text-xl font-bold mb-2" style="color: #ede7df;">Gemini is watching the video...</h2>
+            <p class="text-sm" style="color: #a39b8f;">
               Performing audio-visual fusion analysis. This may take a minute.
             </p>
-            <div class="mt-4 flex items-center justify-center gap-2 text-xs" style="color: #64748b;">
+            <div class="mt-4 flex items-center justify-center gap-2 text-xs" style="color: #6b6258;">
               <i class="pi pi-clock"></i>
               <span>Polling for completion every 3 seconds</span>
             </div>
@@ -131,12 +131,12 @@
         <!-- Phase (c): Ready -->
         <div v-else-if="sessionStatus === 'ready'" class="space-y-6">
           <div v-if="videoTitle" class="text-center">
-            <h2 class="text-2xl font-bold" style="color: #ffffff;">{{ videoTitle }}</h2>
+            <h2 class="text-2xl font-bold" style="color: #ede7df;">{{ videoTitle }}</h2>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="space-y-4">
-              <div class="rounded-2xl overflow-hidden" style="border: 1px solid #334155; background-color: #000;">
+              <div class="rounded-2xl overflow-hidden" style="border: 1px solid #3a352f; background-color: #000;">
                 <video
                   ref="videoPlayer"
                   v-if="localVideoUrl"
@@ -153,12 +153,12 @@
               </div>
             </div>
 
-            <div class="rounded-2xl flex flex-col" style="background-color: #1e293b; border: 1px solid #334155; min-height: 480px;">
-              <div class="px-5 py-4 flex items-center gap-3" style="border-bottom: 1px solid #334155;">
+            <div class="rounded-2xl flex flex-col" style="background-color: #262320; border: 1px solid #3a352f; min-height: 480px;">
+              <div class="px-5 py-4 flex items-center gap-3" style="border-bottom: 1px solid #3a352f;">
                 <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: rgba(99, 102, 241, 0.2);">
                   <i class="pi pi-comments" style="color: #a5b4fc;"></i>
                 </div>
-                <span class="font-semibold text-sm" style="color: #ffffff;">Video Chat</span>
+                <span class="font-semibold text-sm" style="color: #ede7df;">Video Chat</span>
               </div>
 
               <div
@@ -169,7 +169,7 @@
                 style="max-height: 380px;"
                 @click="handleChatClick"
               >
-                <div v-if="messages.length === 0" class="text-center py-8" style="color: #64748b;">
+                <div v-if="messages.length === 0" class="text-center py-8" style="color: #6b6258;">
                   <i class="pi pi-comments text-3xl mb-3 block"></i>
                   <p class="text-sm">Ask anything about the video content.</p>
                   <p class="text-xs mt-1">Timestamps, concepts, summaries — all fair game.</p>
@@ -184,37 +184,37 @@
                   <div
                     class="max-w-xs lg:max-w-sm px-4 py-2.5 rounded-2xl text-sm leading-relaxed"
                     :style="msg.role === 'user'
-                      ? 'background-color: #6366f1; color: #ffffff; border-bottom-right-radius: 4px;'
-                      : 'background-color: #0f172a; color: #e2e8f0; border-bottom-left-radius: 4px; border: 1px solid #334155;'"
+                      ? 'background-color: #6366f1; color: #ede7df; border-bottom-right-radius: 4px;'
+                      : 'background-color: #131110; color: #ede7df; border-bottom-left-radius: 4px; border: 1px solid #3a352f;'"
                     v-html="formatMessage(msg.content, msg.role === 'user')"
                   ></div>
                 </div>
 
                 <div v-if="isChatLoading" class="flex justify-start">
-                  <div class="px-4 py-2.5 rounded-2xl text-sm" style="background-color: #0f172a; color: #64748b; border: 1px solid #334155; border-bottom-left-radius: 4px;">
+                  <div class="px-4 py-2.5 rounded-2xl text-sm" style="background-color: #131110; color: #6b6258; border: 1px solid #3a352f; border-bottom-left-radius: 4px;">
                     <span class="typing-indicator">Thinking</span>
                   </div>
                 </div>
               </div>
 
-              <div class="px-5 py-4 flex gap-3" style="border-top: 1px solid #334155;">
+              <div class="px-5 py-4 flex gap-3" style="border-top: 1px solid #3a352f;">
                 <input
                   v-model="chatInput"
                   type="text"
-                  aria-label="Pergunta sobre o vídeo"
+                  aria-label="Question about the video"
                   placeholder="Ask about the video..."
                   maxlength="2000"
                   @keydown.enter="sendMessage"
                   :disabled="isChatLoading"
                   class="flex-1 px-4 py-2.5 rounded-lg text-sm outline-none transition-all"
-                  style="background-color: #0f172a; border: 1px solid #334155; color: #e2e8f0;"
+                  style="background-color: #131110; border: 1px solid #3a352f; color: #ede7df;"
                 />
                 <button
                   @click="sendMessage"
                   :disabled="isChatLoading || !chatInput.trim()"
                   aria-label="Enviar mensagem"
                   class="w-10 h-10 rounded-lg flex items-center justify-center transition-all flex-shrink-0"
-                  style="background-color: #6366f1; color: #ffffff;"
+                  style="background-color: #6366f1; color: #ede7df;"
                   :class="{ 'opacity-50 cursor-not-allowed': isChatLoading || !chatInput.trim() }"
                 >
                   <i :class="isChatLoading ? 'pi pi-spin pi-spinner' : 'pi pi-send'" class="text-sm"></i>
@@ -227,7 +227,7 @@
             <button
               @click="resetSession"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-all"
-              style="background-color: #1e293b; color: #94a3b8; border: 1px solid #334155;"
+              style="background-color: #262320; color: #a39b8f; border: 1px solid #3a352f;"
             >
               <i class="pi pi-refresh"></i>
               Analyze a different video
@@ -240,13 +240,13 @@
           <div class="rounded-2xl p-8 text-center" style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3);">
             <i class="pi pi-exclamation-triangle text-4xl mb-4" style="color: #ef4444;"></i>
             <h2 class="text-xl font-bold mb-2" style="color: #fca5a5;">Transcription Failed</h2>
-            <p class="text-sm mb-6" style="color: #94a3b8;">
+            <p class="text-sm mb-6" style="color: #a39b8f;">
               {{ errorMessage || 'An error occurred while processing the video. Please try again.' }}
             </p>
             <button
               @click="resetSession"
               class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm"
-              style="background-color: #dc2626; color: #ffffff;"
+              style="background-color: #dc2626; color: #ede7df;"
             >
               <i class="pi pi-refresh"></i>
               Try Again
@@ -256,12 +256,12 @@
       </div>
     </main>
 
-    <footer class="py-8" style="background-color: #030712; color: #9ca3af; border-top: 1px solid #1f2937;">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <footer class="py-8" style="background-color: #131110; color: #a39b8f; border-top: 1px solid #3a352f;">
+      <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <router-link
           to="/"
           class="inline-flex items-center gap-2 px-6 py-3 rounded-lg transition-colors font-medium"
-          style="background-color: #6366f1; color: #ffffff;"
+          style="background-color: #c8703f; color: #1c1a17;"
         >
           <i class="pi pi-arrow-left"></i>
           Back to Portfolio
