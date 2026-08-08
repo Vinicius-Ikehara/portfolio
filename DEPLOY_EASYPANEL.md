@@ -289,6 +289,56 @@ python -c "import secrets; print(secrets.token_hex(32))"
 
 ## Troubleshooting
 
+### "Fiz o deploy mas a mudança não aparece no site"
+
+Se o arquivo alterado veio de `frontend/public/` (favicon, imagens), **suspeite do
+Cloudflare antes de qualquer outra coisa**.
+
+O site fica atrás do Cloudflare (`portfolio.ikehara.dev.br`). Isso não aparece em
+lugar nenhum do código — nem no `docker-compose`, nem no `nginx.conf`. Arquivos de
+`public/` mantêm o mesmo nome entre deploys, então o Cloudflare pode continuar
+entregando a versão antiga da borda mesmo com o container correto.
+
+**Diagnóstico em dois comandos.** A query string cria outra chave de cache no
+Cloudflare, forçando a ida até a origem — comparar as duas respostas isola a camada:
+
+```bash
+# Pela borda (o que os visitantes recebem)
+curl -sI https://portfolio.ikehara.dev.br/favicon.svg | grep -iE 'cf-cache-status|age:|content-length'
+
+# Furando o cache (o que a origem realmente tem)
+curl -sI "https://portfolio.ikehara.dev.br/favicon.svg?bust=123" | grep -iE 'cf-cache-status|age:|content-length'
+```
+
+| Resultado | Onde está o problema |
+|---|---|
+| `HIT` vs `MISS`, tamanhos diferentes | **Cloudflare** servindo cópia velha → purge |
+| Iguais, e o conteúdo está errado | **Container/build** → siga para o passo abaixo |
+| Iguais, e o conteúdo está certo | **Navegador** → limpar cache de imagens e reabrir |
+
+**Conferir o que o container realmente serve:**
+
+```bash
+C=$(docker ps --format '{{.Names}}' | grep -i front)
+docker exec "$C" cat /usr/share/nginx/html/favicon.svg
+docker ps --format '{{.Names}}\t{{.CreatedAt}}' | grep -i front   # nasceu depois do merge?
+```
+
+> Atenção: em Docker Swarm o nome do container muda a cada deploy
+> (`portfolio_frontend.1.<hash>`). Se o hash mudou entre duas verificações, você
+> inspecionou containers diferentes — refaça a leitura.
+
+**Purge do Cloudflare:** painel → domínio `ikehara.dev.br` → **Caching** →
+**Configuration** → **Purge Cache** → *Custom Purge* com a URL completa do arquivo.
+
+Arquivo **novo** (nome que nunca existiu) aparece na hora e dispensa purge — só
+substituições mantendo o nome precisam.
+
+**Prevenção já aplicada:** o `frontend/nginx.conf` marca `immutable` apenas em
+`^~ /assets/`, cujos nomes carregam hash do Vite. Os demais estáticos recebem TTL
+curto com `must-revalidate`. Antes disso, todo SVG saía com `immutable` e TTL de
+1 ano, o que prendeu o favicon na borda do Cloudflare por meses.
+
 ### Backend não conecta ao banco
 
 ```bash

@@ -235,6 +235,59 @@ docker-compose -f docker-compose.dev.yml up backend
 
 ---
 
+## Produção e CDN
+
+> ⚠️ **O site fica atrás do Cloudflare.** Nada no código revela isso — nem o
+> `docker-compose`, nem o `nginx.conf`, nem os docs de deploy. É a primeira
+> coisa a considerar quando "a mudança não aparece em produção".
+
+| | |
+|---|---|
+| **URL de produção** | https://portfolio.ikehara.dev.br |
+| **Hospedagem** | EasyPanel (Docker Swarm) em VPS Hostinger |
+| **CDN** | Cloudflare, na frente de tudo |
+
+### Regra: trocar arquivo de `public/` exige purge
+
+Arquivos em `frontend/public/` (`favicon.svg`, `images/*`) mantêm o **mesmo nome**
+entre deploys. A saída do Vite em `dist/assets/` tem hash no nome e se resolve
+sozinha; esses não.
+
+Se você **substituir** um arquivo de `public/` mantendo o nome, o Cloudflare
+continua servindo a versão antiga da borda até o TTL expirar. Deploy correto,
+container correto, e mesmo assim o mundo inteiro vê o arquivo velho.
+
+**Depois do deploy:** Cloudflare → domínio `ikehara.dev.br` → **Caching** →
+**Configuration** → **Purge Cache** → *Custom Purge* com a URL do arquivo.
+
+Arquivo **novo** (nome inédito) aparece na hora e não precisa de purge.
+
+### Diagnóstico: é cache de CDN?
+
+Compare a URL normal com uma que tenha query string. A query cria outra chave de
+cache no Cloudflare, então força a ida até a origem:
+
+```bash
+curl -sI https://portfolio.ikehara.dev.br/favicon.svg            | grep -iE 'cf-cache-status|age:|content-length'
+curl -sI "https://portfolio.ikehara.dev.br/favicon.svg?bust=123" | grep -iE 'cf-cache-status|age:|content-length'
+```
+
+`HIT` na primeira e `MISS` na segunda, com tamanhos diferentes, significa
+Cloudflare servindo cópia velha. Se as duas forem idênticas, o problema está no
+container ou no build — aí vale inspecionar o que está servido de fato:
+
+```bash
+C=$(docker ps --format '{{.Names}}' | grep -i front)
+docker exec "$C" cat /usr/share/nginx/html/favicon.svg
+```
+
+> Histórico: em ago/2026 o `nginx.conf` mandava `Cache-Control: immutable` com
+> TTL de 1 ano para todo SVG. O Cloudflare obedeceu e fixou o favicon por um ano.
+> O `nginx.conf` foi corrigido — `immutable` agora só vale para `/assets/`, que
+> tem hash no nome —, mas objetos já fixados na borda só saem com purge manual.
+
+---
+
 ## Notas Importantes
 
 1. **Dados hardcoded**: `frontend/src/data/portfolio.js` contém projetos/experiências
@@ -242,3 +295,6 @@ docker-compose -f docker-compose.dev.yml up backend
 3. **Portas**: Backend 8000, Frontend 3000 (dev) / 80 (prod)
 4. **Git**: Nunca commitar `.env`, já está no `.gitignore`
 5. **Embedding model**: Usa `text-embedding-3-small` (compatível com vectorstore Supabase)
+6. **Cloudflare**: trocar arquivo de `public/` mantendo o nome exige purge manual — ver "Produção e CDN"
+7. **Favicon/Logo**: o "V" é um `<path>`, não `<text>`. Favicon SVG é rasterizado num contexto isolado, sem garantia de fonte, e `<text>` sai em branco. Manter `favicon.svg` e `Logo.vue` com o mesmo `d`.
+8. **Design tokens**: `style.css` define tokens semânticos (`--bg-card`, `--text-heading`…) trocados por `data-theme`. `Home.vue`, `Navbar.vue` e `ProjectCarousel.vue` usam; as 5 telas de projeto ainda têm hex fixo e **não acompanham o modo claro**.
