@@ -100,7 +100,11 @@
               Featured Projects
             </h2>
 
-            <ProjectCarousel :projects="projects" @open="activeProject = $event" />
+            <ProjectCarousel
+              :projects="projects"
+              @open="activeProject = $event"
+              @open-chat="openChat"
+            />
           </section>
 
         </main>
