@@ -2,32 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Professional Blue Color Palette - Column 3 */
+/* Grafite & Cobre Palette */
 :root {
-  --primary-50: #e8f0ff;
-  --primary-100: #d0e1ff;
-  --primary-200: #a0bbf0;
-  --primary-300: #7b9ed9;
-  --primary-400: #5b7cba;
-  --primary-500: #3b5998;
-  --primary-600: #2c4373;
-  --primary-700: #1e3a8a;
-  --primary-800: #1a2f6f;
-  --primary-900: #1a2332;
-  --primary-950: #0f1621;
+  --primary-50: #fbf0e8;
+  --primary-100: #f5dcc7;
+  --primary-200: #eab98f;
+  --primary-300: #dd9660;
+  --primary-400: #d17f45;
+  --primary-500: #c8703f;
+  --primary-600: #a85a30;
+  --primary-700: #874726;
+  --primary-800: #66351d;
+  --primary-900: #452414;
+  --primary-950: #2e1810;
 
-  --surface-0: #ffffff;
-  --surface-50: #f8fafc;
-  --surface-100: #f1f5f9;
-  --surface-200: #e2e8f0;
-  --surface-300: #cbd5e1;
-  --surface-400: #94a3b8;
-  --surface-500: #64748b;
-  --surface-600: #475569;
-  --surface-700: #334155;
-  --surface-800: #1e293b;
-  --surface-900: #0f172a;
-  --surface-950: #020617;
+  --surface-0: #f7f4f0;
+  --surface-50: #ede7df;
+  --surface-100: #d9d1c5;
+  --surface-200: #a39b8f;
+  --surface-300: #8a8175;
+  --surface-400: #6b6258;
+  --surface-500: #4d453c;
+  --surface-600: #3a352f;
+  --surface-700: #262320;
+  --surface-800: #1c1a17;
+  --surface-900: #131110;
+  --surface-950: #0a0908;
+}
+
+/* Theme tokens: dark (default) */
+:root,
+:root[data-theme="dark"] {
+  --bg-page: #1c1a17;
+  --bg-card: #262320;
+  --bg-nav: #1c1a17;
+  --border-color: #3a352f;
+  --text-heading: #ede7df;
+  --text-muted: #a39b8f;
+  --text-faint: #6b6258;
+  --accent-text: #dd9660;
+}
+
+/* Theme tokens: light (bege) */
+:root[data-theme="light"] {
+  --bg-page: #f7f4f0;
+  --bg-card: #ffffff;
+  --bg-nav: #ffffff;
+  --border-color: #e2d9cb;
+  --text-heading: #2e1810;
+  --text-muted: #6b5f52;
+  --text-faint: #9c8f7d;
+  --accent-text: #a85a30;
 }
 
 * {
@@ -42,7 +67,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--surface-50);
+  background-color: var(--bg-page);
+  transition: background-color 0.2s ease;
 }
 
 code {
@@ -58,4 +84,28 @@ code {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Offset anchored sections so the sticky navbar doesn't cover them */
+#about,
+#experience,
+#projects {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Quick highlight flash when jumping to a section via the navbar */
+.nav-highlight-flash {
+  animation: navHighlightFlash 1s ease-out;
+  border-radius: 0.75rem;
+}
+
+@keyframes navHighlightFlash {
+  0% {
+    background-color: rgba(200, 112, 63, 0.22);
+    box-shadow: 0 0 0 3px rgba(200, 112, 63, 0.5);
+  }
+  100% {
+    background-color: rgba(200, 112, 63, 0);
+    box-shadow: 0 0 0 3px rgba(200, 112, 63, 0);
+  }
 }

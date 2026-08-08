@@ -1,52 +1,73 @@
 <template>
-  <nav class="sticky top-0 z-50 shadow-lg" style="background-color: #0f172a; border-bottom: 1px solid #1e293b;">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <nav class="sticky top-0 z-50 shadow-lg" style="background-color: var(--bg-nav); border-bottom: 1px solid var(--border-color);">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo/Name -->
-        <a href="#about" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #38bdf8;">
+        <a href="#about" @click.prevent="scrollToSection('about')" class="flex items-center gap-2 text-xl font-bold transition-colors" style="color: #c8703f; font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;">
           <Logo :size="32" />
-          <span class="hidden sm:block" style="color: #ffffff;">{{ profile?.name || 'Portfolio' }}</span>
+          <span class="hidden sm:block" style="color: var(--text-heading);">{{ profile?.name || 'Portfolio' }}</span>
         </a>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-6">
           <a
             v-for="item in menuItems"
             :key="item.id"
             :href="item.route"
-            class="font-medium transition-colors flex items-center gap-2 hover:text-sky-400"
-            style="color: #cbd5e1;"
+            @click.prevent="scrollToSection(item.id)"
+            class="font-medium transition-colors flex items-center gap-2 hover:opacity-70"
+            style="color: var(--text-muted);"
           >
-            <i :class="item.icon" class="text-sm" style="color: #38bdf8;"></i>
+            <i :class="item.icon" class="text-sm" style="color: #c8703f;"></i>
             <span>{{ item.label }}</span>
           </a>
+
+          <button
+            @click="toggleTheme"
+            class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
+            style="color: var(--text-muted); border: 1px solid var(--border-color);"
+            :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            :title="theme === 'dark' ? 'Light mode' : 'Dark mode'"
+          >
+            <i :class="theme === 'dark' ? 'pi pi-sun' : 'pi pi-moon'" style="color: #c8703f;"></i>
+          </button>
         </div>
 
         <!-- Mobile Menu Button -->
-        <button
-          @click="mobileMenuOpen = !mobileMenuOpen"
-          class="md:hidden p-2 rounded-lg transition-colors"
-          style="color: #cbd5e1;"
-        >
-          <i :class="mobileMenuOpen ? 'pi pi-times' : 'pi pi-bars'" class="text-xl"></i>
-        </button>
+        <div class="flex items-center gap-2 md:hidden">
+          <button
+            @click="toggleTheme"
+            class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
+            style="color: var(--text-muted); border: 1px solid var(--border-color);"
+            :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          >
+            <i :class="theme === 'dark' ? 'pi pi-sun' : 'pi pi-moon'" style="color: #c8703f;"></i>
+          </button>
+          <button
+            @click="mobileMenuOpen = !mobileMenuOpen"
+            class="p-2 rounded-lg transition-colors"
+            style="color: var(--text-muted);"
+          >
+            <i :class="mobileMenuOpen ? 'pi pi-times' : 'pi pi-bars'" class="text-xl"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Mobile Menu -->
       <div
         v-show="mobileMenuOpen"
         class="md:hidden py-4 space-y-2"
-        style="border-top: 1px solid #1e293b;"
+        style="border-top: 1px solid var(--border-color);"
       >
         <a
           v-for="item in menuItems"
           :key="item.id"
           :href="item.route"
-          @click="mobileMenuOpen = false"
+          @click.prevent="scrollToSection(item.id)"
           class="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors"
-          style="color: #cbd5e1;"
+          style="color: var(--text-muted);"
         >
-          <i :class="item.icon" style="color: #38bdf8;"></i>
+          <i :class="item.icon" style="color: #c8703f;"></i>
           <span>{{ item.label }}</span>
         </a>
       </div>
@@ -57,12 +78,28 @@
 <script setup>
 import { ref } from 'vue'
 import Logo from './Logo.vue'
+import { useTheme } from '../composables/useTheme.js'
 
 defineProps({
   profile: Object
 })
 
+const { theme, toggleTheme } = useTheme()
+
 const mobileMenuOpen = ref(false)
+
+const scrollToSection = (id) => {
+  mobileMenuOpen.value = false
+  const el = document.getElementById(id)
+  if (!el) return
+
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  el.classList.remove('nav-highlight-flash')
+  void el.offsetWidth // restart animation if the same section is clicked again
+  el.classList.add('nav-highlight-flash')
+  setTimeout(() => el.classList.remove('nav-highlight-flash'), 1000)
+}
 
 const menuItems = [
   {
